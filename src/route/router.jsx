@@ -24,7 +24,7 @@ const router = createBrowserRouter([
         path: "chats",
         element: <Chats />
       }, {
-        path: "meeting",
+        path: "video-call",
         element: <VideoCall />,
       }
     ],
