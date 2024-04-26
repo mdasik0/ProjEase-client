@@ -19,7 +19,7 @@ const LinkVideoCall = () => {
         }`}
       />
       <span
-        className={`${position ? "opacity-100" : "opacity-0"} duration-300`}
+        className={`${position ? "opacity-100" : "opacity-0"} duration-300 `}
       >
         Video Call
       </span>

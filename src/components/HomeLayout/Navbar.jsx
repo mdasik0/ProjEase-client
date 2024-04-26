@@ -11,9 +11,9 @@ import ThemeChanger from "./NavLinks/ThemeChanger";
 const Navbar = () => {
   const notifications = false;
   return (
-    <nav className="bg-blue-300 flex justify-between px-20 py-6">
+    <nav className="flex justify-between px-20 py-6">
       <h2>logo</h2>
-      <ul className="flex gap-10">
+      <ul className="flex justify-between w-2/6">
         <li>
           <LinkTask />
         </li>

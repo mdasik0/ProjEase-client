@@ -22,7 +22,7 @@ const ThemeChanger = () => {
     return (
         <div className="relative ">
         <button
-          className="z-50 absolute h-10 w-10 opacity-0"
+          className="z-50 absolute h-6 w-6 opacity-0"
           onClick={handleDark}
         ></button>
         <label className="swap swap-rotate z-10 absolute">

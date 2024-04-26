@@ -14,7 +14,7 @@ const LinkChats = () => {
       to={"/chats"}
     >
       <PiChats
-        className={`text-xl absolute duration-300 ${
+        className={`text-xl absolute duration-300  ${
           position ? "bottom-5" : "bottom-0"
         }`}
       />
