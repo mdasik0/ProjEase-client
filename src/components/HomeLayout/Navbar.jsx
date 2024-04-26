@@ -7,6 +7,7 @@ import {
 import LinkTask from "./NavLinks/LinkTask";
 import LinkChats from "./NavLinks/LinkChats";
 import LinkVideoCall from "./NavLinks/LinkVideoCall";
+import ThemeChanger from "./NavLinks/ThemeChanger";
 const Navbar = () => {
   const notifications = false;
   return (
@@ -32,7 +33,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to={""}>USER</Link>
+          <ThemeChanger />
         </li>
       </ul>
     </nav>
