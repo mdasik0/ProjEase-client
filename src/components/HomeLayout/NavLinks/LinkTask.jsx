@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { GoTasklist } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const LinkTask = () => {
 
    
   const [position, setPosition] = useState(false);
   return (
-    <Link
+    <NavLink
       onMouseLeave={() => setPosition(false)}
       onMouseEnter={() => setPosition(true)}
-      className="relative flex flex-col items-center h-[20px] overflow-y-hidden "
+      className="relative flex flex-col items-center h-[24px] overflow-y-hidden "
       to={"/tasks"}
     >
       <GoTasklist
-        className={`text-xl absolute duration-300 ${
-          position ? "bottom-5" : "bottom-0"
+        className={`text-2xl absolute duration-300 ${
+          position ? "bottom-6" : "bottom-0"
         }`}
       />
       <span
@@ -23,7 +23,7 @@ const LinkTask = () => {
       >
         Tasks
       </span>
-    </Link>
+    </NavLink>
   );
 };
 

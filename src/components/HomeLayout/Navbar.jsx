@@ -1,18 +1,13 @@
-import { Link } from "react-router-dom";
-
-import {
-  MdOutlineNotificationsActive,
-  MdOutlineNotifications,
-} from "react-icons/md";
 import LinkTask from "./NavLinks/LinkTask";
 import LinkChats from "./NavLinks/LinkChats";
 import LinkVideoCall from "./NavLinks/LinkVideoCall";
 import ThemeChanger from "./NavLinks/ThemeChanger";
+import Notification from "./NavLinks/Notification";
+import Logo from "./NavLinks/Logo";
 const Navbar = () => {
-  const notifications = false;
   return (
     <nav className="flex justify-between px-20 py-6">
-      <h2>logo</h2>
+      <Logo />
       <ul className="flex justify-between w-2/6">
         <li>
           <LinkTask />
@@ -24,13 +19,7 @@ const Navbar = () => {
           <LinkChats />
         </li>
         <li>
-          <Link to={""}>
-            {notifications ? (
-              <MdOutlineNotificationsActive className="text-[22px]" />
-            ) : (
-              <MdOutlineNotifications className="text-[22px]" />
-            )}
-          </Link>
+          <Notification />
         </li>
         <li>
           <ThemeChanger />
