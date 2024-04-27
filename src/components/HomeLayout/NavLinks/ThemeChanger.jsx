@@ -20,7 +20,7 @@ const ThemeChanger = () => {
         dispatch(themeChange(storedMode))
       }, []);
     return (
-        <div className="relative ">
+        <div className="relative h-[24px] w-[80px] flex flex-col items-center">
         <button
           className="z-50 absolute h-6 w-6 opacity-0"
           onClick={handleDark}

@@ -10,7 +10,7 @@ const LinkTask = () => {
     <NavLink
       onMouseLeave={() => setPosition(false)}
       onMouseEnter={() => setPosition(true)}
-      className="relative flex flex-col items-center h-[24px] overflow-y-hidden "
+      className="relative flex flex-col items-center h-[24px] w-[80px] overflow-y-hidden "
       to={"/tasks"}
     >
       <GoTasklist
