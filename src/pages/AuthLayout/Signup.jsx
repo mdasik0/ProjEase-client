@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AuthNav from "../../components/AuthLayout/AuthNav";
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -18,6 +19,7 @@ const Signup = () => {
 
   return (
     <div className="flex h-screen justify-center items-center">
+      <AuthNav />
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>

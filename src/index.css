@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.active {
+nav .active {
     @apply text-red-500
+}
+.active button {
+    @apply bg-zinc-900 
+    
 }
