@@ -8,10 +8,10 @@ const App = ({ children }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const storedMode = localStorage.getItem("theme")
+    const storedTheme = localStorage.getItem("theme")
       ? localStorage.getItem("theme")
       : "light";
-    dispatch(themeChange(storedMode));
+    dispatch(themeChange(storedTheme));
   }, [dispatch]);
 
   return (
