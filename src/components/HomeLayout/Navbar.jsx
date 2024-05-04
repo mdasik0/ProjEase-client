@@ -3,12 +3,15 @@ import LinkChats from "./NavLinks/LinkChats";
 import LinkVideoCall from "./NavLinks/LinkVideoCall";
 import ThemeChanger from "./NavLinks/ThemeChanger";
 import Notification from "./NavLinks/Notification";
-import Logo from "./NavLinks/Logo";
 import User from "./NavLinks/User";
+import { Link } from "react-router-dom";
+import Logo from "../Shared/Logo";
 const Navbar = () => {
   return (
     <nav className="flex justify-between px-20 py-6">
-      <Logo />
+      <Link to={'/'}>
+        <Logo />
+      </Link>
       <ul className="flex justify-between gap-6">
         <li>
           <LinkTask />

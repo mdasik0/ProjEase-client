@@ -8,17 +8,17 @@ const ThemeChanger = () => {
     const dispatch = useDispatch()
     
       const handleDark = () => {
-        const newMode = mode === "dark" ? "white" : "dark";
-        localStorage.setItem("mode", newMode);
+        const newMode = mode === "dark" ? "light" : "dark";
+        localStorage.setItem("theme", newMode);
         setMode(newMode);
         dispatch(themeChange(newMode))
       };
     
       useEffect(() => {
-        const storedMode = localStorage.getItem("mode");
-        setMode(storedMode || "light"); // default to "light" if no mode is stored
+        const storedMode = localStorage.getItem("theme") ? localStorage.getItem("theme") : "light";
+        setMode(storedMode); // default to "light" if no mode is stored
         dispatch(themeChange(storedMode))
-      }, []);
+      }, [dispatch]);
     return (
         <div className="relative h-[24px] w-[80px] flex flex-col items-center">
         <button
@@ -36,7 +36,7 @@ const ThemeChanger = () => {
           {/* sun icon */}
           <svg
             className={`${
-              mode == ("white" || "light") ? "swap-off" : "swap-on"
+              mode == ( "light") ? "swap-off" : "swap-on"
             } fill-current w-6 h-6`}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
