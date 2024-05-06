@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { loginUser } from "../../../redux/features/userSlice";
 import toast from "react-hot-toast";
 
-const Login_Form = () => {
+const Register_Form = () => {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
-    password: "",
+    newPassword: "",
+    confirmPassword: "",
     show: false,
   });
 
@@ -34,8 +36,24 @@ const Login_Form = () => {
   return (
     <form onSubmit={handleSubmit} className="px-6">
       <div className="text-center mb-10">
-        <h2 className="text-5xl font-bold mb-3">Welcome Back!</h2>
-        <p>Please enter your email & password</p>
+        <h2 className="text-5xl font-bold mb-3">Create an Account</h2>
+        <p>Please enter your Name, Email & Passwords</p>
+      </div>
+      <div className="mb-4">
+        <label className="text-sm block mb-1" htmlFor="name">
+          Name
+        </label>
+        <input
+          onChange={(e) => {
+            setFormData({ ...formData, name: e.target.value });
+          }}
+          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-full"
+          placeholder="John Doe"
+          required
+          type="text"
+          name="name"
+          id="name"
+        />
       </div>
       <div className="mb-4">
         <label className="text-sm block mb-1" htmlFor="email">
@@ -54,19 +72,35 @@ const Login_Form = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="text-sm  block mb-1" htmlFor="password">
-          Password
+        <label className="text-sm  block mb-1" htmlFor="newPassword">
+         New Password
         </label>
         <input
           onChange={(e) => {
-            setFormData({ ...formData, password: e.target.value });
+            setFormData({ ...formData, newPassword: e.target.value });
           }}
           className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-full"
           placeholder="########"
           required
           type={formData.show ? "text" : "password"}
-          name="password"
-          id="password"
+          name="newPassword"
+          id="newPassword"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="text-sm  block mb-1" htmlFor="confirmPassword">
+         Confirm Password
+        </label>
+        <input
+          onChange={(e) => {
+            setFormData({ ...formData, confirmPassword: e.target.value });
+          }}
+          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-full"
+          placeholder="########"
+          required
+          type={formData.show ? "text" : "password"}
+          name="confirmPassword"
+          id="confirmPassword"
         />
       </div>
 
@@ -110,4 +144,4 @@ const Login_Form = () => {
   );
 };
 
-export default Login_Form;
+export default Register_Form;

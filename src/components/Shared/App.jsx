@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { themeChange } from "../../redux/features/otherSlice";
+import { Toaster } from "react-hot-toast";
 
 const App = ({ children }) => {
   const { themes } = useSelector((state) => state.otherSlice);
@@ -13,12 +14,13 @@ const App = ({ children }) => {
       : "light";
     dispatch(themeChange(storedTheme));
   }, [dispatch]);
+  useEffect(() => {
+    document.querySelector("html").setAttribute("data-theme", themes);
+  }, [themes]);
 
   return (
-    <div
-      data-theme={themes === "light" ? "light" : "dark"}
-      className={`h-screen w-screen `}
-    >
+    <div className={`h-screen w-screen `}>
+      <Toaster position="top-center" reverseOrder={false} />
       {children}
     </div>
   );
