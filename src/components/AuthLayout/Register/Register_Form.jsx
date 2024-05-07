@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { loginUser } from "../../../redux/features/userSlice";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { createUser } from "../../../redux/features/userSlice";
 
 const Register_Form = () => {
   const [formData, setFormData] = useState({
@@ -17,12 +17,30 @@ const Register_Form = () => {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const name = formData.name;
     const email = formData.email;
-    const password = formData.password;
-    dispatch(loginUser({ email, password }));
-    console.log(email, password);
+    const newPassword = formData.newPassword;
+    const confirmPassword = formData.confirmPassword;
+    // let password;
+
+    if(newPassword !== confirmPassword) {
+      return toast.error('Passwords do not match')
+    }
+
+    if(newPassword.length < 8 || confirmPassword.length < 8) {
+      return toast.error("Password is too short, Must be at least 8 characters")
+    }
+
+    const password = newPassword;
+
+    console.log(name, email, password)
+
+    dispatch(createUser({email, password, name}))    
+
   };
 
   useEffect(() => {
@@ -31,6 +49,7 @@ const Register_Form = () => {
     }
     if (name) {
       toast.success(`welcome ${name}`);
+      navigate('/')
     }
   }, [error, name]);
   return (
@@ -116,10 +135,11 @@ const Register_Form = () => {
             id="show"
           />{" "}
           <span className="text-sm">Show password</span>
+          
         </div>
-        <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
+        {/* <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
           Forgot Password?
-        </span>
+        </span> */}
       </div>
       <button
         type="submit"
@@ -132,12 +152,12 @@ const Register_Form = () => {
         )}
       </button>
       <span className="text-sm w-full flex items-center gap-1 justify-end ">
-        Don&apos;t have an Account?{" "}
+        Already have an Account?{" "}
         <Link
-          to={`/auth/sign-up`}
+          to={`/auth/sign-in`}
           className="hover:underline hover:text-blue-500 duration-200 cursor-pointer"
         >
-          Register!
+          Login!
         </Link>{" "}
       </span>
     </form>
