@@ -1,8 +1,12 @@
+import Sidebar from "../../components/Shared/Sidebar";
 
 const Tasks = () => {
+
+    
     return (
-        <div>
-            task manager page
+        <div className="flex">
+            <Sidebar />
+           
         </div>
     );
 };

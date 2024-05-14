@@ -9,3 +9,6 @@ nav .active {
     @apply bg-zinc-900 
     
 }
+.sidebar_main_nav .active {
+    @apply bg-gray-200
+}

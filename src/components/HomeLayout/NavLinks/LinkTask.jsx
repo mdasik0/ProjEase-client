@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoTasklist } from "react-icons/go";
+import { MdOutlineTaskAlt } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
 const LinkTask = () => {
@@ -13,7 +13,7 @@ const LinkTask = () => {
       className="relative flex flex-col items-center h-[24px] w-[80px] overflow-y-hidden "
       to={"/tasks"}
     >
-      <GoTasklist
+      <MdOutlineTaskAlt
         className={`text-2xl absolute duration-300 ${
           position ? "bottom-6" : "bottom-0"
         }`}

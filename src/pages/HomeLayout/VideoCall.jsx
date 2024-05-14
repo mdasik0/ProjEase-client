@@ -1,7 +1,9 @@
+import Sidebar from "../../components/Shared/Sidebar";
 
 const VideoCall = () => {
     return (
-        <div>
+        <div className="flex">
+            <Sidebar />
             join meeting
         </div>
     );
