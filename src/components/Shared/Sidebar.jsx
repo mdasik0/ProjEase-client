@@ -15,7 +15,7 @@ const Sidebar = () => {
 
   const currentRoute = location.pathname.split("/")[1];
 
-  console.log(currentRoute);
+  // console.log(currentRoute);
   return (
     <div className={`shadow-lg shadow-gray-300 h-screen w-1/6 duration-300 `}>
       <div className=" flex flex-col items-center justify-center my-6">
@@ -25,8 +25,8 @@ const Sidebar = () => {
         {/* page specific menu. for tasks example: archive, my tasks, priority tasks etc.. */}
       </div>
       <div className="main-manu pl-10">
-        <h4 className="text-xs text-gray-500  flex items-center gap-24">
-          Main Menu <IoIosArrowDown />
+        <h4 className="text-xs text-gray-500  flex items-center relative">
+          Main Menu <IoIosArrowDown className="absolute right-4" />
         </h4>
         <ul className="sidebar-navigation mt-3 mr-3 flex flex-col gap-2 text-[15px]">
           <li className="sidebar_main_nav">

@@ -1,3 +1,4 @@
+import TasksDate from "../../components/HomeLayout/Tasks/TasksDate";
 import Sidebar from "../../components/Shared/Sidebar";
 import { LuBellRing } from "react-icons/lu";
 const Tasks = () => {
@@ -7,7 +8,7 @@ const Tasks = () => {
       <Sidebar />
       {/* Content here */}
       <div className="w-full">
-        <section className="flex justify-between m-10">
+        <section className="flex justify-between border-b px-10 py-5">
           {/* proj Name */}
           <h1 className="text-3xl font-bold">Project 01</h1>
           {/* icons */}
@@ -24,6 +25,10 @@ const Tasks = () => {
               </div>
             </div>
           </div>
+        </section>
+        <section className="mx-8 py-3 px-6 my-3.5 border rounded-lg flex items-center justify-between">
+            <TasksDate />
+            
         </section>
       </div>
     </div>
