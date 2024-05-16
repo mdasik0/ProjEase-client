@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   console.log(currentRoute);
   return (
-    <div className={`shadow-lg shadow-gray-300 h-screen w-56 duration-300 `}>
+    <div className={`shadow-lg shadow-gray-300 h-screen w-1/6 duration-300 `}>
       <div className=" flex flex-col items-center justify-center my-6">
         <Logo />
         {/* 2 menus */}
