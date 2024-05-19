@@ -1,8 +1,11 @@
 import TasksDate from "../../components/HomeLayout/Tasks/TasksDate";
 import Sidebar from "../../components/Shared/Sidebar";
 import { LuBellRing } from "react-icons/lu";
+import { LuSettings2 } from "react-icons/lu";
+import { TiPlus } from "react-icons/ti";
+import { CiSearch } from "react-icons/ci";
 const Tasks = () => {
-    const notifications = ["abdul", "hasem", "rafiq"]
+  const notifications = ["abdul", "hasem", "rafiq"];
   return (
     <div className="flex w-full">
       <Sidebar />
@@ -15,9 +18,9 @@ const Tasks = () => {
           <div className="flex gap-6">
             <p className="p-2.5 bg-gray-200 hover:bg-gray-300 cursor-pointer w-fit rounded-full duration-500 relative">
               <LuBellRing className="text-xl" />
-              {
-                notifications.length > 0 && <span className="bg-red-500 absolute w-3.5 h-3.5 rounded-full border-2 border-white right-0 top-0"></span>
-              }
+              {notifications.length > 0 && (
+                <span className="bg-red-500 absolute w-3.5 h-3.5 rounded-full border-2 border-white right-0 top-0"></span>
+              )}
             </p>
             <div className="avatar">
               <div className="w-10 rounded-full duration-300 cursor-pointer hover:ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -26,9 +29,22 @@ const Tasks = () => {
             </div>
           </div>
         </section>
-        <section className="mx-8 py-3 px-6 my-3.5 border rounded-lg flex items-center justify-between">
-            <TasksDate />
-            
+        <section className=" py-3 px-4 my-3.5 border rounded-lg flex items-center justify-between mx-5  ">
+          <TasksDate />
+
+<div className="border border-gray-400 rounded-lg px-3 py-2 w-[850px] flex items-center gap-3">
+  <CiSearch className="font-semibold text-xl" />
+  <input type="text" placeholder="search for anything" />
+</div>
+
+          <div className="border-l pl-6 flex items-center gap-3 w-fit ">
+            <button className="flex items-center gap-1 border border-gray-400 hover:bg-gray-200 duration-300 px-3 py-2 rounded-lg">
+              <LuSettings2 /> Filter
+            </button>
+            <button className="flex items-center gap-1  bg-zinc-800 hover:bg-zinc-900 duration-300 text-white font-semibold px-6 py-3 rounded-lg">
+              Create Task <TiPlus />
+            </button>
+          </div>
         </section>
       </div>
     </div>

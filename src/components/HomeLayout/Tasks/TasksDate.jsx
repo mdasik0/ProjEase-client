@@ -32,11 +32,11 @@ const TasksDate = () => {
 //   console.log(`date: ${date}, Month: ${month}, Year: ${year}`);
 
   return (
-    <div className="border-r pr-6">
+    <div className="border-r pl-2 pr-6 w-fit ">
       <h2 className="text-2xl">{day}</h2>
-      <p className="font-semibold">
+      <h className="font-semibold">
         {date} of {monthEng}, {year}
-      </p>
+      </h>
     </div>
   );
 };
