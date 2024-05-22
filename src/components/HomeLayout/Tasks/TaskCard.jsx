@@ -120,7 +120,9 @@ const TaskCard = () => {
                 placeholder="Add Steps"
               />
             </div>
+            
           </section>
+          
         </div>
       </div>
     </div>
