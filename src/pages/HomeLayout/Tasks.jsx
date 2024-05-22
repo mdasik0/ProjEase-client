@@ -5,6 +5,8 @@ import { LuSettings2 } from "react-icons/lu";
 import { TiPlus } from "react-icons/ti";
 import { CiSearch } from "react-icons/ci";
 import { useEffect, useRef } from "react";
+import { FaCaretRight, FaChevronDown } from "react-icons/fa";
+import TaskCard from "../../components/HomeLayout/Tasks/TaskCard";
 const Tasks = () => {
   const notifications = ["abdul", "hasem", "rafiq"];
 
@@ -16,9 +18,9 @@ const Tasks = () => {
         event.preventDefault();
         inputRef.current.focus();
       }
-      if(event.key === "Escape") {
+      if (event.key === "Escape") {
         event.preventDefault();
-        inputRef.current.blur()
+        inputRef.current.blur();
       }
     };
 
@@ -30,7 +32,7 @@ const Tasks = () => {
   }, []);
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full ">
       <Sidebar />
       {/* Content here */}
       <div className="w-full">
@@ -77,8 +79,46 @@ const Tasks = () => {
             </button>
           </div>
         </section>
-        <section>
-          hello wolrd
+        <section className="mx-5 my-6 flex justify-between items-start bg-gray-100 py-3 px-3 rounded-xl gap-10">
+          <div className=" rounded-xl w-full">
+            <h3 className="flex items-center justify-between py-2 px-3 gap-3 bg-white rounded-lg">
+              <span className="text-lg font-semibold">To Do</span> <FaChevronDown />
+            </h3>
+            <div>
+              <TaskCard />
+            </div>
+          </div>
+          <div className="border-2 rounded-xl w-full">
+            <h3 className="flex items-center py-1 px-3 gap-3 bg-gray-50">
+              <FaCaretRight /> <span className="text-xl font-semibold">To Do</span>
+            </h3>
+            <div>
+              <div className="task_cards m-3">
+
+              </div>
+            </div>
+          </div>
+          <div className="border-2 rounded-xl w-full">
+            <h3 className="flex items-center py-1 px-3 gap-3 bg-gray-50">
+              <FaCaretRight /> <span className="text-xl font-semibold">To Do</span>
+            </h3>
+            <div>
+              <div className="task_cards m-3">
+
+              </div>
+            </div>
+          </div>
+          <div className="border-2 rounded-xl w-full">
+            <h3 className="flex items-center py-1 px-3 gap-3 bg-gray-50">
+              <FaCaretRight /> <span className="text-xl font-semibold">To Do</span>
+            </h3>
+            <div>
+              <div className="task_cards m-3">
+
+              </div>
+            </div>
+          </div>
+          
         </section>
       </div>
     </div>
