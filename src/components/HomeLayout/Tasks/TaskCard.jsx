@@ -1,39 +1,61 @@
 import { useEffect, useRef, useState } from "react";
+import { FaPlus, FaRegCheckCircle, FaRegCircle } from "react-icons/fa";
 import { IoMdStar } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 
 const TaskCard = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const sidebarRef = useRef(null);
-    const task = "This is the Task Heading And I am Doing this For today";
-    const ArrowSvg = <svg
-    className=""
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-  >
-    <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
-  </svg>
-  
-    const handleClickOutside = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputHover, setInputHover] = useState(false);
+  const [onchangeStpes, setOnchangeSteps] = useState("");
+  const [addStepsData, setAddStepsData] = useState([]);
+  const sidebarRef = useRef(null);
+  const inputRef = useRef();
+
+  const inputFocus = (e) => {
+    e.stopPropagation(); // Prevent the click event from propagating
+    inputRef.current.focus();
+  };
+
+  const handleAddSteps = (e) => {
+    e.preventDefault();
+    setAddStepsData([
+      ...addStepsData,
+      { id: addStepsData.length + 1, step: onchangeStpes },
+    ]);
+    document.getElementById("addSteps").value = "";
+    setOnchangeSteps("")
+    
+  };
+
+  console.log(addStepsData);
+
+  const task = "This is the Task Heading And I am Doing this For today";
+  const ArrowSvg = (
+    <svg className="" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+      <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
+    </svg>
+  );
+
+  const handleClickOutside = (event) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  
-    useEffect(() => {
-      if (isOpen) {
-        document.addEventListener("mousedown", handleClickOutside);
-      } else {
-        document.removeEventListener("mousedown", handleClickOutside);
-      }
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [isOpen]);
+  }, [isOpen]);
+
   return (
     <div
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={() => setIsOpen(true)}
       className="task_cards bg-red-100 mt-3 pt-3 px-2 rounded-xl cursor-pointer"
     >
       <p className="text-sm flex gap-1">
@@ -51,8 +73,8 @@ const TaskCard = () => {
       </div>
       {/* sidebar */}
       <div
-       ref={sidebarRef}
-       onClick={(e) => e.stopPropagation()}
+        ref={sidebarRef}
+        onClick={(e) => e.stopPropagation()}
         className={`absolute ${
           isOpen ? "right-0 top-0" : "-right-[80%] top-0"
         } bg-gray-200 w-2/12 h-screen duration-500`}
@@ -62,12 +84,43 @@ const TaskCard = () => {
         </div>
         {/* task body */}
         <div className="mx-4 font-semibold">
-            <h1 className="text-xl">{task}.</h1>
-            <hr className="my-6 border-gray-500" />
-<div>
-    
-</div>
+          <h1 className="text-xl">{task}.</h1>
+          <hr className="mt-6 border-gray-500" />
+          {/* add steps section */}
+          <section className="mt-3">
+            {/* card start */}
+            {
+                addStepsData.map(d => <div key={d.id} className="flex items-center gap-2 rounded-lg mb-2">
+                <div onMouseEnter={() => setInputHover(true)} onMouseLeave={() => setInputHover(false)}>
+                  {inputHover ? <FaRegCheckCircle  /> : <FaRegCircle />}
+                </div>
+  
+                <h4 className="font-normal bg-transparent placeholder:text-black placeholder:focus:text-gray-400 placeholder:text-sm focus:outline-none focus:border-b border-gray-500 hover:cursor-pointer">
+                  {d.step}
+                </h4>
+              </div>)
+            }
+            {/* card end */}
+            <div
+              onClick={inputFocus}
+              className="flex items-center gap-2 rounded-lg"
+            >
+              {onchangeStpes ? (
+                <FaRegCircle onClick={handleAddSteps} />
+              ) : (
+                <FaPlus />
+              )}
 
+              <input
+                ref={inputRef}
+                id="addSteps"
+                onChange={(e) => setOnchangeSteps(e.target.value)}
+                className="font-normal bg-transparent placeholder:text-black placeholder:focus:text-gray-400 placeholder:text-sm focus:outline-none focus:border-b border-gray-500 hover:cursor-pointer"
+                type="text"
+                placeholder="Add Steps"
+              />
+            </div>
+          </section>
         </div>
       </div>
     </div>
