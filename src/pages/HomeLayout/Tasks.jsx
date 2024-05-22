@@ -32,7 +32,7 @@ const Tasks = () => {
   }, []);
 
   return (
-    <div className="flex w-full ">
+    <div className="flex w-full overflow-hidden relative">
       <Sidebar />
       {/* Content here */}
       <div className="w-full">
