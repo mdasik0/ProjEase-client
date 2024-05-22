@@ -12,3 +12,6 @@ nav .active {
 .sidebar_main_nav .active {
     @apply bg-gray-200 
 }
+.testInput {
+    width: 100%;
+}

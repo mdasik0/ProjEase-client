@@ -4,8 +4,31 @@ import { LuBellRing } from "react-icons/lu";
 import { LuSettings2 } from "react-icons/lu";
 import { TiPlus } from "react-icons/ti";
 import { CiSearch } from "react-icons/ci";
+import { useEffect, useRef } from "react";
 const Tasks = () => {
   const notifications = ["abdul", "hasem", "rafiq"];
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "/") {
+        event.preventDefault();
+        inputRef.current.focus();
+      }
+      if(event.key === "Escape") {
+        event.preventDefault();
+        inputRef.current.blur()
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className="flex w-full">
       <Sidebar />
@@ -32,10 +55,18 @@ const Tasks = () => {
         <section className=" py-3 px-4 my-3.5 border rounded-lg flex items-center justify-between mx-5  ">
           <TasksDate />
 
-<div className="border border-gray-400 rounded-lg px-3 py-2 w-[850px] flex items-center gap-3">
-  <CiSearch className="font-semibold text-xl" />
-  <input type="text" placeholder="search for anything" />
-</div>
+          <div className="border border-gray-400 bg-gray-200 rounded-lg px-3 py-2 flex-grow mx-6 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 flex-grow">
+              <CiSearch className="font-semibold text-xl" />
+              <input
+                ref={inputRef}
+                className="bg-transparent focus:outline-none  flex-grow"
+                type="text"
+                placeholder="search for anything"
+              />
+            </div>
+            <kbd className="kbd kbd-sm rounded-md py-1">Ctrl + /</kbd>
+          </div>
 
           <div className="border-l pl-6 flex items-center gap-3 w-fit ">
             <button className="flex items-center gap-1 border border-gray-400 hover:bg-gray-200 duration-300 px-3 py-2 rounded-lg">
@@ -45,6 +76,9 @@ const Tasks = () => {
               Create Task <TiPlus />
             </button>
           </div>
+        </section>
+        <section>
+          hello wolrd
         </section>
       </div>
     </div>
