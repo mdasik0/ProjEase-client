@@ -59,7 +59,7 @@ const Tasks = () => {
         <section className=" py-3 px-4 my-3.5 border rounded-lg flex items-center justify-between mx-5  ">
           <TasksDate />
 
-          <div className="border border-gray-400 bg-gray-200 rounded-lg px-3 py-2 flex-grow mx-6 flex items-center justify-between gap-3">
+          <div className=" bg-gray-200 rounded-lg pl-3 pr-2 py-1.5 flex-grow mx-6 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 flex-grow">
               <CiSearch className="font-semibold text-xl" />
               <input
@@ -69,7 +69,7 @@ const Tasks = () => {
                 placeholder="search for anything"
               />
             </div>
-            <kbd className="kbd kbd-sm rounded-md py-1">Ctrl + /</kbd>
+            <kbd className="kbd kbd-sm rounded-md text-xs py-1.5 px-4">Ctrl + /</kbd>
           </div>
 
           <div className="border-l pl-6 flex items-center gap-3 w-fit ">

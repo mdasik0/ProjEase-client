@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import StepsCard from "./StepsCard";
 import { IoIosAttach } from "react-icons/io";
 import { LuPlusSquare } from "react-icons/lu";
+import { IoTrashSharp } from "react-icons/io5";
 
 const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
   const [steps, setSteps] = useState({ inputHover: false, onchangeStpes: "" });
@@ -56,7 +57,7 @@ const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
             {steps.onchangeStpes ? (
               <FaRegCircle onClick={handleAddSteps} />
             ) : (
-                <LuPlusSquare />
+              <LuPlusSquare />
             )}
 
             <input
@@ -75,8 +76,17 @@ const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
           <IoIosAttach /> <span className="font-normal text-sm">Add files</span>
         </div>
         <p className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
-            <span className="block font-semibold text-gray-500 mb-2">Description</span>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae non et enim inventore nobis esse quo, facilis dolor cupiditate harum, dolorum veritatis vero amet quaerat maxime soluta,</p>
+          <span className="block font-semibold text-gray-500 mb-2">
+            Description
+          </span>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae
+          non et enim inventore nobis esse quo, facilis dolor cupiditate harum,
+          dolorum veritatis vero amet quaerat maxime soluta,
+        </p>
+        <div className="flex items-center gap-3 bg-red-500 text-white duration-300 hover:bg-red-400 font-semibold rounded-lg px-3 py-2.5 mt-4">
+          <IoTrashSharp />{" "}
+          <span className="font-normal text-sm">Delete task</span>
+        </div>
       </div>
     </div>
   );
