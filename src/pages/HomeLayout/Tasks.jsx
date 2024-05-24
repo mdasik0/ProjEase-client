@@ -79,7 +79,7 @@ const Tasks = () => {
             <AddTask />
           </div>
         </section>
-        <section className="mx-5 my-6 flex justify-between items-start bg-gray-100 py-3 px-3 rounded-xl gap-10">
+        <section className="mx-5 my-6 h-[512px] flex justify-between items-start bg-gray-100 py-3 px-3 rounded-xl gap-4">
           <ToDoTasks />
           <InProgressTasks />
           <CompletedTasks />

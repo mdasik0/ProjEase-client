@@ -3,15 +3,36 @@
 @tailwind utilities;
 
 nav .active {
-    @apply text-red-500
+  @apply text-red-500;
 }
 .active button {
-    @apply bg-zinc-900 
-    
+  @apply bg-zinc-900;
 }
 .sidebar_main_nav .active {
-    @apply bg-gray-200 
+  @apply bg-gray-200;
 }
 .testInput {
-    width: 100%;
+  width: 100%;
 }
+
+/* styles.css */
+
+.scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+  }
+  
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(212, 212, 212);
+    border-radius: 100vh;
+  }
+  
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: lightgray;
+  }
+  
