@@ -1,6 +1,6 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
-import PropTypes from 'prop-types';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
+import PropTypes from "prop-types";
 
 export default function Modal({ isOpen, setIsOpen, children }) {
   function closeModal() {
@@ -38,8 +38,7 @@ export default function Modal({ isOpen, setIsOpen, children }) {
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                  </Dialog.Title>
+                  ></Dialog.Title>
                   {children}
                 </Dialog.Panel>
               </Transition.Child>
@@ -51,3 +50,8 @@ export default function Modal({ isOpen, setIsOpen, children }) {
   );
 }
 
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
