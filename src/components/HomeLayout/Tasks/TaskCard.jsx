@@ -1,35 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { FaPlus, FaRegCheckCircle, FaRegCircle } from "react-icons/fa";
 import { IoMdStar } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
+import TaskSideBar from "./TaskSideBar";
 
 const TaskCard = () => {
+  // opens and closes the task sidebar
   const [isOpen, setIsOpen] = useState(false);
-  const [inputHover, setInputHover] = useState(false);
-  const [onchangeStpes, setOnchangeSteps] = useState("");
-  const [addStepsData, setAddStepsData] = useState([]);
+  
   const sidebarRef = useRef(null);
   const inputRef = useRef();
 
-  const inputFocus = (e) => {
-    e.stopPropagation(); // Prevent the click event from propagating
-    inputRef.current.focus();
-  };
-
-  const handleAddSteps = (e) => {
-    e.preventDefault();
-    setAddStepsData([
-      ...addStepsData,
-      { id: addStepsData.length + 1, step: onchangeStpes },
-    ]);
-    document.getElementById("addSteps").value = "";
-    setOnchangeSteps("")
-    
-  };
-
-  console.log(addStepsData);
-
+// dummy data
   const task = "This is the Task Heading And I am Doing this For today";
+
   const ArrowSvg = (
     <svg className="" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
       <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
@@ -72,59 +54,7 @@ const TaskCard = () => {
         </span>
       </div>
       {/* sidebar */}
-      <div
-        ref={sidebarRef}
-        onClick={(e) => e.stopPropagation()}
-        className={`absolute ${
-          isOpen ? "right-0 top-0" : "-right-[80%] top-0"
-        } bg-gray-200 w-2/12 h-screen duration-500`}
-      >
-        <div className="p-3 text-2xl">
-          <RxCross2 onClick={() => setIsOpen(!isOpen)} />
-        </div>
-        {/* task body */}
-        <div className="mx-4 font-semibold">
-          <h1 className="text-xl">{task}.</h1>
-          <hr className="mt-6 border-gray-500" />
-          {/* add steps section */}
-          <section className="mt-3">
-            {/* card start */}
-            {
-                addStepsData.map(d => <div key={d.id} className="flex items-center gap-2 rounded-lg mb-2">
-                <div onMouseEnter={() => setInputHover(true)} onMouseLeave={() => setInputHover(false)}>
-                  {inputHover ? <FaRegCheckCircle  /> : <FaRegCircle />}
-                </div>
-  
-                <h4 className="font-normal bg-transparent placeholder:text-black placeholder:focus:text-gray-400 placeholder:text-sm focus:outline-none focus:border-b border-gray-500 hover:cursor-pointer">
-                  {d.step}
-                </h4>
-              </div>)
-            }
-            {/* card end */}
-            <div
-              onClick={inputFocus}
-              className="flex items-center gap-2 rounded-lg"
-            >
-              {onchangeStpes ? (
-                <FaRegCircle onClick={handleAddSteps} />
-              ) : (
-                <FaPlus />
-              )}
-
-              <input
-                ref={inputRef}
-                id="addSteps"
-                onChange={(e) => setOnchangeSteps(e.target.value)}
-                className="font-normal bg-transparent placeholder:text-black placeholder:focus:text-gray-400 placeholder:text-sm focus:outline-none focus:border-b border-gray-500 hover:cursor-pointer"
-                type="text"
-                placeholder="Add Steps"
-              />
-            </div>
-            
-          </section>
-          
-        </div>
-      </div>
+      <TaskSideBar task={task} isOpen={isOpen} setIsOpen={setIsOpen} sidebarRef={sidebarRef} inputRef={inputRef} />
     </div>
   );
 };
