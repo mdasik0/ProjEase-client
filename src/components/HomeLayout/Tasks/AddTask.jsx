@@ -21,17 +21,7 @@ const AddTask = () => {
       </button>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Programming Hero">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col mb-5">
-            <label htmlFor="title" className="mb-2">
-              Title
-            </label>
-            <input
-              className="w-full rounded-md"
-              type="text"
-              id="title"
-              {...register("title")}
-            />
-          </div>
+         add title input here
           <div className="flex flex-col mb-5">
             <label htmlFor="title" className="mb-2">
               Description
