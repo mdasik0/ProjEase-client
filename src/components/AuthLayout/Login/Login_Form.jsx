@@ -87,7 +87,7 @@ const Login_Form = () => {
           Forgot Password?
         </span>
       </div>
-      <button
+      <button   
         type="submit"
         className="block bg-zinc-800 font-semibold w-full text-white py-2.5 rounded-full hover:bg-zinc-700 duration-500 active:scale-90 mb-3"
       >

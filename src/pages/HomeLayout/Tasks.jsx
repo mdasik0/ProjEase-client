@@ -9,8 +9,18 @@ import ToDoTasks from "../../components/HomeLayout/Tasks/ToDoTasks";
 import InProgressTasks from "../../components/HomeLayout/Tasks/InProgressTasks";
 import CompletedTasks from "../../components/HomeLayout/Tasks/CompletedTasks";
 import MyTasks from "../../components/HomeLayout/Tasks/MyTasks";
+import { useGetTasksQuery } from "../../redux/api/tasksApi";
 const Tasks = () => {
   const notifications = ["abdul", "hasem", "rafiq"];
+
+  const { data, isLoading } = useGetTasksQuery();
+
+  const todoTasks = data?.filter(t => t.status === "pending");
+  const inProgressTasks = data?.filter(t => t.status === "in-progress");
+  const completedTasks = data?.filter(t => t.status === "completed");
+
+
+  console.log(data);
 
   const inputRef = useRef(null);
 
@@ -69,7 +79,9 @@ const Tasks = () => {
                 placeholder="search for anything"
               />
             </div>
-            <kbd className="kbd kbd-sm rounded-md text-xs py-1.5 px-4">Ctrl + /</kbd>
+            <kbd className="kbd kbd-sm rounded-md text-xs py-1.5 px-4">
+              Ctrl + /
+            </kbd>
           </div>
 
           <div className="border-l pl-6 flex items-center gap-3 w-fit ">
@@ -79,12 +91,18 @@ const Tasks = () => {
             <AddTask />
           </div>
         </section>
-        <section className="mx-5 my-6 h-[512px] flex justify-between items-start bg-gray-100 py-3 px-3 rounded-xl gap-4">
-          <ToDoTasks />
-          <InProgressTasks />
-          <CompletedTasks />
-          <MyTasks />
-        </section>
+        {isLoading ? (
+          <div className="h-3/4 w-full flex items-center justify-center">
+            <span className="loading loading-infinity loading-lg text-blue-500"></span>
+          </div>
+        ) : (
+          <section className="mx-5 my-6 h-[512px] flex justify-between items-start bg-gray-100 py-3 px-3 rounded-xl gap-4">
+            <ToDoTasks todoTasks={todoTasks} />
+            <InProgressTasks inProgressTasks={inProgressTasks} />
+            <CompletedTasks completedTasks={completedTasks} />
+            <MyTasks />
+          </section>
+        )}
       </div>
     </div>
   );
