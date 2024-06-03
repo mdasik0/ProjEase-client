@@ -7,8 +7,27 @@ import { IoIosAttach } from "react-icons/io";
 import { LuPlusSquare } from "react-icons/lu";
 import { IoTrashSharp } from "react-icons/io5";
 
-const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
-  const [steps, setSteps] = useState({ inputHover: false, onchangeStpes: "" });
+const TaskSideBar = ({
+  sidebarRef,
+  inputRef,
+  isOpen,
+  setIsOpen,
+  addedBy,
+  assignedTo,
+  date,
+  deadline,
+  description,
+  priority,
+  status,
+  steps,
+  time,
+  title,
+  _id,
+}) => {
+  const [addStepsInfo, setAddStepsInfo] = useState({
+    inputHover: false,
+    onchangeStpes: "",
+  });
   const [stepsData, setStepsData] = useState([]);
 
   // sidebar function
@@ -22,10 +41,10 @@ const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
     e.preventDefault();
     setStepsData([
       ...stepsData,
-      { id: stepsData.length + 1, step: steps.onchangeStpes },
+      { id: stepsData.length + 1, step: addStepsInfo.onchangeStpes },
     ]);
     document.getElementById("addSteps").value = "";
-    setSteps({ ...steps, onchangeStpes: "" });
+    setAddStepsInfo({ ...addStepsInfo, onchangeStpes: "" });
   };
 
   return (
@@ -41,20 +60,25 @@ const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
       </div>
       {/* task body */}
       <div className="mx-4 font-semibold">
-        <h1 className="text-xl">{task}.</h1>
+        <h1 className="text-xl">{title}.</h1>
         <hr className="mt-6 border-gray-500" />
         {/* add steps section */}
         <section className="mt-3">
           {/* card start */}
           {stepsData.map((d) => (
-            <StepsCard key={d.id} d={d} steps={steps} setSteps={setSteps} />
+            <StepsCard
+              key={d.id}
+              d={d}
+              steps={addStepsInfo}
+              setSteps={setAddStepsInfo}
+            />
           ))}
           {/* card end */}
           <div
             onClick={inputFocus}
             className="flex items-center gap-3 bg-white px-3 py-2 rounded-lg"
           >
-            {steps.onchangeStpes ? (
+            {addStepsInfo.onchangeStpes ? (
               <FaRegCircle onClick={handleAddSteps} />
             ) : (
               <LuPlusSquare />
@@ -64,7 +88,10 @@ const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
               ref={inputRef}
               id="addSteps"
               onChange={(e) =>
-                setSteps({ ...steps, onchangeStpes: e.target.value })
+                setAddStepsInfo({
+                  ...addStepsInfo,
+                  onchangeStpes: e.target.value,
+                })
               }
               className="font-normal bg-transparent placeholder:text-black placeholder:focus:text-gray-400 placeholder:text-sm focus:outline-none focus:border-b border-gray-500 hover:cursor-pointer"
               type="text"
@@ -79,9 +106,7 @@ const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
           <span className="block font-semibold text-gray-500 mb-2">
             Description
           </span>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae
-          non et enim inventore nobis esse quo, facilis dolor cupiditate harum,
-          dolorum veritatis vero amet quaerat maxime soluta,
+          {description}
         </p>
         <div className="flex items-center gap-3 bg-red-500 text-white duration-300 hover:bg-red-400 font-semibold rounded-lg px-3 py-2.5 mt-4">
           <IoTrashSharp />{" "}
@@ -92,17 +117,28 @@ const TaskSideBar = ({ sidebarRef, inputRef, isOpen, setIsOpen, task }) => {
   );
 };
 
-// PropTypes validation
 TaskSideBar.propTypes = {
-  sidebarRef: PropTypes.shape({
-    current: PropTypes.instanceOf(Element),
-  }).isRequired,
-  inputRef: PropTypes.shape({
-    current: PropTypes.instanceOf(Element),
-  }).isRequired,
+  sidebarRef: PropTypes.oneOfType([
+    PropTypes.func, 
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ]),
+  inputRef: PropTypes.oneOfType([
+    PropTypes.func, 
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ]),
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  task: PropTypes.string.isRequired,
+  addedBy: PropTypes.string,
+  assignedTo: PropTypes.string,
+  date: PropTypes.string,
+  deadline: PropTypes.string,
+  description: PropTypes.string,
+  priority: PropTypes.string,
+  status: PropTypes.string,
+  steps: PropTypes.arrayOf(PropTypes.object),
+  time: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  _id: PropTypes.string.isRequired,
 };
 
 export default TaskSideBar;
