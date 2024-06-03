@@ -53,7 +53,7 @@ const TaskCard = ({
   return (
     <div
       onClick={() => setIsOpen(true)}
-      className="task_cards bg-red-100 mt-3 pt-3 px-2 rounded-xl cursor-pointer"
+      className="task_cards bg-red-100 mt-3 pt-3 px-2 flex flex-col justify-between min-h-[174px] rounded-xl cursor-pointer"
     >
       <p className="text-sm flex gap-1">
         <IoMdStar className="text-yellow-500 text-lg" />
@@ -64,7 +64,6 @@ const TaskCard = ({
           ? title?.substring(0, 45) + " ..."
           : title || "No Title"}
       </h2>
-      <p className="pl-2">{description || "No Description"}</p>
       <div className="ml-2 pb-3 pt-3 flex justify-between items-end">
         <span className="text-sm ">{time || "No Time"}</span>
         <span
