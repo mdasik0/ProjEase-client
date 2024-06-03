@@ -7,10 +7,15 @@ const tasksApi = createApi({
     getTasks: builder.query({
         query: () => "/tasks"
     }),
-   
+    updateStatus: builder.mutation({
+      query: (_id) => ({
+        url : `/tasks/${_id}`,
+        method: "PATCH",
+      })
+    })
   })
 })
 
-export const { useGetTasksQuery,  } = tasksApi
+export const { useGetTasksQuery, useUpdateStatusMutation } = tasksApi
 
 export default tasksApi;
