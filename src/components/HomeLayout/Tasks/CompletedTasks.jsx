@@ -1,6 +1,7 @@
 import { FaChevronDown } from "react-icons/fa";
 import TaskCard from "./TaskCard";
 import PropTypes from "prop-types";
+import NoTasksCard from "./NoTasksCard";
 
 
 const CompletedTasks = ({completedTasks}) => {
@@ -11,23 +12,26 @@ const CompletedTasks = ({completedTasks}) => {
         <FaChevronDown />
       </h3>
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-      {completedTasks?.map((task) => (
-          <TaskCard
-            key={task?._id}
-            _id= {task?._id}
-            status={task?.status}
-            title={task?.title}
-            description={task?.description}
-            addedBy={task?.addedBy}
-            assignedTo={task?.assignedTo}
-            date={task?.date}
-            time={task?.time}
-            deadline={task?.deadline}
-            priority={task?.priority}
-            steps={task?.steps}
-
-          />
-        ))}
+      {completedTasks.length == 0 && (
+          <NoTasksCard />
+        )}
+        {completedTasks.length != 0 &&
+          completedTasks?.map((task) => (
+            <TaskCard
+              key={task?._id}
+              _id={task?._id}
+              status={task?.status}
+              title={task?.title}
+              description={task?.description}
+              addedBy={task?.addedBy}
+              assignedTo={task?.assignedTo}
+              date={task?.date}
+              time={task?.time}
+              deadline={task?.deadline}
+              priority={task?.priority}
+              steps={task?.steps}
+            />
+          ))}
       </div>
     </div>
   );

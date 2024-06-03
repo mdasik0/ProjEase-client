@@ -6,10 +6,11 @@ const tasksApi = createApi({
   endpoints: (builder) => ({
     getTasks: builder.query({
         query: () => "/tasks"
-    })
+    }),
+   
   })
 })
 
-export const { useGetTasksQuery } = tasksApi
+export const { useGetTasksQuery,  } = tasksApi
 
 export default tasksApi;
