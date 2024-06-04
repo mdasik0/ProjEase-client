@@ -1,7 +1,7 @@
 import { TiPlus } from "react-icons/ti";
 import { useForm } from "react-hook-form";
 import Modal from "../../Shared/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
 
 import { time, fullDate } from "../../../utils/getDate";
@@ -10,19 +10,41 @@ import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
 
 const AddTask = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false)
   const { register, handleSubmit, reset } = useForm();
-  const [] = useCreateTaskMutation()
+  const [createTask, { data, isLoading, isError, error }] =
+    useCreateTaskMutation();
 
-  const user = "Md Asik"
+  const user = "Md Asik";
 
   const onCancel = () => {
     reset();
     setIsOpen(false);
   };
-  const onSubmit = async (data) => {
+
+  useEffect(() => {
+    if (data) {
+      toast.success("Task created successfully");
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      const selector = document.getElementById("assignedTo");
+      if (selector && selector.options.length > 0) {
+        selector.value = selector.options[0].value;
+      } // Reset selector to default
+      const selector2 = document.getElementById("priority");
+      if (selector2 && selector2.options.length > 0) {
+        selector2.value = selector2.options[0].value;
+      } // Reset selector to default
+      document.getElementById("deadline").value = "";
+    }
+    if (isError) {
+      console.error("Error:", error.message);
+      toast.error("error.message");
+    }
+  }, [data, isError, error]);
+
+  const onSubmit = async (taskData) => {
     const taskobj = {
-      ...data,
+      ...taskData,
       time,
       date: fullDate,
       status: "pending",
@@ -30,31 +52,10 @@ const AddTask = () => {
       steps: [],
     };
     console.log(JSON.stringify(taskobj));
-  
-    try {
-      setLoading(true)
-      const res = await fetch('http://localhost:5000/createTasks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(taskobj)
-      });
-  
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status} ${res.statusText}`);
-      }
-  
-      const result = await res.json();
-      if(result.acknowledged) {
-        setLoading(false)
-        toast.success('Task created successfully')
-      }
-    } catch (error) {
-      console.error('Error:', error.message);
-      setLoading(false)
-      toast.error("error.message")
-    }
+
+    createTask(taskobj);
   };
-  
+
   return (
     <div>
       <button
@@ -105,7 +106,6 @@ const AddTask = () => {
               Deadline
             </label>
             <input
-            
               className="w-full rounded-md border border-gray-400 focus:outline-blue-500 px-3 py-2"
               type="date"
               id="deadline"
@@ -120,7 +120,7 @@ const AddTask = () => {
               Assigned To
             </label>
             <select
-            required
+              required
               className="w-full appearance-none rounded-md border border-gray-400 focus:outline-blue-500 px-3 py-2 pr-10" // Extra padding for custom arrow
               id="assignedTo"
               {...register("assignedTo")}
@@ -190,7 +190,14 @@ const AddTask = () => {
               type="submit"
               className=" flex items-center gap-2 text-sm bg-green-500 text-white px-4 h-fit py-3 rounded-lg"
             >
-              {loading ? <span className="loading loading-dots loading-md"></span> : <><MdAddTask className="text-xl" /><span> Create task</span></>}
+              {isLoading ? (
+                <span className="loading loading-dots loading-md"></span>
+              ) : (
+                <>
+                  <MdAddTask className="text-xl" />
+                  <span> Create task</span>
+                </>
+              )}
             </button>
           </div>
         </form>
