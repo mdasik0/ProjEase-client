@@ -9,6 +9,9 @@ import { IoTrashSharp } from "react-icons/io5";
 import { useDeleteTaskMutation } from "../../../redux/api/tasksApi";
 import Modal from "../../Shared/Modal";
 import toast from "react-hot-toast";
+import { BsCalendar2Date } from "react-icons/bs";
+import { calculateDaysDifference } from "../../../utils/getDate";
+import { FiUser, FiUserPlus } from "react-icons/fi";
 
 const TaskSideBar = ({
   sidebarRef,
@@ -63,23 +66,22 @@ const TaskSideBar = ({
   };
 
   useEffect(() => {
-if(data) {
-  toast.success(data.message);
-}
-  },[])
+    if (data) {
+      toast.success(data.message);
+    }
+  }, []);
 
   return (
     <div
       ref={sidebarRef}
       onClick={(e) => e.stopPropagation()}
       className={`absolute ${
-        isOpen
-          ? "right-0 top-0"
-          : "-right-[80%] top-0"
-      } bg-gray-200 w-2/12 h-screen duration-500`}
+        isOpen ? "right-0 top-0" : "-right-[80%] top-0"
+      } bg-gray-200 w-[280px] h-screen  duration-500`}
     >
-      <div className="p-3 text-2xl">
-        <RxCross2 onClick={() => setIsOpen(!isOpen)} />
+      <div className="p-3 flex items-center justify-between">
+        <span className="text-sm pl-2 text-gray-500">{time}</span>
+        <RxCross2 className=" text-2xl" onClick={() => setIsOpen(!isOpen)} />
       </div>
       {/* task body */}
       <div className="mx-4 font-semibold">
@@ -131,6 +133,43 @@ if(data) {
           </span>
           {description}
         </p>
+        <p
+          className={`font-normal text-sm gap-3 ${
+            (status === "pending" && "bg-yellow-500") ||
+            (status === "in-progress" && "bg-blue-500") ||
+            (status === "completed" && "bg-green-500")
+          } duration-300 text-white hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4`}
+        >
+          Status : {status}
+        </p>
+        <p
+          className={`font-normal text-sm gap-3 ${
+            (priority === "low" && "bg-green-500") ||
+            (priority === "medium" && "bg-yellow-500") ||
+            (priority === "high" && "bg-red-500")
+          } duration-300 text-white hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4`}
+        >
+          Priority : {priority}
+        </p>
+
+        <div className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
+          <div className="flex items-center gap-3 mt-1">
+            <BsCalendar2Date /> Due {deadline}
+          </div>
+          <hr className="my-3" />
+          <div className="flex items-center gap-3 mb-1">
+            <BsCalendar2Date /> {calculateDaysDifference()} days left
+          </div>
+        </div>
+        <div className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
+          <div className="flex items-center gap-3 mt-1">
+          <FiUserPlus /> Assigned By {addedBy}
+          </div>
+          <hr className="my-3" />
+          <div className="flex items-center gap-3 mb-1">
+          <FiUser /> Assigned To {assignedTo}
+          </div>
+        </div>
         <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-3 bg-red-500 text-white duration-300 hover:bg-red-400 font-semibold rounded-lg px-3 py-2.5 mt-4 w-full"

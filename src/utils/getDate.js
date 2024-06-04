@@ -38,10 +38,10 @@ const monthEng = [
 const getTime = () => {
   let hours = today.getHours();
   const minutes = today.getMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
-  const strMinutes = minutes < 10 ? '0' + minutes : minutes;
+  const strMinutes = minutes < 10 ? "0" + minutes : minutes;
   const time = `${hours}:${strMinutes} ${ampm}`;
   return time;
 };
@@ -49,11 +49,15 @@ const getTime = () => {
 const time = getTime();
 
 // Format full date in dd/mm/yyyy
-const fullDate = `${date < 10 ? '0' + date : date}/${month < 10 ? '0' + month : month}/${year}`;
+const fullDate = `${date < 10 ? "0" + date : date}-${
+  month < 10 ? "0" + month : month
+}-${year}`;
 
 const calculateDaysDifference = (givenDate) => {
+  // const correctDate = parseInt(givenDate.toString().slice("-").reverse().join("-"));
+  console.log(givenDate);
   const givenDateTime = new Date(givenDate);
-  
+
   const differenceInMs = today.getTime() - givenDateTime.getTime();
 
   const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
@@ -65,4 +69,13 @@ const calculateDaysDifference = (givenDate) => {
 // calculateDaysDifference("02-01-2024")
 
 // Export them individually
-export { day, date, month, year, monthEng, time, fullDate, calculateDaysDifference };
+export {
+  day,
+  date,
+  month,
+  year,
+  monthEng,
+  time,
+  fullDate,
+  calculateDaysDifference,
+};
