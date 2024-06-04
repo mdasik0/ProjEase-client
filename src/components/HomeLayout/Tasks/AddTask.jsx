@@ -6,11 +6,13 @@ import { MdAddTask, MdCancel } from "react-icons/md";
 
 import { time, fullDate } from "../../../utils/getDate";
 import toast from "react-hot-toast";
+import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
 
 const AddTask = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit, reset } = useForm();
+  const [] = useCreateTaskMutation()
 
   const user = "Md Asik"
 

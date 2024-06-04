@@ -3,29 +3,30 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const tasksApi = createApi({
   reducerPath: "tasks",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
-  tagTypes: ['TaskUpdate'],
+  tagTypes: ["tasks"],
   endpoints: (builder) => ({
     getTasks: builder.query({
-        query: () => "/tasks",
-        providesTags:['TaskUpdate']
-    }),
-    updateStatus: builder.mutation({
-      query: (_id) => ({
-        url : `/updateTaskStatus/${_id}`,
-        method: "PATCH",
-      }),
-      invalidatesTags: ['TaskUpdate']
+      query: () => "/tasks",
+      providesTags: ["tasks"],
     }),
     createTask: builder.mutation({
       query: (body) => ({
-        url : ``,
+        url: `/createTasks`,
         method: "POST",
-        body:body
-      })}
-    })
-  })
-})
+        body: body,
+      }),
+      invalidatesTags: ["tasks"]
+    }),
+    updateStatus: builder.mutation({
+      query: (_id) => ({
+        url: `/updateTaskStatus/${_id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["tasks"],
+    }),
+  }),
+});
 
-export const { useGetTasksQuery, useUpdateStatusMutation } = tasksApi
+export const {useCreateTaskMutation, useGetTasksQuery, useUpdateStatusMutation } = tasksApi;
 
 export default tasksApi;
