@@ -4,6 +4,7 @@ import { IoMdStar } from "react-icons/io";
 import TaskSideBar from "./TaskSideBar";
 import { useUpdateStatusMutation } from "../../../redux/api/tasksApi";
 import toast from "react-hot-toast";
+import {fullDate} from "../../../utils/getDate"
 
 const TaskCard = ({
   addedBy,
@@ -21,7 +22,7 @@ const TaskCard = ({
   // Log task to verify prop is being passed correctly
   // opens and closes the task sidebar
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const sidebarRef = useRef(null);
   const inputRef = useRef();
   const [updateStatus,{data, isLoading}] = useUpdateStatusMutation()
@@ -70,9 +71,8 @@ const TaskCard = ({
         },
       });
     }
-    console.log(data)
   };
-
+  
   return (
     <div
       onClick={() => setIsOpen(true)}
@@ -80,15 +80,15 @@ const TaskCard = ({
     >
       <p className="text-sm flex gap-1">
         <IoMdStar className="text-yellow-500 text-lg" />
-        {date || "No Date"}
+        {fullDate === date ? "Today" : date}
       </p>
       <h2 className="text-2xl mt-5 block pl-2 font-semibold">
         {title?.length > 45
           ? title?.substring(0, 45) + " ..."
-          : title || "No Title"}
+          : title}
       </h2>
       <div className="ml-2 pb-3 pt-3 flex justify-between items-end">
-        <span className="text-sm ">{time || "No Time"}</span>
+        <span className="text-sm ">{time}</span>
         <span
           onClick={(e) => handleStatusUpdate(e,_id,status)}
           className="border duration-300 hover:bg-red-300 border-black p-2 rounded-full mr-2 cursor-pointer"

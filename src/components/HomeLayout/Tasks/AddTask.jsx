@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
+import {time, fullDate} from "../../../utils/getDate"
 
 const AddTask = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +46,8 @@ const AddTask = () => {
       status: "pending",
       addedBy: user,
       steps: [],
+      time: time,
+      date: fullDate
     };
     console.log(JSON.stringify(taskobj));
 

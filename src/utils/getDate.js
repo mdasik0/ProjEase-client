@@ -49,7 +49,7 @@ const getTime = () => {
 const time = getTime();
 
 // Format full date in dd/mm/yyyy
-const fullDate = `${date < 10 ? '0' + date : date}-${month < 10 ? '0' + month : month}-${year}`;
+const fullDate = `${date < 10 ? '0' + date : date}/${month < 10 ? '0' + month : month}/${year}`;
 
 const calculateDaysDifference = (givenDate) => {
   const givenDateTime = new Date(givenDate);
