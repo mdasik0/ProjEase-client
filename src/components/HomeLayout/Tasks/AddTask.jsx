@@ -3,16 +3,13 @@ import { useForm } from "react-hook-form";
 import Modal from "../../Shared/Modal";
 import { useEffect, useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
-
-import { time, fullDate } from "../../../utils/getDate";
 import toast from "react-hot-toast";
 import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
 
 const AddTask = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
-  const [createTask, { data, isLoading, isError, error }] =
-    useCreateTaskMutation();
+  const [createTask, { data, isLoading, isError, error }] = useCreateTaskMutation();
 
   const user = "Md Asik";
 
@@ -29,12 +26,12 @@ const AddTask = () => {
       const selector = document.getElementById("assignedTo");
       if (selector && selector.options.length > 0) {
         selector.value = selector.options[0].value;
-      } // Reset selector to default
+      }
       const selector2 = document.getElementById("priority");
       if (selector2 && selector2.options.length > 0) {
         selector2.value = selector2.options[0].value;
-      } // Reset selector to default
-      document.getElementById("deadline").value = "";
+      }
+      document.getElementById("deadline").value = new Date().toISOString().split("T")[0]; // Reset to today's date
     }
     if (isError) {
       console.error("Error:", error.message);
@@ -45,8 +42,6 @@ const AddTask = () => {
   const onSubmit = async (taskData) => {
     const taskobj = {
       ...taskData,
-      time,
-      date: fullDate,
       status: "pending",
       addedBy: user,
       steps: [],
@@ -56,11 +51,14 @@ const AddTask = () => {
     createTask(taskobj);
   };
 
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
+
   return (
     <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1  bg-zinc-800 hover:bg-zinc-700 duration-300 text-white font-semibold px-5 py-2.5 rounded-lg"
+        className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 duration-300 text-white font-semibold px-5 py-2.5 rounded-lg"
       >
         Create Task <TiPlus />
       </button>
@@ -109,6 +107,8 @@ const AddTask = () => {
               className="w-full rounded-md border border-gray-400 focus:outline-blue-500 px-3 py-2"
               type="date"
               id="deadline"
+              min={today} // Set the minimum date to today's date
+              defaultValue={today} // Set the default date to today's date
               {...register("deadline")}
             />
           </div>
@@ -121,7 +121,7 @@ const AddTask = () => {
             </label>
             <select
               required
-              className="w-full appearance-none rounded-md border border-gray-400 focus:outline-blue-500 px-3 py-2 pr-10" // Extra padding for custom arrow
+              className="w-full appearance-none rounded-md border border-gray-400 focus:outline-blue-500 px-3 py-2 pr-10"
               id="assignedTo"
               {...register("assignedTo")}
             >
@@ -157,7 +157,7 @@ const AddTask = () => {
               Priority
             </label>
             <select
-              className="w-full appearance-none rounded-md border border-gray-400 focus:outline-blue-500 px-3 py-2 pr-10" // Extra padding for custom arrow
+              className="w-full appearance-none rounded-md border border-gray-400 focus:outline-blue-500 px-3 py-2 pr-10"
               id="priority"
               {...register("priority")}
             >
