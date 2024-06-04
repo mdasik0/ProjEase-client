@@ -2,6 +2,7 @@ import { FaChevronDown } from "react-icons/fa";
 import TaskCard from "./TaskCard";
 import PropTypes from "prop-types";
 import NoTasksCard from "./NoTasksCard";
+import FailedToLoadDataCard from "./FailedToLoadDataCard";
 
 
 const CompletedTasks = ({completedTasks}) => {
@@ -12,10 +13,16 @@ const CompletedTasks = ({completedTasks}) => {
         <FaChevronDown />
       </h3>
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-      {completedTasks.length == 0 && (
+      {!completedTasks || !Array.isArray(completedTasks) ? (
+  <FailedToLoadDataCard />
+) : (
+      completedTasks.length == 0 && (
           <NoTasksCard />
-        )}
-        {completedTasks.length != 0 &&
+        )
+)}
+
+
+        {completedTasks?.length != 0 &&
           completedTasks?.map((task) => (
             <TaskCard
               key={task?._id}

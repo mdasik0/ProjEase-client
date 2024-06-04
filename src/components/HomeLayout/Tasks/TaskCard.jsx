@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { IoMdStar } from "react-icons/io";
 import TaskSideBar from "./TaskSideBar";
+import { useUpdateStatusMutation } from "../../../redux/api/tasksApi";
+import toast from "react-hot-toast";
 
 const TaskCard = ({
   addedBy,
@@ -19,15 +21,19 @@ const TaskCard = ({
   // Log task to verify prop is being passed correctly
   // opens and closes the task sidebar
   const [isOpen, setIsOpen] = useState(false);
-
+  
   const sidebarRef = useRef(null);
   const inputRef = useRef();
+  const [updateStatus,{data, isLoading}] = useUpdateStatusMutation()
 
   const ArrowSvg = (
     <svg className="" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
       <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
     </svg>
   );
+
+  const LoadingSvg = <img src="/loading.svg" alt="loading animation" />
+  
   const handleClickOutside = (event) => {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
       setIsOpen(false);
@@ -47,7 +53,24 @@ const TaskCard = ({
 
   const handleStatusUpdate = (e, id) => {
     e.stopPropagation();
-    console.log(id);
+    let newStatus;
+    if(status === "pending") newStatus = "in-progress"
+    else if(status === "in-progress") newStatus = "completed"
+    else newStatus = "task is already completed"
+    updateStatus(id)
+    if(data) {
+      toast.success(`task is ${newStatus}`)
+    } else if (newStatus === "task is already completed") {
+      toast(newStatus, {
+        icon: '⚠️',
+        style: {
+          borderRadius: '10px',
+          background: '#ffcd28',
+          color: '#ffffff'
+        },
+      });
+    }
+    console.log(data)
   };
 
   return (
@@ -67,10 +90,10 @@ const TaskCard = ({
       <div className="ml-2 pb-3 pt-3 flex justify-between items-end">
         <span className="text-sm ">{time || "No Time"}</span>
         <span
-          onClick={(e) => handleStatusUpdate(e,_id)}
+          onClick={(e) => handleStatusUpdate(e,_id,status)}
           className="border duration-300 hover:bg-red-300 border-black p-2 rounded-full mr-2 cursor-pointer"
         >
-          {ArrowSvg}
+          {isLoading ? LoadingSvg :ArrowSvg}
         </span>
       </div>
       {/* sidebar */}

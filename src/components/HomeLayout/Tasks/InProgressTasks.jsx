@@ -2,6 +2,7 @@ import { FaChevronDown } from "react-icons/fa";
 import TaskCard from "./TaskCard";
 import PropTypes from "prop-types";
 import NoTasksCard from "./NoTasksCard";
+import FailedToLoadDataCard from "./FailedToLoadDataCard";
 
 const InProgressTasks = ({ inProgressTasks }) => {
   return (
@@ -12,10 +13,13 @@ const InProgressTasks = ({ inProgressTasks }) => {
       </h3>
 
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-        {inProgressTasks.length == 0 && (
-          <NoTasksCard />
+        {!inProgressTasks || !Array.isArray(inProgressTasks) ? (
+          <FailedToLoadDataCard />
+        ) : (
+          inProgressTasks.length == 0 && <NoTasksCard />
         )}
-        {inProgressTasks.length != 0 &&
+
+        {inProgressTasks?.length != 0 &&
           inProgressTasks?.map((task) => (
             <TaskCard
               key={task?._id}
