@@ -1,5 +1,5 @@
 import { FaChevronDown } from 'react-icons/fa';
-import TaskCard from './TaskCard';
+import NoTasksCard from './NoTasksCard';
 
 const MyTasks = () => {
     return (
@@ -9,7 +9,7 @@ const MyTasks = () => {
         <FaChevronDown />
       </h3>
       <div className="h-[440px] scrollbar overflow-scroll ">
-          <TaskCard />
+          <NoTasksCard />
       </div>
     </div>
     );

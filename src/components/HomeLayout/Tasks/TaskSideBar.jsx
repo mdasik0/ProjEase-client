@@ -3,10 +3,12 @@ import { FaRegCircle } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import PropTypes from "prop-types";
 import StepsCard from "./StepsCard";
-import { IoIosAttach } from "react-icons/io";
 import { LuPlusSquare } from "react-icons/lu";
 import { IoTrashSharp } from "react-icons/io5";
-import { useAddStepsMutation, useDeleteTaskMutation } from "../../../redux/api/tasksApi";
+import {
+  useAddStepsMutation,
+  useDeleteTaskMutation,
+} from "../../../redux/api/tasksApi";
 import Modal from "../../Shared/Modal";
 import toast from "react-hot-toast";
 import { BsCalendar2Date } from "react-icons/bs";
@@ -35,8 +37,8 @@ const TaskSideBar = ({
     onchangeStpes: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteTask, { data : deleteMutation }] = useDeleteTaskMutation();
-  const [addSteps, {data : stepsMutation}] = useAddStepsMutation()
+  const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
+  const [addSteps, { data: stepsMutation }] = useAddStepsMutation();
 
   // sidebar function
   const inputFocus = (e) => {
@@ -46,15 +48,19 @@ const TaskSideBar = ({
 
   // sidebar function
 
-  const handleAddSteps = (e,_id) => {
+  const handleAddSteps = (e, _id) => {
     e.preventDefault();
     const stepsData = {
-      text : addStepsInfo.onchangeStpes,
-      isCompleted: false
-    }
+      text: addStepsInfo.onchangeStpes,
+      isCompleted: false,
+    };
     console.log(stepsData);
-    addSteps({_id, body: stepsData})
-    
+    if (steps.length >= 5) {
+      return toast.error("you can't add more than 5 steps in a Task");
+    } else {
+      addSteps({ _id, body: stepsData });
+    }
+
     document.getElementById("addSteps").value = "";
     setAddStepsInfo({ ...addStepsInfo, onchangeStpes: "" });
   };
@@ -76,7 +82,7 @@ const TaskSideBar = ({
     if (stepsMutation) {
       toast.success(stepsMutation.message);
     }
-  }, [deleteMutation,stepsMutation]);
+  }, [deleteMutation, stepsMutation]);
 
   return (
     <div
@@ -112,7 +118,7 @@ const TaskSideBar = ({
             className="flex items-center gap-3 bg-white px-3 py-2 rounded-lg"
           >
             {addStepsInfo.onchangeStpes ? (
-              <FaRegCircle onClick={(e) => handleAddSteps(e,_id)} />
+              <FaRegCircle onClick={(e) => handleAddSteps(e, _id)} />
             ) : (
               <LuPlusSquare />
             )}
