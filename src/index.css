@@ -35,4 +35,22 @@ nav .active {
   .scrollbar::-webkit-scrollbar-thumb:hover {
     background: lightgray;
   }
+.scrollbar-sidebar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .scrollbar-sidebar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+  }
+  
+  .scrollbar-sidebar::-webkit-scrollbar-thumb {
+    background: rgb(182, 182, 182);
+    border-radius: 100vh;
+  }
+  
+  .scrollbar-sidebar::-webkit-scrollbar-thumb:hover {
+    background: lightgray;
+  }
   

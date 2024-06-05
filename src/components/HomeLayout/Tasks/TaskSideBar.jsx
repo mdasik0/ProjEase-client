@@ -45,7 +45,7 @@ const TaskSideBar = ({
   };
 
   // sidebar function
-  const handleAddSteps = (e) => {
+  const handleAddSteps = (e,_id) => {
     e.preventDefault();
     setStepsData([
       ...stepsData,
@@ -77,7 +77,7 @@ const TaskSideBar = ({
       onClick={(e) => e.stopPropagation()}
       className={`absolute ${
         isOpen ? "right-0 top-0" : "-right-[80%] top-0"
-      } bg-gray-200 w-[280px] h-screen  duration-500`}
+      } bg-gray-200 w-[280px] h-screen  duration-500 overflow-y-auto scrollbar-sidebar`}
     >
       <div className="p-3 flex items-center justify-between">
         <span className="text-sm pl-2 text-gray-500">{time}</span>
@@ -104,7 +104,7 @@ const TaskSideBar = ({
             className="flex items-center gap-3 bg-white px-3 py-2 rounded-lg"
           >
             {addStepsInfo.onchangeStpes ? (
-              <FaRegCircle onClick={handleAddSteps} />
+              <FaRegCircle onClick={(e) => handleAddSteps(e,_id)} />
             ) : (
               <LuPlusSquare />
             )}
@@ -124,9 +124,9 @@ const TaskSideBar = ({
             />
           </div>
         </section>
-        <div className="flex items-center gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
+        {/* <div className="flex items-center gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
           <IoIosAttach /> <span className="font-normal text-sm">Add files</span>
-        </div>
+        </div> */}
         <p className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
           <span className="block font-semibold text-gray-500 mb-2">
             Description
@@ -163,20 +163,24 @@ const TaskSideBar = ({
         </div>
         <div className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
           <div className="flex items-center gap-3 mt-1">
-          <FiUserPlus /> Assigned By {addedBy}
+            <FiUserPlus /> Assigned By {addedBy}
           </div>
           <hr className="my-3" />
           <div className="flex items-center gap-3 mb-1">
-          <FiUser /> Assigned To {assignedTo}
+            <FiUser /> Assigned To {assignedTo}
           </div>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-3 bg-red-500 text-white duration-300 hover:bg-red-400 font-semibold rounded-lg px-3 py-2.5 mt-4 w-full"
+          className="flex items-center gap-3 bg-red-500 text-white duration-300 hover:bg-red-400 font-semibold rounded-lg px-3 py-2.5 my-4 w-full"
         >
           <IoTrashSharp />{" "}
           <span className="font-normal text-sm">Delete task</span>
         </button>
+        <p className="flex items-center justify-center text-lg  font-normal gap-2  text-gray-500  duration-300  rounded-lg w-full  mb-4">
+          Created on
+          <span>{date}</span>
+        </p>
         <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
           <div>
             <h2 className="text-xl text-center my-4">

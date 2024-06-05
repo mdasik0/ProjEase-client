@@ -93,7 +93,7 @@ const Tasks = () => {
         </section>
         {isLoading ? (
           <div className="h-3/4 w-full flex items-center justify-center">
-            <span className="loading loading-infinity loading-lg text-blue-500"></span>
+            <span className="loading loading-bars loading-lg text-gray-500"></span>
           </div>
         ) : (
           <section className="mx-5 my-6 h-[512px] flex justify-between items-start bg-gray-100 py-3 px-3 rounded-xl gap-4">

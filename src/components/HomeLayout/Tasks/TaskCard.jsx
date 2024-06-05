@@ -28,7 +28,7 @@ const TaskCard = ({
   const [updateStatus,{data, isLoading}] = useUpdateStatusMutation()
 
   const ArrowSvg = (
-    <svg className="" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+    <svg className="fill-gray-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
       <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
     </svg>
   );
@@ -71,17 +71,26 @@ const TaskCard = ({
         },
       });
     }
-  };
+  };  
   
   return (
     <div
       onClick={() => setIsOpen(true)}
-      className="task_cards bg-red-100 mt-3 pt-3 px-2 flex flex-col justify-between min-h-[174px] rounded-xl cursor-pointer"
+      className={`task_cards ${
+        (priority === "low" && "bg-green-200") ||
+        (priority === "medium" && "bg-yellow-200") ||
+        (priority === "high" && "bg-red-200")
+      } mt-3 pt-3 px-2 flex flex-col justify-between min-h-[174px] rounded-xl cursor-pointer`}
     >
-      <p className="text-sm flex gap-1">
+      <div className="flex items-center justify-between">
+      <p className="text-sm flex  gap-1">
         <IoMdStar className="text-yellow-500 text-lg" />
         {fullDate === date ? "Today" : date}
       </p>
+      {
+        steps?.length !== 0 && `/${steps?.length}`
+      }
+      </div>
       <h2 className="text-2xl mt-5 block pl-2 font-semibold">
         {title?.length > 45
           ? title?.substring(0, 45) + " ..."
@@ -91,7 +100,7 @@ const TaskCard = ({
         <span className="text-sm ">{time}</span>
         <span
           onClick={(e) => handleStatusUpdate(e,_id,status)}
-          className="border duration-300 hover:bg-red-300 border-black p-2 rounded-full mr-2 cursor-pointer"
+          className="border duration-300 hover:bg-[rgba(0,0,0,0.17)] border-gray-600  p-2 rounded-full mr-2 cursor-pointer"
         >
           {isLoading ? LoadingSvg :ArrowSvg}
         </span>

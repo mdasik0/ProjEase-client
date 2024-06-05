@@ -31,6 +31,31 @@ const tasksApi = createApi({
       }),
       invalidatesTags: ["tasks"]
     }),
+    addSteps: builder.mutation({
+      query: ({_id,body}) => ({
+        url: `/createSteps/${_id}`,
+        method: "PATCH",
+        body: body,
+      }), 
+      invalidatesTags: ["tasks"]
+    }),
+    completeSteps: builder.mutation({
+      query: ({_id,body}) => ({
+        url: `/completeSteps/${_id}`,
+        method: "PATCH",
+        body: body,
+      }),
+      invalidatesTags: ['tasks']
+    }),
+    deleteSteps: builder.mutation({
+      query: ({_id,body}) => ({
+        url: `/deleteSteps/${_id}`,
+        method: "PATCH",
+        body: body,
+      }),
+      invalidatesTags: ['tasks']
+    }),
+    
   }),
 });
 
@@ -38,7 +63,10 @@ export const {
   useCreateTaskMutation,
   useGetTasksQuery,
   useUpdateStatusMutation,
-  useDeleteTaskMutation
+  useDeleteTaskMutation,
+  useAddStepsMutation,
+  useCompleteStepsMutation,
+  useDeleteStepsMutation,
 } = tasksApi;
 
 export default tasksApi;
