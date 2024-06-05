@@ -29,33 +29,33 @@ const tasksApi = createApi({
         url: `/deleteTasks/${_id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["tasks"]
+      invalidatesTags: ["tasks"],
     }),
     addSteps: builder.mutation({
-      query: ({_id,body}) => ({
+      query: ({ _id, body }) => ({
         url: `/createSteps/${_id}`,
         method: "PATCH",
         body: body,
-      }), 
-      invalidatesTags: ["tasks"]
+      }),
+      invalidatesTags: ["tasks"],
     }),
     completeSteps: builder.mutation({
-      query: ({_id,body}) => ({
+      query: ({ _id, stepid }) => ({
         url: `/completeSteps/${_id}`,
         method: "PATCH",
-        body: body,
+        body: { stepid }, // Ensure stepid is sent as an object
       }),
-      invalidatesTags: ['tasks']
+      invalidatesTags: ["tasks"],
     }),
+
     deleteSteps: builder.mutation({
-      query: ({_id,body}) => ({
+      query: ({ _id, stepid }) => ({
         url: `/deleteSteps/${_id}`,
         method: "PATCH",
-        body: body,
+        body: { stepid },
       }),
-      invalidatesTags: ['tasks']
+      invalidatesTags: ["tasks"],
     }),
-    
   }),
 });
 

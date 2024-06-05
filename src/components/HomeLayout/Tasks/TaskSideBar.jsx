@@ -35,8 +35,8 @@ const TaskSideBar = ({
     onchangeStpes: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteTask, { data }] = useDeleteTaskMutation();
-  const [addSteps] = useAddStepsMutation()
+  const [deleteTask, { data : deleteMutation }] = useDeleteTaskMutation();
+  const [addSteps, {data : stepsMutation}] = useAddStepsMutation()
 
   // sidebar function
   const inputFocus = (e) => {
@@ -70,10 +70,13 @@ const TaskSideBar = ({
   };
 
   useEffect(() => {
-    if (data) {
-      toast.success(data.message);
+    if (deleteMutation) {
+      toast.success(deleteMutation.message);
     }
-  }, []);
+    if (stepsMutation) {
+      toast.success(stepsMutation.message);
+    }
+  }, [deleteMutation,stepsMutation]);
 
   return (
     <div
@@ -97,6 +100,7 @@ const TaskSideBar = ({
           {steps?.map((d) => (
             <StepsCard
               key={d._id}
+              _id={_id}
               d={d}
               steps={addStepsInfo}
               setSteps={setAddStepsInfo}
