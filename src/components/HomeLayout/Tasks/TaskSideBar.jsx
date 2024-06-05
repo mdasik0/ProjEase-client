@@ -6,7 +6,7 @@ import StepsCard from "./StepsCard";
 import { IoIosAttach } from "react-icons/io";
 import { LuPlusSquare } from "react-icons/lu";
 import { IoTrashSharp } from "react-icons/io5";
-import { useDeleteTaskMutation } from "../../../redux/api/tasksApi";
+import { useAddStepsMutation, useDeleteTaskMutation } from "../../../redux/api/tasksApi";
 import Modal from "../../Shared/Modal";
 import toast from "react-hot-toast";
 import { BsCalendar2Date } from "react-icons/bs";
@@ -34,9 +34,9 @@ const TaskSideBar = ({
     inputHover: false,
     onchangeStpes: "",
   });
-  const [stepsData, setStepsData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteTask, { data }] = useDeleteTaskMutation();
+  const [addSteps] = useAddStepsMutation()
 
   // sidebar function
   const inputFocus = (e) => {
@@ -45,12 +45,16 @@ const TaskSideBar = ({
   };
 
   // sidebar function
+
   const handleAddSteps = (e,_id) => {
     e.preventDefault();
-    setStepsData([
-      ...stepsData,
-      { id: stepsData.length + 1, step: addStepsInfo.onchangeStpes },
-    ]);
+    const stepsData = {
+      text : addStepsInfo.onchangeStpes,
+      isCompleted: false
+    }
+    console.log(stepsData);
+    addSteps({_id, body: stepsData})
+    
     document.getElementById("addSteps").value = "";
     setAddStepsInfo({ ...addStepsInfo, onchangeStpes: "" });
   };
@@ -90,9 +94,9 @@ const TaskSideBar = ({
         {/* add steps section */}
         <section className="mt-3">
           {/* card start */}
-          {stepsData.map((d) => (
+          {steps?.map((d) => (
             <StepsCard
-              key={d.id}
+              key={d._id}
               d={d}
               steps={addStepsInfo}
               setSteps={setAddStepsInfo}

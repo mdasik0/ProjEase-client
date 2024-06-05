@@ -20,7 +20,6 @@ const Login_Form = () => {
     const email = formData.email;
     const password = formData.password;
     dispatch(loginUser({ email, password }));
-    console.log(email, password);
   };
 
   useEffect(() => {

@@ -49,7 +49,6 @@ const AddTask = () => {
       time: time,
       date: fullDate
     };
-    console.log(JSON.stringify(taskobj));
 
     createTask(taskobj);
   };

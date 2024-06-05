@@ -5,7 +5,6 @@ import NoTasksCard from "./NoTasksCard";
 import FailedToLoadDataCard from "./FailedToLoadDataCard";
 
 const ToDoTasks = ({ todoTasks }) => {
-  console.log(todoTasks);
   return (
     <div className="rounded-xl w-full h-full">
       <h3 className="flex items-center justify-between py-2 px-3 gap-3 bg-white rounded-lg mr-6">

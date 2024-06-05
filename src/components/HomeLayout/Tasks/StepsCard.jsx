@@ -13,11 +13,11 @@ const StepsCard = ({ d }) => {
         onMouseEnter={() => setStepHover(true)}
         onMouseLeave={() => setStepHover(false)}
       >
-        {stepHover ? <FaRegCheckCircle onClick={() => handleUpdateSteps(d.id)} /> : <FaRegCircle />}
+        {stepHover ? <FaRegCheckCircle onClick={() => handleUpdateSteps(d._id)} /> : <FaRegCircle />}
       </div>
 
       <h4 className="font-normal bg-transparent placeholder:text-black placeholder:focus:text-gray-400 placeholder:text-sm focus:outline-none focus:border-b border-gray-500 hover:cursor-pointer">
-        {d.step} 
+        {d?.text} 
       </h4>
     </div>
   );
@@ -26,8 +26,8 @@ const StepsCard = ({ d }) => {
 // PropTypes validation
 StepsCard.propTypes = {
   d: PropTypes.shape({
-    step: PropTypes.string,
-    id: PropTypes.number,
+    text: PropTypes.string,
+    _id: PropTypes.any,
   }).isRequired,
 };
 

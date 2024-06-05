@@ -40,7 +40,6 @@ const VideoCall = () => {
 
     if (filter) {
         const statusUpdate = { ...filter, status: "active" };
-        console.log(statusUpdate);
 
         // Create a new array with the updated object
         const updatedNothing = nothing.map((item) => 
@@ -53,7 +52,6 @@ const VideoCall = () => {
 };
 
   useEffect(() => {
-    console.log(nothing);
   }, [nothing]);
 
   const pending = nothing?.filter((y) => y.status === "pending");

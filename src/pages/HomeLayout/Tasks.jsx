@@ -20,7 +20,6 @@ const Tasks = () => {
   const completedTasks = data?.filter(t => t.status === "completed");
 
 
-  console.log(data);
 
   const inputRef = useRef(null);
 

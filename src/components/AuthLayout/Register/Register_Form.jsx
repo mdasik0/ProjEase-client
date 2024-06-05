@@ -37,7 +37,6 @@ const Register_Form = () => {
 
     const password = newPassword;
 
-    console.log(name, email, password)
 
     dispatch(createUser({email, password, name}))    
 

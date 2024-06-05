@@ -55,7 +55,6 @@ const fullDate = `${date < 10 ? "0" + date : date}-${
 
 const calculateDaysDifference = (givenDate) => {
   // const correctDate = parseInt(givenDate.toString().slice("-").reverse().join("-"));
-  console.log(givenDate);
   const givenDateTime = new Date(givenDate);
 
   const differenceInMs = today.getTime() - givenDateTime.getTime();
