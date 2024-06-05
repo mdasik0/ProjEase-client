@@ -53,15 +53,49 @@ const fullDate = `${date < 10 ? "0" + date : date}-${
   month < 10 ? "0" + month : month
 }-${year}`;
 
-const calculateDaysDifference = (givenDate) => {
-  // const correctDate = parseInt(givenDate.toString().slice("-").reverse().join("-"));
-  const givenDateTime = new Date(givenDate);
+const calculateDaysLeft = (deadline) => {
+  const deadlineDate = new Date(deadline.split("-").reverse().join("-"));
+  const today = new Date();
+  const differenceInMs = deadlineDate - today;
+  const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
 
-  const differenceInMs = today.getTime() - givenDateTime.getTime();
+  return differenceInDays > 0
+    ? `${differenceInDays} days left`
+    : differenceInDays === 0
+    ? "Due today"
+    : `Overdue by ${Math.abs(differenceInDays)} days`;
+};
 
-  const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+const formatDate = (anyDate) => {
+  const dateArr = anyDate.split("-");
+  let dateSmthing;
 
-  return differenceInDays;
+  if (dateArr[0] == 1) {
+    dateSmthing = `${dateArr[0]}st`;
+  } else if (dateArr[0] == 2) {
+    dateSmthing = `${dateArr[0]}nd`;
+  } else if (dateArr[0] == 3) {
+    dateSmthing = `${dateArr[0]}rd`;
+  } else dateSmthing = `${dateArr[0]}th`;
+
+  const monthIndex = parseInt(dateArr[1], 10) - 1; // Convert to number and adjust for zero-based indexing
+  const mE = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ][monthIndex]; // Access the correct month abbreviation
+
+  const dateStr = `${dateSmthing} of ${mE}, ${dateArr[2]}`;
+  return dateStr;
 };
 
 // calculateDaysDifference("dd-mm-yyyy")
@@ -76,5 +110,6 @@ export {
   monthEng,
   time,
   fullDate,
-  calculateDaysDifference,
+  calculateDaysLeft,
+  formatDate
 };

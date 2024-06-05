@@ -39,9 +39,9 @@ const StepsCard = ({ d, _id }) => {
     <div className="flex items-center gap-2 justify-between mx-2 mb-2">
       <div className="flex items-center gap-2">
       <div>
-        {d.isCompleted && <FaRegCheckCircle />}
+        {d.isCompleted && <FaRegCheckCircle className="cursor-pointer" />}
         {!d.isCompleted && (
-          <FaRegCircle onClick={() => handleUpdateSteps(d._id)} />
+          <FaRegCircle className="cursor-pointer" onClick={() => handleUpdateSteps(d._id)} />
         )}
       </div>
       <h4 title={d?.text} className={`font-normal ${d.isCompleted ? "text-gray-500 line-through" : "text-black"}`}>

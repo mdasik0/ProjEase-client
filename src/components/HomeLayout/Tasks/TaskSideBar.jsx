@@ -12,7 +12,7 @@ import {
 import Modal from "../../Shared/Modal";
 import toast from "react-hot-toast";
 import { BsCalendar2Date } from "react-icons/bs";
-import { calculateDaysDifference } from "../../../utils/getDate";
+import { calculateDaysLeft,formatDate } from "../../../utils/getDate";
 import { FiUser, FiUserPlus } from "react-icons/fi";
 
 const TaskSideBar = ({
@@ -168,11 +168,11 @@ const TaskSideBar = ({
 
         <div className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
           <div className="flex items-center gap-3 mt-1">
-            <BsCalendar2Date /> Due {deadline}
+            <BsCalendar2Date /> Due {formatDate(deadline)}
           </div>
           <hr className="my-3" />
           <div className="flex items-center gap-3 mb-1">
-            <BsCalendar2Date /> {calculateDaysDifference()} days left
+            <BsCalendar2Date /> {calculateDaysLeft(deadline)}
           </div>
         </div>
         <div className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
@@ -193,7 +193,7 @@ const TaskSideBar = ({
         </button>
         <p className="flex items-center justify-center text-lg  font-normal gap-2  text-gray-500  duration-300  rounded-lg w-full  mb-4">
           Created on
-          <span>{date}</span>
+          <span>{formatDate(date)}</span>
         </p>
         <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
           <div>

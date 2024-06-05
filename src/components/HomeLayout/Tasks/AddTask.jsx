@@ -41,20 +41,24 @@ const AddTask = () => {
   }, [data, isError, error]);
 
   const onSubmit = async (taskData) => {
+    const formatedDeadline = (taskData.deadline).split("-").reverse().join("-");
     const taskobj = {
       ...taskData,
       status: "pending",
       addedBy: user,
       steps: [],
       time: time,
-      date: fullDate
+      date: fullDate,
+      deadline: formatedDeadline
     };
 
+    console.log(taskobj);
     createTask(taskobj);
   };
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
+  console.log(today);
 
   return (
     <div>

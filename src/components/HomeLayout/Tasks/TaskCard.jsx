@@ -19,6 +19,7 @@ const TaskCard = ({
   title,
   _id,
 }) => {
+  console.log(date,time)
   // Log task to verify prop is being passed correctly
   // opens and closes the task sidebar
   const [isOpen, setIsOpen] = useState(false);
