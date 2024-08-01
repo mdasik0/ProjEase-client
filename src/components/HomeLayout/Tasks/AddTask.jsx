@@ -4,8 +4,8 @@ import Modal from "../../Shared/Modal";
 import { useEffect, useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
-import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
 import {time, fullDate} from "../../../utils/getDate"
+import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
 
 const AddTask = () => {
   const [isOpen, setIsOpen] = useState(false);

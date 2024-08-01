@@ -1,29 +1,27 @@
 import { FaChevronDown } from "react-icons/fa";
-import TaskCard from "./TaskCard";
+import TaskCard from "../Cards/TaskCard";
+
 import PropTypes from "prop-types";
-import NoTasksCard from "./NoTasksCard";
-import FailedToLoadDataCard from "./FailedToLoadDataCard";
+import NoTasksCard from "../Cards/NoTasksCard";
+import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 
-
-const CompletedTasks = ({completedTasks}) => {
+const InProgressTasks = ({ inProgressTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
       <h3 className="flex items-center justify-between py-2 px-3 gap-3 bg-white rounded-lg mr-6">
-        <span className="text-lg font-semibold block">Completed</span>
+        <span className="text-lg font-semibold block">In progress</span>
         <FaChevronDown />
       </h3>
+
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-      {!completedTasks || !Array.isArray(completedTasks) ? (
-  <FailedToLoadDataCard />
-) : (
-      completedTasks.length == 0 && (
-          <NoTasksCard />
-        )
-)}
+        {!inProgressTasks || !Array.isArray(inProgressTasks) ? (
+          <FailedToLoadDataCard />
+        ) : (
+          inProgressTasks.length == 0 && <NoTasksCard />
+        )}
 
-
-        {completedTasks?.length != 0 &&
-          completedTasks?.map((task) => (
+        {inProgressTasks?.length != 0 &&
+          inProgressTasks?.map((task) => (
             <TaskCard
               key={task?._id}
               _id={task?._id}
@@ -44,8 +42,8 @@ const CompletedTasks = ({completedTasks}) => {
   );
 };
 
-CompletedTasks.propTypes = {
-  completedTasks: PropTypes.arrayOf(
+InProgressTasks.propTypes = {
+  inProgressTasks: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
@@ -62,4 +60,4 @@ CompletedTasks.propTypes = {
   ).isRequired,
 };
 
-export default CompletedTasks;
+export default InProgressTasks;

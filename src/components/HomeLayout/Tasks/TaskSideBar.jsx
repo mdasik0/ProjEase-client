@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { FaRegCircle } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import PropTypes from "prop-types";
-import StepsCard from "./StepsCard";
 import { LuPlusSquare } from "react-icons/lu";
 import { IoTrashSharp } from "react-icons/io5";
 import {
@@ -14,6 +13,7 @@ import toast from "react-hot-toast";
 import { BsCalendar2Date } from "react-icons/bs";
 import { calculateDaysLeft,formatDate } from "../../../utils/getDate";
 import { FiUser, FiUserPlus } from "react-icons/fi";
+import StepsCard from "./Cards/StepsCard";
 
 const TaskSideBar = ({
   sidebarRef,

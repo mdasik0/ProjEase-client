@@ -1,26 +1,25 @@
 import { FaChevronDown } from "react-icons/fa";
-import TaskCard from "./TaskCard";
 import PropTypes from "prop-types";
-import NoTasksCard from "./NoTasksCard";
-import FailedToLoadDataCard from "./FailedToLoadDataCard";
+import TaskCard from "../Cards/TaskCard";
+import NoTasksCard from "../Cards/NoTasksCard";
+import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 
-const InProgressTasks = ({ inProgressTasks }) => {
+const ToDoTasks = ({ todoTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
       <h3 className="flex items-center justify-between py-2 px-3 gap-3 bg-white rounded-lg mr-6">
-        <span className="text-lg font-semibold block">In progress</span>
+        <span className="text-lg font-semibold block">To Do</span>
         <FaChevronDown />
       </h3>
-
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-        {!inProgressTasks || !Array.isArray(inProgressTasks) ? (
+        {!todoTasks || !Array.isArray(todoTasks) ? (
           <FailedToLoadDataCard />
         ) : (
-          inProgressTasks.length == 0 && <NoTasksCard />
+          todoTasks.length == 0 && <NoTasksCard />
         )}
 
-        {inProgressTasks?.length != 0 &&
-          inProgressTasks?.map((task) => (
+        {todoTasks?.length != 0 &&
+          todoTasks?.map((task) => (
             <TaskCard
               key={task?._id}
               _id={task?._id}
@@ -37,12 +36,13 @@ const InProgressTasks = ({ inProgressTasks }) => {
             />
           ))}
       </div>
+      <div></div>
     </div>
   );
 };
 
-InProgressTasks.propTypes = {
-  inProgressTasks: PropTypes.arrayOf(
+ToDoTasks.propTypes = {
+  todoTasks: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
@@ -59,4 +59,4 @@ InProgressTasks.propTypes = {
   ).isRequired,
 };
 
-export default InProgressTasks;
+export default ToDoTasks;

@@ -1,4 +1,4 @@
-import bgImg from "/public/auth/signup-Page.png"
+import bgImg from "/auth/signup-Page.png"
 
 const Login_imgSection = () => {
   return (

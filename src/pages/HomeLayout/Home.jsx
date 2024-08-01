@@ -1,13 +1,9 @@
-import Navbar from "../../components/HomeLayout/Navbar";
+import Header from "../../components/HomeLayout/Homepage/Header";
 
 const Home = () => {
   return (
     <div>
-      <Navbar />
-      <div>
-        
-      </div>
-      
+      <Header />
     </div>
   );
 };

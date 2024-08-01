@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { IoMdStar } from "react-icons/io";
-import TaskSideBar from "./TaskSideBar";
-import { useUpdateStatusMutation } from "../../../redux/api/tasksApi";
+import TaskSideBar from "../TaskSideBar";
+import { useUpdateStatusMutation } from "../../../../redux/api/tasksApi";
 import toast from "react-hot-toast";
-import { fullDate } from "../../../utils/getDate";
+import { fullDate } from "../../../../utils/getDate";
 
 const TaskCard = ({
   addedBy,

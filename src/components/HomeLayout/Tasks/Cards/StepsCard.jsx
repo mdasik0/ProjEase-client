@@ -1,9 +1,9 @@
 import { FaRegCheckCircle, FaRegCircle } from "react-icons/fa";
 import PropTypes from "prop-types";
-import { useCompleteStepsMutation, useDeleteStepsMutation } from "../../../redux/api/tasksApi";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
+import { useCompleteStepsMutation, useDeleteStepsMutation } from "../../../../redux/api/tasksApi";
 
 const StepsCard = ({ d, _id }) => {
   const [completeSteps,{data : completeStep}] = useCompleteStepsMutation();

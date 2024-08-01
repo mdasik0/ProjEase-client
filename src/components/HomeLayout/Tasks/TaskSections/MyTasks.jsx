@@ -1,5 +1,5 @@
 import { FaChevronDown } from 'react-icons/fa';
-import NoTasksCard from './NoTasksCard';
+import NoTasksCard from "../Cards/NoTasksCard";
 
 const MyTasks = () => {
     return (
