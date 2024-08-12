@@ -24,6 +24,9 @@ export const createUser = createAsyncThunk(
       payload.email,
       payload.password
     );
+
+    console.log(data);
+
     await updateProfile(auth.currentUser, { displayName: payload.name });
 
     return { name: data.user.displayName, email: data.user.email };
@@ -38,6 +41,7 @@ export const loginUser = createAsyncThunk(
       payload.email,
       payload.password
     );
+    console.log(data);
     return { name: data.user.displayName, email: data.user.email };
   }
 );
