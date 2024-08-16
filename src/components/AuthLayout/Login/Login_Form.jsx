@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../redux/features/userSlice";
 import toast from "react-hot-toast";
 
@@ -11,9 +11,12 @@ const Login_Form = () => {
     show: false,
   });
 
-  const { isLoading, error, name } = useSelector((state) => state.userSlice);
+  const { isLoading, error, name, method } = useSelector(
+    (state) => state.userSlice
+  );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,11 +28,12 @@ const Login_Form = () => {
   useEffect(() => {
     if (error) {
       toast.error(error);
+    } else if (method == "sign-in") {  // Use else if to prevent both toasts from firing
+      toast.success(`Welcome back ${name}`);
+      navigate("/");
     }
-    if (name) {
-      toast.success(`welcome ${name}`);
-    }
-  }, [error, name]);
+  }, [error, method, name, navigate]);
+  
   return (
     <form onSubmit={handleSubmit} className="px-6">
       <div className="text-center mb-10">
@@ -86,7 +90,7 @@ const Login_Form = () => {
           Forgot Password?
         </span>
       </div>
-      <button   
+      <button
         type="submit"
         className="block bg-zinc-800 font-semibold w-full text-white py-2.5 rounded-full hover:bg-zinc-700 duration-500 active:scale-90 mb-3"
       >

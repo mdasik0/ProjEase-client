@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { createUser } from "../../../redux/features/userSlice";
+import { signUpUser } from "../../../redux/features/userSlice";
+import { useCreateUserMutation } from "../../../redux/api/userApi";
 
 const Register_Form = () => {
   const [formData, setFormData] = useState({
@@ -12,13 +13,19 @@ const Register_Form = () => {
     confirmPassword: "",
     show: false,
   });
-
-  const { isLoading, error, name } = useSelector((state) => state.userSlice);
+  
+  //! retrive data from redux store
+  const { isLoading,isError, error, name, email, image } = useSelector(
+    (state) => state.userSlice
+  );
+  //! createUser api from rtk query
+  const [createUser, { data, isError: isServerError, error: serverError }] =
+    useCreateUserMutation();
 
   const dispatch = useDispatch();
-
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
+  
+  // ! handling inputs on submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const name = formData.name;
@@ -26,31 +33,59 @@ const Register_Form = () => {
     const newPassword = formData.newPassword;
     const confirmPassword = formData.confirmPassword;
     // let password;
-
-    if(newPassword !== confirmPassword) {
-      return toast.error('Passwords do not match')
+    
+    if (newPassword !== confirmPassword) {
+      return toast.error("Passwords do not match");
     }
-
-    if(newPassword.length < 8 || confirmPassword.length < 8) {
-      return toast.error("Password is too short, Must be at least 8 characters")
-    }
-
+    
     const password = newPassword;
-
-
-    dispatch(createUser({email, password, name}))    
-
+    
+    //! Submitting user data to the async thunk for creating a new user in Firebase
+    dispatch(signUpUser({ email, password, name }));
   };
-
+  
+  
+  //! managing toast on success/rejection
   useEffect(() => {
-    if (error) {
+    if (isError) {
       toast.error(error);
     }
-    if (name) {
-      toast.success(`welcome ${name}`);
-      navigate('/')
+    if (email) {
+      handleBackendSubmit();
     }
-  }, [error, name]);
+  }, [error, email]);
+  
+
+  //! sending data to backend
+    const handleBackendSubmit = async () => {
+      const obj = {
+        name,
+        email,
+        image,
+        lastUpdated: "",
+        created: new Date(),
+        joinedProjects: [],
+      };
+    
+      createUser(obj)
+    };
+
+    //! toast for a new user created successfully
+    useEffect(()=>{
+      if(data) {
+        toast.success("Account has been created successfully")
+       return navigate("/")
+      } 
+      if(isServerError) {
+        toast.error(serverError)
+      }
+    },[data, isServerError, serverError, navigate])
+
+
+
+
+
+
   return (
     <form onSubmit={handleSubmit} className="px-6">
       <div className="text-center mb-10">
@@ -91,7 +126,7 @@ const Register_Form = () => {
       </div>
       <div className="mb-4">
         <label className="text-sm  block mb-1" htmlFor="newPassword">
-         New Password
+          New Password
         </label>
         <input
           onChange={(e) => {
@@ -107,7 +142,7 @@ const Register_Form = () => {
       </div>
       <div className="mb-4">
         <label className="text-sm  block mb-1" htmlFor="confirmPassword">
-         Confirm Password
+          Confirm Password
         </label>
         <input
           onChange={(e) => {
@@ -134,7 +169,6 @@ const Register_Form = () => {
             id="show"
           />{" "}
           <span className="text-sm">Show password</span>
-          
         </div>
         {/* <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
           Forgot Password?
