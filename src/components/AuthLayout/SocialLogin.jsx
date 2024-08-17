@@ -4,29 +4,60 @@ import { googleLogin } from "../../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { useCreateUserMutation } from "../../redux/api/userApi";
 const SocialLogin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  //! createUser api from rtk query
+  const [createUser, { data, isError: isServerError, error: serverError }] =
+    useCreateUserMutation();
+
   //! handle google login
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
   };
-  const { error, name, method } = useSelector(
+
+  const { isError, error, name, email, image, method } = useSelector(
     (state) => state.userSlice
   );
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
+  //! managing toast on success/rejection
   useEffect(() => {
-    if (error) {
+    if (isError) {
       toast.error(error);
     }
-    if (method == "google") {
-      toast.success(`Welcome back ${name}`);
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+    if (email) {
+      handleBackendSubmit();
     }
-  }, [error, method, name, navigate]);
+  }, [error, email, isError]);
+
+  //! sending data to backend
+  const handleBackendSubmit = async () => {
+    const obj = {
+      name,
+      email,
+      image,
+      method,
+      lastUpdated: "",
+      created: new Date(),
+      joinedProjects: [],
+    };
+
+    createUser(obj);
+  };
+
+  //! toast for a new user created successfully
+  useEffect(() => {
+    if (data) {
+      toast.success("Account has been created successfully");
+      return navigate("/");
+    }
+    if (isServerError) {
+      toast.error(serverError);
+      return navigate("/");
+    }
+  }, [data, isServerError, serverError, navigate]);
 
   return (
     <>
@@ -40,8 +71,7 @@ const SocialLogin = () => {
           alt="google social icon"
           src={googleIcon}
         />
-        <span className="text-black hover:text-black">
-          Login with Google</span>
+        <span className="text-black hover:text-black">Login with Google</span>
       </div>
     </>
   );

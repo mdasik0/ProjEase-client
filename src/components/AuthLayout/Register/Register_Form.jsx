@@ -15,7 +15,7 @@ const Register_Form = () => {
   });
   
   //! retrive data from redux store
-  const { isLoading,isError, error, name, email, image } = useSelector(
+  const { isLoading,isError, error, name, email, image, method } = useSelector(
     (state) => state.userSlice
   );
   //! createUser api from rtk query
@@ -62,6 +62,7 @@ const Register_Form = () => {
         name,
         email,
         image,
+        method,
         lastUpdated: "",
         created: new Date(),
         joinedProjects: [],
