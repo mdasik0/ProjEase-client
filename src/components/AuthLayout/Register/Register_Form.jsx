@@ -13,79 +13,68 @@ const Register_Form = () => {
     confirmPassword: "",
     show: false,
   });
-  
-  //! retrive data from redux store
-  const { isLoading,isError, error, name, email, image, method } = useSelector(
+
+  const { isLoading, isError, error, name, email, image, method } = useSelector(
     (state) => state.userSlice
   );
-  //! createUser api from rtk query
   const [createUser, { data, isError: isServerError, error: serverError }] =
     useCreateUserMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  // ! handling inputs on submit
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const name = formData.name;
-    const email = formData.email;
-    const newPassword = formData.newPassword;
-    const confirmPassword = formData.confirmPassword;
-    // let password;
-    
+
+    const { name, email, newPassword, confirmPassword } = formData;
+
     if (newPassword !== confirmPassword) {
       return toast.error("Passwords do not match");
     }
-    
+
     const password = newPassword;
-    
-    //! Submitting user data to the async thunk for creating a new user in Firebase
     dispatch(signUpUser({ email, password, name }));
   };
-  
-  
-  //! managing toast on success/rejection
+
+  const handleBackendSubmit = async () => {
+    const userData = {
+      name,
+      email,
+      image,
+      method,
+      lastUpdated: "",
+      created: new Date(),
+      joinedProjects: [],
+    };
+
+    createUser(userData);
+  };
+
   useEffect(() => {
     if (isError) {
       toast.error(error);
     }
+
     if (email) {
       handleBackendSubmit();
     }
   }, [error, email]);
-  
 
-  //! sending data to backend
-    const handleBackendSubmit = async () => {
-      const obj = {
-        name,
-        email,
-        image,
-        method,
-        lastUpdated: "",
-        created: new Date(),
-        joinedProjects: [],
-      };
-    
-      createUser(obj)
-    };
+  useEffect(() => {
+    if (data) {
+      toast.success("Account has been created successfully");
+      navigate("/");
+    } 
 
-    //! toast for a new user created successfully
-    useEffect(()=>{
-      if(data) {
-        toast.success("Account has been created successfully")
-       return navigate("/")
-      } 
-      if(isServerError) {
-        toast.error(serverError)
-      }
-    },[data, isServerError, serverError, navigate])
-
-
-
-
-
+    if (isServerError) {
+      toast.error(serverError);
+    }
+  }, [data, isServerError, serverError, navigate]);
 
   return (
     <form onSubmit={handleSubmit} className="px-6">
@@ -98,10 +87,9 @@ const Register_Form = () => {
           Name
         </label>
         <input
-          onChange={(e) => {
-            setFormData({ ...formData, name: e.target.value });
-          }}
-          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-full"
+          onChange={handleChange}
+          value={formData.name}
+          className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-full"
           placeholder="John Doe"
           required
           type="text"
@@ -114,10 +102,9 @@ const Register_Form = () => {
           Email
         </label>
         <input
-          onChange={(e) => {
-            setFormData({ ...formData, email: e.target.value });
-          }}
-          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-full"
+          onChange={handleChange}
+          value={formData.email}
+          className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-full"
           placeholder="example@gmail.com"
           required
           type="email"
@@ -126,14 +113,13 @@ const Register_Form = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="text-sm  block mb-1" htmlFor="newPassword">
+        <label className="text-sm block mb-1" htmlFor="newPassword">
           New Password
         </label>
         <input
-          onChange={(e) => {
-            setFormData({ ...formData, newPassword: e.target.value });
-          }}
-          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-full"
+          onChange={handleChange}
+          value={formData.newPassword}
+          className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-full"
           placeholder="########"
           required
           type={formData.show ? "text" : "password"}
@@ -142,14 +128,13 @@ const Register_Form = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="text-sm  block mb-1" htmlFor="confirmPassword">
+        <label className="text-sm block mb-1" htmlFor="confirmPassword">
           Confirm Password
         </label>
         <input
-          onChange={(e) => {
-            setFormData({ ...formData, confirmPassword: e.target.value });
-          }}
-          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-full"
+          onChange={handleChange}
+          value={formData.confirmPassword}
+          className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-full"
           placeholder="########"
           required
           type={formData.show ? "text" : "password"}
@@ -161,20 +146,22 @@ const Register_Form = () => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-1">
           <input
-            onChange={() => {
-              setFormData({ ...formData, show: !formData.show });
-            }}
+            onChange={() =>
+              setFormData((prevData) => ({
+                ...prevData,
+                show: !prevData.show,
+              }))
+            }
+            checked={formData.show}
             className="cursor-pointer"
             type="checkbox"
             name="show"
             id="show"
-          />{" "}
+          />
           <span className="text-sm">Show password</span>
         </div>
-        {/* <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
-          Forgot Password?
-        </span> */}
       </div>
+
       <button
         type="submit"
         className="block bg-zinc-800 font-semibold w-full text-white py-2.5 rounded-full hover:bg-zinc-700 duration-500 active:scale-90 mb-3"
@@ -185,14 +172,14 @@ const Register_Form = () => {
           <span>Submit</span>
         )}
       </button>
-      <span className="text-sm w-full flex items-center gap-1 justify-end ">
+      <span className="text-sm w-full flex items-center gap-1 justify-end">
         Already have an Account?{" "}
         <Link
           to={`/auth/sign-in`}
           className="hover:underline hover:text-blue-500 duration-200 cursor-pointer"
         >
           Login!
-        </Link>{" "}
+        </Link>
       </span>
     </form>
   );

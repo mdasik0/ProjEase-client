@@ -15,7 +15,7 @@ const Navbar = () => {
   console.log(userInfo);
 
   const user = userInfo.email || null;
-  console.log();
+  const { isLoading } = userInfo;
 
   const dispatch = useDispatch();
 
@@ -68,13 +68,26 @@ const Navbar = () => {
           to={"/auth/sign-in"}
           className="login-button  cursor-pointer px-6 py-1.5 rounded-full"
         >
-          Login
+          {isLoading ?  <span className="loading loading-spinner loading-sm"></span> : "Login"}
         </Link>
       )}
       {user && <div onClick={() => handleLogOut()}>LogOut</div>}
 
       {/* modal */}
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}></Modal>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        {/* cover image & profile picture */}
+        <div className="bg-[url('/')]">
+        <div className="kabab-menu"></div>
+        {/* profile picture here */}
+        <div>
+
+        </div>
+        </div>
+        {/* user information */}
+        <div>
+
+        </div>
+      </Modal>
     </div>
   );
 };
