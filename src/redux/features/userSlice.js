@@ -20,6 +20,8 @@ const initialState = {
   email: "",
   image: "",
   method: "",
+  phoneNumber: "",
+  lastUpdated: "",
   isLoading: false,
   isError: false,
   error: "",

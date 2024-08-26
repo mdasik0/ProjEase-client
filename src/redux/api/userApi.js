@@ -1,5 +1,3 @@
-// import { createApi } from '@reduxjs/toolkit/query/react'
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const userApi = createApi({
@@ -13,6 +11,12 @@ const userApi = createApi({
         body: body,
       }),
     }),
+    getUser: builder.query({
+      query: (email) => ({
+        url: `/getUser`,
+        params: { email }, // Add email as a query parameter
+      }),
+    }),
     updateUser: builder.mutation({
       query: (body) => ({
         url: "/query",
@@ -22,17 +26,17 @@ const userApi = createApi({
     }),
     addProjects: builder.query({
       query: (body) => ({
-        url: "somehting",
+        url: "something",
         method: "PATCH",
         body: body,
       }),
     }),
-    
   }),
 });
 
 export const {
   useCreateUserMutation,
+  useGetUserQuery,
   useUpdateUserMutation,
   useAddProjectsQuery,
 } = userApi;

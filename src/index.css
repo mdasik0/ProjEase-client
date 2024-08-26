@@ -149,6 +149,10 @@ box-shadow: -4px -4px 0px 3px white;
   background-color: rgb(209 213 219);
 }
 
+.bg {
+  background-color: rgba(255, 255, 255, 0.212);
+}
+
 .cta-design-5th-card::after {
   content: '';
   width: 25px;

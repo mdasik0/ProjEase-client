@@ -3,25 +3,14 @@ import { FaExclamation } from "react-icons/fa";
 import logo from "/logo/svg-projease-logo.svg";
 import ProjectsNav from "./ProjectsNav";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import Modal from "../../Shared/Modal";
-import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../../redux/features/userSlice";
+import { useSelector } from "react-redux";
+import UserModal from "./UserModal";
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const userInfo = useSelector((state) => state.userSlice);
-
-  console.log(userInfo);
-
   const user = userInfo.email || null;
   const { isLoading } = userInfo;
 
-  const dispatch = useDispatch();
-
-  const handleLogOut = () => {
-    dispatch(logoutUser());
-  };
+  
 
   return (
     <div className="flex justify-between items-start px-20 py-6">
@@ -45,24 +34,8 @@ const Navbar = () => {
         <ProjectsNav />
       </ul>
       {user ? (
-        <div
-          // onclick open profile modal in homepage
-          onClick={() => setIsOpen(!isOpen)}
-          title={user && userInfo?.name}
-          className="cursor-pointer  w-11 h-11 rounded-full hover:border hover:border-black duration-500"
-        >
-          {userInfo?.image ? (
-            <img
-              className="rounded-full hover:p-0.5 duration-500"
-              src={userInfo?.image}
-              alt="userImage"
-            />
-          ) : (
-            <span className="bg-green-500 hover:bg-green-600 active:scale-110 duration-500 rounded-full w-full h-full flex items-center justify-center text-white font-semibold">
-              {userInfo?.name?.charAt(0)?.toUpperCase()}
-            </span>
-          )}
-        </div>
+        
+        <UserModal userInfo={userInfo} user={user} />
       ) : (
         <Link
           to={"/auth/sign-in"}
@@ -71,23 +44,8 @@ const Navbar = () => {
           {isLoading ?  <span className="loading loading-spinner loading-sm"></span> : "Login"}
         </Link>
       )}
-      {user && <div onClick={() => handleLogOut()}>LogOut</div>}
 
-      {/* modal */}
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        {/* cover image & profile picture */}
-        <div className="bg-[url('/')]">
-        <div className="kabab-menu"></div>
-        {/* profile picture here */}
-        <div>
-
-        </div>
-        </div>
-        {/* user information */}
-        <div>
-
-        </div>
-      </Modal>
+      
     </div>
   );
 };
