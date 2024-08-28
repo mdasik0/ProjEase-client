@@ -6,13 +6,15 @@ import { logoutUser } from "../../../redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { TbCameraPlus } from "react-icons/tb";
+import { FaExclamationCircle } from "react-icons/fa";
 
 const UserModal = ({ userInfo, user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [ppChange, setPpChange] = useState({ img: "", previewImg: "" });
   const [edit, setEdit] = useState(false);
   const { image, name, email, phoneNumber } = userInfo;
-  const [changes, setChanges] = useState({name: name, phoneNumber: phoneNumber})
+  const [nameChange, setNameChange] = useState({name: name, changed: false})
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleLogOut = () => {
@@ -39,9 +41,10 @@ const UserModal = ({ userInfo, user }) => {
 
   const handleEditComplete = () => {
 
+    setLoading(true);
     // first collect all the new inputs in a state
     // loading on
-    // then on submit upload the image to imgbb and collect new url 
+    //! then on submit upload the image to imgbb and collect new url 
     // now sum it all up (img, newname, phone) and send it to the backend and firebase
     // img update firebase if successful then backend
     // name update firebase if successful then backend
@@ -68,6 +71,16 @@ const UserModal = ({ userInfo, user }) => {
       return null;
     }
   };
+
+  const NameChange = (e) => {
+    e.preventDefault();
+    const newName = e.target.value;
+    if(newName !== name) {
+      setNameChange({name: newName, changed: true});
+    } else if (newName === name) {
+      setNameChange({name: name, changed: false})
+    }
+  }
   
 
   return (
@@ -172,13 +185,17 @@ const UserModal = ({ userInfo, user }) => {
             <div className=" mb-3">
               <p className="text-sm text-gray-600">Name</p>
               {edit ? (
-                <div className="border rounded-md">
+                <div className="border rounded-md flex items-center">
                   <input
                     className="py-1.5 px-2 text-sm rounded-md w-full focus:outline-none "
                     type="text"
                     placeholder="Change Name"
-                    defaultValue={name}
+                    defaultValue={nameChange.name}
+                    onChange={NameChange}
                   />
+                  {
+                    nameChange.changed && <FaExclamationCircle title="Changed" className="mr-2 text-red-500 cursor-pointer" />
+                  }
                 </div>
               ) : (
                 <p className="text-black">{name}</p>

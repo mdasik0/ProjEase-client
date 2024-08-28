@@ -28,16 +28,16 @@ const SocialLogin = () => {
       toast.error(error);
     }
     if (email) {
-      handleBackendSubmit();
+      createUserInBackend();
     }
   }, [error, email, isError]);
 
   //! sending data to backend
-  const handleBackendSubmit = async () => {
+  const createUserInBackend = async () => {
     const obj = {
+      image,
       name,
       email,
-      image,
       method,
       lastUpdated: "",
       created: new Date(),
@@ -50,7 +50,7 @@ const SocialLogin = () => {
   //! toast for a new user created successfully
   useEffect(() => {
     if (data) {
-      toast.success("Account has been created successfully");
+      toast.success("Welcome Back");
       return navigate("/");
     }
     if (isServerError) {

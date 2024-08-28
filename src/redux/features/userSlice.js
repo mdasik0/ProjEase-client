@@ -32,16 +32,19 @@ export const signUpUser = createAsyncThunk(
   "userSlice/signUpUser",
   async (payload, { rejectWithValue }) => {
     try {
+      // create a new user
       const data = await createUserWithEmailAndPassword(
         auth,
         payload.email,
         payload.password
       );
 
+      // update the username
       await updateProfile(auth.currentUser, { displayName: payload.name });
-      
+
+      // storing information in the state
       return {
-        name: data.user.displayName || payload.name,
+        name: data.user.displayName,
         email: data.user.email,
         image: data.user.photoURL || "",
         method: AUTH_METHODS.SIGN_IN,
@@ -94,6 +97,8 @@ export const googleLogin = createAsyncThunk(
       const provider = new GoogleAuthProvider();
       const data = await signInWithPopup(auth, provider);
       localStorage.setItem('authMethod', 'google');
+
+      console.log(data)
       return {
         name: data.user.displayName || "",
         email: data.user.email,
@@ -117,7 +122,7 @@ const userSlice = createSlice({
       state.method = payload.method;
       state.isLoading = false; 
     },
-    resetUser: (state) => {
+    resetUser: (state) => {  
       state.name = "";
       state.email = "";
       state.image = "";
