@@ -7,13 +7,14 @@ import { useDispatch } from "react-redux";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { TbCameraPlus } from "react-icons/tb";
 import { FaExclamationCircle } from "react-icons/fa";
+import { useGetUserQuery } from "../../../redux/api/userApi";
 
 const UserModal = ({ userInfo, user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [ppChange, setPpChange] = useState({ img: "", previewImg: "" });
   const [edit, setEdit] = useState(false);
-  const { image, name, email, phoneNumber } = userInfo;
-  const [nameChange, setNameChange] = useState({name: name, changed: false})
+  const { image, name, email } = userInfo;
+  const [nameChange, setNameChange] = useState({ name: name, changed: false });
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -35,36 +36,37 @@ const UserModal = ({ userInfo, user }) => {
 
     console.log("imgFile:", imgFile, "previewUrl:", previewUrl);
 
-    uploadToImgbb(imgFile)
-
+    uploadToImgbb(imgFile);
   };
 
-  const handleEditComplete = () => {
+  // const handleEditComplete = () => {
 
-    setLoading(true);
-    // first collect all the new inputs in a state
-    // loading on
-    //! then on submit upload the image to imgbb and collect new url 
-    // now sum it all up (img, newname, phone) and send it to the backend and firebase
-    // img update firebase if successful then backend
-    // name update firebase if successful then backend
-    // name update backend.
-    // loading off 
+  //   setLoading(true);
+  //   // first collect all the new inputs in a state
+  //   // loading on
+  //   //! then on submit upload the image to imgbb and collect new url
+  //   // now sum it all up (img, newname, phone) and send it to the backend and firebase
+  //   // img update firebase if successful then backend
+  //   // name update firebase if successful then backend
+  //   // name update backend.
+  //   // loading off
 
-
-  }
+  // }
 
   const uploadToImgbb = async (imgFile) => {
     const formData = new FormData();
     formData.append("image", imgFile);
-  
+
     try {
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=cee5c8e4272d01a162dd93f5d44c390b`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `https://api.imgbb.com/1/upload?key=cee5c8e4272d01a162dd93f5d44c390b`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const data = await response.json();
-      console.log(data.data.url)
+      console.log(data.data.url);
       return data.data.url; // This is the image URL returned by imgbb
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -75,13 +77,24 @@ const UserModal = ({ userInfo, user }) => {
   const NameChange = (e) => {
     e.preventDefault();
     const newName = e.target.value;
-    if(newName !== name) {
-      setNameChange({name: newName, changed: true});
+    if (newName !== name) {
+      setNameChange({ name: newName, changed: true });
     } else if (newName === name) {
-      setNameChange({name: name, changed: false})
+      setNameChange({ name: name, changed: false });
     }
-  }
-  
+  };
+
+  const { data } = useGetUserQuery(email);
+
+  // console.log(data);
+
+  const handleEdit = (value) => {
+    if (data?.method === "google") {
+      return;
+    } else {
+      setEdit(value);
+    }
+  };
 
   return (
     <>
@@ -112,25 +125,27 @@ const UserModal = ({ userInfo, user }) => {
             {/* profile picture */}
             <div className="flex  justify-center items-center w-fit h-full ml-6">
               <div className="relative">
-                {userInfo?.image ? (
+                {data?.image ? (
                   <div>
                     {edit ? (
                       <img
                         className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
-                        src={ppChange?.previewImg ? ppChange?.previewImg : image}
+                        src={
+                          ppChange?.previewImg ? ppChange?.previewImg : image
+                        }
                         alt="userImage"
                       />
                     ) : (
                       <img
                         className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
-                        src={image}
+                        src={data?.image}
                         alt="userImage"
                       />
                     )}
                   </div>
                 ) : (
                   <span className="bg-green-500 hover:bg-green-600 active:scale-110 duration-500 w-[80px] h-[80px] rounded-full flex items-center justify-center text-white text-2xl border-[3px] font-semibold">
-                    {userInfo?.name?.charAt(0)?.toUpperCase()}
+                    {data?.name?.charAt(0)?.toUpperCase()}
                   </span>
                 )}
                 {edit && (
@@ -152,16 +167,20 @@ const UserModal = ({ userInfo, user }) => {
               {edit ? (
                 <button
                   title="Done"
-                  onClick={() => setEdit(false)}
+                  onClick={() => handleEdit(false)}
                   className=" p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300 absolute top-2 right-2"
                 >
                   <IoIosCheckmarkCircle className="text-green-500 text-xl" />
                 </button>
               ) : (
                 <button
-                  title="Edit"
-                  onClick={() => setEdit(true)}
-                  className=" p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300 absolute top-2 right-2"
+                  title={
+                    data?.method === "google"
+                      ? "You can not edit profile with google login"
+                      : "Edit"
+                  }
+                  onClick={() => handleEdit(true)}
+                  className={data?.method === "google" ? `p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300 absolute top-2 right-2 cursor-not-allowed` : 'p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300 absolute top-2 right-2' }
                 >
                   <FiEdit className="text-white" />
                 </button>
@@ -179,7 +198,7 @@ const UserModal = ({ userInfo, user }) => {
               </h4>
               <p className="text-sm italic w-[140px]">
                 Last Updated:
-                {userInfo?.lastUpdated ? userInfo?.lastUpdated : "__"}
+                {data?.lastUpdated ? data?.lastUpdated : "__"}
               </p>
             </div>
             <div className=" mb-3">
@@ -193,12 +212,15 @@ const UserModal = ({ userInfo, user }) => {
                     defaultValue={nameChange.name}
                     onChange={NameChange}
                   />
-                  {
-                    nameChange.changed && <FaExclamationCircle title="Changed" className="mr-2 text-red-500 cursor-pointer" />
-                  }
+                  {nameChange.changed && (
+                    <FaExclamationCircle
+                      title="Changed"
+                      className="mr-2 text-red-500 cursor-pointer"
+                    />
+                  )}
                 </div>
               ) : (
-                <p className="text-black">{name}</p>
+                <p className="text-black">{data?.name}</p>
               )}
             </div>
             <div className="mb-3">
@@ -211,11 +233,11 @@ const UserModal = ({ userInfo, user }) => {
                     className="py-1.5 px-2 text-sm rounded-md w-full focus:outline-none bg-gray-100 cursor-not-allowed"
                     type="email"
                     placeholder="Change Email"
-                    defaultValue={email}
+                    defaultValue={data?.email}
                   />
                 </div>
               ) : (
-                <p className="text-black">{email}</p>
+                <p className="text-black">{data?.email}</p>
               )}
             </div>
             <div className="mb-3">
@@ -228,13 +250,13 @@ const UserModal = ({ userInfo, user }) => {
                     className="py-1.5 px-2 text-sm rounded-md w-full focus:outline-none "
                     type="text"
                     placeholder="Change phone number"
-                    defaultValue={userInfo?.phoneNumber}
+                    defaultValue={data?.phoneNumber}
                   />
                 </div>
               ) : (
                 <p className="text-black">
-                  {userInfo?.phoneNumber ? (
-                    userInfo?.phoneNumber
+                  {data?.phoneNumber ? (
+                    data?.phoneNumber
                   ) : (
                     <span className="text-gray-500 italic">
                       (no phone number available)

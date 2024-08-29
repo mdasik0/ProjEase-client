@@ -13,8 +13,7 @@ const userApi = createApi({
     }),
     getUser: builder.query({
       query: (email) => ({
-        url: `/getUser`,
-        params: { email }, // Add email as a query parameter
+        url: `/getUser/${email}`,
       }),
     }),
     updateUser: builder.mutation({
