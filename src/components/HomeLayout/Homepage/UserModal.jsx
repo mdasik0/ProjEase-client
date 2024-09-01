@@ -15,20 +15,21 @@ import {
   useUpdateUserMutation,
 } from "../../../redux/api/userApi";
 import toast from "react-hot-toast";
+import { fullDate } from "../../../utils/getDate";
 
 const UserModal = ({ userInfo, user }) => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { image, name, email } = userInfo;
+  const [loading, setLoading] = useState({ loading: "", state: false });
+  const { name, email } = userInfo;
   const { data } = useGetUserQuery(email);
   const [ppChange, setPpChange] = useState({
     img: "",
     previewImg: "",
     imgbbUrl: "",
   });
-  const [nameChange, setNameChange] = useState({ name: name, changed: false });
+  const [nameChange, setNameChange] = useState({ name: data?.name, changed: false });
   const [phoneChange, setPhoneChange] = useState({
     phone: data?.phoneNumber,
     changed: false,
@@ -36,8 +37,52 @@ const UserModal = ({ userInfo, user }) => {
   const [updateUser] = useUpdateUserMutation();
 
   // functions
-  const handleLogOut = () => {
-    dispatch(logoutUser());
+
+  // handling edit state
+  const handleEdit = (value) => {
+    if (data?.method === "google") {
+      return;
+    } else if (value === false) {
+      handleEditComplete(value);
+      // setEdit(value);
+    } else {
+      setEdit(value);
+    }
+  };
+
+  // changing profile picture
+  const handleChangeProfilePicture = (e) => {
+    e.preventDefault();
+    const imgFile = e.target.files[0];
+    if (!imgFile) {
+      return;
+    }
+    const previewUrl = URL.createObjectURL(imgFile);
+    setPpChange({ img: imgFile, previewImg: previewUrl });
+  };
+
+  // uploading img to imgbb
+  const uploadToImgbb = async (imgFile) => {
+    setLoading({ text: "Uploading to imgbb...", state: true });
+    try {
+      const response = await fetch(
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMGBB_apiKey
+        }`,
+        {
+          method: "POST",
+          body: imgFile,
+        }
+      );
+      const data = await response.json();
+      // console.log(data.data.url);
+      setLoading({ ...loading, text: "Uploading Complete &#10003;" });
+      setLoading({ text: "", state: false });
+      return setPpChange({ ...ppChange, imgbbUrl: data.data.url });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      return null;
+    }
   };
 
   const NameChange = (e) => {
@@ -61,76 +106,40 @@ const UserModal = ({ userInfo, user }) => {
     }
   };
 
-  const handleChangeProfilePicture = (e) => {
-    e.preventDefault();
-    const imgFile = e.target.files[0];
-    if (!imgFile) {
-      return;
-    }
-    const previewUrl = URL.createObjectURL(imgFile);
-    setPpChange({ img: imgFile, previewImg: previewUrl });
-    uploadToImgbb(imgFile);
-    console.log(ppChange.imgbbUrl);
-  };
-
-  const uploadToImgbb = async (imgFile) => {
-    const formData = new FormData();
-    formData.append("image", imgFile);
-    try {
-      const response = await fetch(
-        `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_IMGBB_apiKey
-        }`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const data = await response.json();
-      // console.log(data.data.url);
-      return setPpChange({ ...ppChange, imgbbUrl: data.data.url });
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      return null;
-    }
-  };
-
   // console.log(data);
 
-  const handleEdit = (value) => {
-    if (data?.method === "google") {
-      return;
-    } else if (value === false) {
-      handleEditComplete(value);
-      // setEdit(value);
-    } else {
-      setEdit(value);
-    }
-  };
-
   const handleEditComplete = (value) => {
-    setLoading(true);
-
     try {
       // Upload image and get URL
+      uploadToImgbb(ppChange.img);
 
       // Update Firebase user profile
+      setLoading({text:"updating Firebase user profile", state:true})
       if (nameChange.changed) {
         dispatch(
-          updateFirebaseUser({ name: nameChange.name, image: ppChange.imgbbUrl })
+          updateFirebaseUser({
+            name: nameChange.name,
+            image: ppChange.imgbbUrl,
+          })
         ).unwrap();
       }
-
+      setLoading({...loading,text:"Updating complete."})
+      setLoading({...loading,text:"Sending data to backend."})
+      
       // Update user in your database
       const userObj = {
         ...data,
+        lastUpdated: fullDate,
         image: ppChange.imgbbUrl,
         name: nameChange.name,
         phoneNumber: phoneChange.phone,
       };
-
+      
       const res = updateUser({ _id: data._id, data: userObj }).unwrap();
-
+      setLoading({...loading,text:"Updating Done."})
+      setLoading({text:"",state:false})
+      setNameChange({...nameChange,changed: false})
+      setPhoneChange({...phoneChange,changed: false})
       toast.success(res.message);
     } catch (error) {
       toast.error(error.message);
@@ -140,6 +149,10 @@ const UserModal = ({ userInfo, user }) => {
     }
   };
 
+  // handling logout
+  const handleLogOut = () => {
+    dispatch(logoutUser());
+  };
   return (
     <>
       <div
@@ -148,15 +161,15 @@ const UserModal = ({ userInfo, user }) => {
         title={user && userInfo?.name}
         className="cursor-pointer  w-11 h-11 rounded-full hover:border hover:border-black duration-500"
       >
-        {userInfo?.image ? (
+        {data?.image ? (
           <img
             className="rounded-full hover:p-0.5 duration-500"
-            src={image}
+            src={data?.image}
             alt="userImage"
           />
         ) : (
           <span className="bg-green-500 hover:bg-green-600 active:scale-110 duration-500 rounded-full w-full h-full flex items-center justify-center text-white font-semibold">
-            {userInfo?.name?.charAt(0)?.toUpperCase()}
+            {data?.name?.charAt(0)?.toUpperCase()}
           </span>
         )}
       </div>
@@ -175,7 +188,7 @@ const UserModal = ({ userInfo, user }) => {
                       <img
                         className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
                         src={
-                          ppChange?.previewImg ? ppChange?.previewImg : image
+                          ppChange?.previewImg ? ppChange?.previewImg : data?.image
                         }
                         alt="userImage"
                       />
@@ -193,7 +206,7 @@ const UserModal = ({ userInfo, user }) => {
                       <img
                         className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
                         src={
-                          ppChange?.previewImg ? ppChange?.previewImg : image
+                          ppChange?.previewImg ? ppChange?.previewImg : data?.image
                         }
                         alt="userImage"
                       />
@@ -217,15 +230,13 @@ const UserModal = ({ userInfo, user }) => {
                       placeholder="upload new profile picture"
                       name="profile-picture"
                       id="profile-picture"
+                      disabled={loading.state}
                     />
                   </div>
                 )}
               </div>
             </div>
             <div>
-              {loading && (
-                <span className="loading loading-dots loading-md"></span>
-              )}
               {edit ? (
                 <button
                   title="Done"
@@ -252,12 +263,18 @@ const UserModal = ({ userInfo, user }) => {
                 </button>
               )}
             </div>
+            {loading.state === true && (
+              <div className="absolute right-3 animate-pulse bottom-1.5 text-white text-sm italic flex items-center gap-2">
+                <span className="loading loading-spinner loading-xs"></span>{" "}
+                <span>{loading.text}</span>
+              </div>
+            )}
           </div>
           {/* user information */}
           <div className="mx-3">
             <div className="flex justify-between items-center my-3">
               <h4 className="text-2xl font-semibold  text-black">
-                {userInfo?.name}
+                {data?.name}
               </h4>
               <p className="text-sm italic w-[140px]">
                 Last Updated:
@@ -272,7 +289,7 @@ const UserModal = ({ userInfo, user }) => {
                     className="py-1.5 px-2 text-sm rounded-md w-full focus:outline-none "
                     type="text"
                     placeholder="Change Name"
-                    defaultValue={nameChange.name}
+                    defaultValue={data?.name}
                     onChange={NameChange}
                   />
                   {nameChange.changed && (
@@ -313,7 +330,7 @@ const UserModal = ({ userInfo, user }) => {
                     className="py-1.5 px-2 text-sm rounded-md w-full focus:outline-none "
                     type="number"
                     placeholder="Change Phone Number"
-                    defaultValue={phoneChange.phone}
+                    defaultValue={data?.phoneNumber}
                     onChange={PhoneNumberChange}
                   />
                   {phoneChange.changed && (

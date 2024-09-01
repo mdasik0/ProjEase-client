@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const userApi = createApi({
   reducerPath: "users",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  tagTypes:["users"],
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (body) => ({
@@ -15,6 +16,7 @@ const userApi = createApi({
       query: (email) => ({
         url: `/getUser/${email}`,
       }),
+      providesTags: ['users']
     }),
     updateUser: builder.mutation({
       query: ({_id,data}) => ({
@@ -22,6 +24,7 @@ const userApi = createApi({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: ['users']
     }),
     addProjects: builder.query({
       query: (body) => ({
