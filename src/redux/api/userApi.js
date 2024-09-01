@@ -17,10 +17,10 @@ const userApi = createApi({
       }),
     }),
     updateUser: builder.mutation({
-      query: (body) => ({
-        url: "/query",
+      query: ({_id,data}) => ({
+        url: `/updateUser/${_id}`,
         method: "PATCH",
-        body: body,
+        body: data,
       }),
     }),
     addProjects: builder.query({

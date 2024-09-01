@@ -1,11 +1,12 @@
 /* font */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body, html {
+body,
+html {
   overflow-x: hidden;
 }
 
@@ -70,7 +71,6 @@ nav .active {
   background: lightgray;
 }
 
-
 /* navbar dropdown animation */
 
 .dropdown-container {
@@ -111,8 +111,6 @@ nav .active {
   animation: 0.3s positionDropTwo 0.4s ease-out forwards;
 }
 
-
-
 @keyframes positionDropTwo {
   0% {
     transform: translateY(-44px);
@@ -124,24 +122,23 @@ nav .active {
   }
 }
 
-
 /* navbar dropdown ends here */
 
 /* shadow round */
 .shadow-rounder::after {
-content: "";
-position: absolute;
-top: 0px;
-right: -15px;
-height: 15px;
-width: 15px;
-background-color: transparent;
-border-radius: 100vw 0px 0px 0px;
-box-shadow: -4px -4px 0px 3px white;
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: -15px;
+  height: 15px;
+  width: 15px;
+  background-color: transparent;
+  border-radius: 100vw 0px 0px 0px;
+  box-shadow: -4px -4px 0px 3px white;
 }
 
 .login-button {
-  background-color:  rgb(229 231 235);
+  background-color: rgb(229 231 235);
   transition: background-color 0.5s;
 }
 
@@ -154,13 +151,23 @@ box-shadow: -4px -4px 0px 3px white;
 }
 
 .cta-design-5th-card::after {
-  content: '';
+  content: "";
   width: 25px;
   height: 25px;
   position: absolute;
   background-color: transparent;
-  top: -4px; 
+  top: -4px;
   left: -4px;
   border-radius: 15px 0px 0px 0px;
   box-shadow: -8px -8px 0px white;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

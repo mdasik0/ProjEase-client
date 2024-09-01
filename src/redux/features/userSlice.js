@@ -65,7 +65,7 @@ export const loginUser = createAsyncThunk(
         payload.email,
         payload.password
       );
-      localStorage.setItem('authMethod', 'sign-in');
+      localStorage.setItem("authMethod", "sign-in");
       return {
         name: data.user.displayName || "",
         email: data.user.email,
@@ -78,16 +78,22 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const updateFirebaseUser = createAsyncThunk(
+  "userSlice/updateFirebaseUser",
+  async (payload) => {
+    await updateProfile(auth.currentUser, { displayName: payload.name,photoURL: payload.image });
+  }
+);
+
 // Log out user
 export const logoutUser = createAsyncThunk(
   "/userSlice/logoutUser",
   async () => {
     await signOut(auth);
-    localStorage.removeItem('authMethod');
+    localStorage.removeItem("authMethod");
     return { name: "", email: "", image: "", method: "" };
   }
 );
-
 
 // Log in with Google
 export const googleLogin = createAsyncThunk(
@@ -96,9 +102,9 @@ export const googleLogin = createAsyncThunk(
     try {
       const provider = new GoogleAuthProvider();
       const data = await signInWithPopup(auth, provider);
-      localStorage.setItem('authMethod', 'google');
+      localStorage.setItem("authMethod", "google");
 
-      console.log(data)
+      console.log(data);
       return {
         name: data.user.displayName || "",
         email: data.user.email,
@@ -120,14 +126,14 @@ const userSlice = createSlice({
       state.email = payload.email;
       state.image = payload.image;
       state.method = payload.method;
-      state.isLoading = false; 
+      state.isLoading = false;
     },
-    resetUser: (state) => {  
+    resetUser: (state) => {
       state.name = "";
       state.email = "";
       state.image = "";
       state.method = "";
-      state.isLoading = false; 
+      state.isLoading = false;
     },
     setLoading: (state, { payload }) => {
       state.isLoading = payload;
@@ -211,7 +217,6 @@ const userSlice = createSlice({
 export const { resetUser, setUser, setLoading } = userSlice.actions;
 export default userSlice.reducer;
 
-
 // import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import {
 //   createUserWithEmailAndPassword,
@@ -247,7 +252,7 @@ export default userSlice.reducer;
 
 //     // updating the new username
 //     await updateProfile(auth.currentUser, { displayName: payload.name });
-    
+
 //     // storing the data in redux state
 //     return { name: data.user.displayName, email: data.user.email, image : data.user.photoURL, method: "sign-in"};
 //   }
