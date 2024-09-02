@@ -10,8 +10,6 @@ const Navbar = () => {
   const user = userInfo.email || null;
   const { isLoading } = userInfo;
 
-  
-
   return (
     <div className="flex justify-between items-start px-20 py-6">
       {/* logo */}
@@ -34,18 +32,19 @@ const Navbar = () => {
         <ProjectsNav />
       </ul>
       {user ? (
-        
         <UserModal userInfo={userInfo} user={user} />
       ) : (
         <Link
           to={"/auth/sign-in"}
           className="login-button  cursor-pointer px-6 py-1.5 rounded-full"
         >
-          {isLoading ?  <span className="loading loading-spinner loading-sm"></span> : "Login"}
+          {isLoading ? (
+            <span className="loading loading-spinner loading-sm"></span>
+          ) : (
+            "Login"
+          )}
         </Link>
       )}
-
-      
     </div>
   );
 };
