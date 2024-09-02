@@ -7,7 +7,6 @@ import {
   updateFirebaseUser,
 } from "../../../redux/features/userSlice";
 import { useDispatch } from "react-redux";
-import { IoIosCheckmarkCircle } from "react-icons/io";
 import { TbCameraPlus } from "react-icons/tb";
 import { FaExclamationCircle } from "react-icons/fa";
 import {
@@ -16,6 +15,7 @@ import {
 } from "../../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { fullDate } from "../../../utils/getDate";
+import { FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
 
 const UserModal = ({ userInfo, user }) => {
   const dispatch = useDispatch();
@@ -29,7 +29,10 @@ const UserModal = ({ userInfo, user }) => {
     previewImg: "",
     imgbbUrl: "",
   });
-  const [nameChange, setNameChange] = useState({ name: data?.name, changed: false });
+  const [nameChange, setNameChange] = useState({
+    name: data?.name,
+    changed: false,
+  });
   const [phoneChange, setPhoneChange] = useState({
     phone: data?.phoneNumber,
     changed: false,
@@ -114,7 +117,7 @@ const UserModal = ({ userInfo, user }) => {
       uploadToImgbb(ppChange.img);
 
       // Update Firebase user profile
-      setLoading({text:"updating Firebase user profile", state:true})
+      setLoading({ text: "updating Firebase user profile", state: true });
       if (nameChange.changed) {
         dispatch(
           updateFirebaseUser({
@@ -123,9 +126,9 @@ const UserModal = ({ userInfo, user }) => {
           })
         ).unwrap();
       }
-      setLoading({...loading,text:"Updating complete."})
-      setLoading({...loading,text:"Sending data to backend."})
-      
+      setLoading({ ...loading, text: "Updating complete." });
+      setLoading({ ...loading, text: "Sending data to backend." });
+
       // Update user in your database
       const userObj = {
         ...data,
@@ -134,12 +137,12 @@ const UserModal = ({ userInfo, user }) => {
         name: nameChange.name,
         phoneNumber: phoneChange.phone,
       };
-      
+
       const res = updateUser({ _id: data._id, data: userObj }).unwrap();
-      setLoading({...loading,text:"Updating Done."})
-      setLoading({text:"",state:false})
-      setNameChange({...nameChange,changed: false})
-      setPhoneChange({...phoneChange,changed: false})
+      setLoading({ ...loading, text: "Updating Done." });
+      setLoading({ text: "", state: false });
+      setNameChange({ ...nameChange, changed: false });
+      setPhoneChange({ ...phoneChange, changed: false });
       toast.success(res.message);
     } catch (error) {
       toast.error(error.message);
@@ -147,6 +150,25 @@ const UserModal = ({ userInfo, user }) => {
       setLoading(false);
       setEdit(value);
     }
+  };
+
+  // cancel edit
+  const cancelEdit = () => {
+    setPpChange({
+      img: "",
+      previewImg: "",
+      imgbbUrl: "",
+    });
+    setNameChange({
+      name: data?.name,
+      changed: false,
+    })
+    setPhoneChange({
+      phone: data?.phoneNumber,
+      changed: false,
+    });
+    setLoading({ loading: "", state: false });
+    setEdit(false)
   };
 
   // handling logout
@@ -188,7 +210,9 @@ const UserModal = ({ userInfo, user }) => {
                       <img
                         className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
                         src={
-                          ppChange?.previewImg ? ppChange?.previewImg : data?.image
+                          ppChange?.previewImg
+                            ? ppChange?.previewImg
+                            : data?.image
                         }
                         alt="userImage"
                       />
@@ -206,7 +230,9 @@ const UserModal = ({ userInfo, user }) => {
                       <img
                         className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
                         src={
-                          ppChange?.previewImg ? ppChange?.previewImg : data?.image
+                          ppChange?.previewImg
+                            ? ppChange?.previewImg
+                            : data?.image
                         }
                         alt="userImage"
                       />
@@ -238,13 +264,22 @@ const UserModal = ({ userInfo, user }) => {
             </div>
             <div>
               {edit ? (
-                <button
-                  title="Done"
-                  onClick={() => handleEdit(false)}
-                  className=" p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300 absolute top-2 right-2"
-                >
-                  <IoIosCheckmarkCircle className="text-green-500 text-xl" />
-                </button>
+                <div className=" absolute top-2 right-2">
+                  <button
+                    title="Cancel Edit"
+                    onClick={cancelEdit}
+                    className=" p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300"
+                  >
+                    <FaCircleXmark className="text-red-500 text-xl" />
+                  </button>
+                  <button
+                    title="Done"
+                    onClick={() => handleEdit(false)}
+                    className=" p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300"
+                  >
+                    <FaCircleCheck className="text-green-500 text-xl" />
+                  </button>
+                </div>
               ) : (
                 <button
                   title={
