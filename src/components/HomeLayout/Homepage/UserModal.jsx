@@ -1,4 +1,5 @@
 import { useState } from "react";
+import imageCompression from "browser-image-compression";
 import Modal from "../../Shared/Modal";
 import PropTypes from "prop-types";
 import { FiEdit, FiLogOut } from "react-icons/fi";
@@ -24,151 +25,219 @@ const UserModal = ({ userInfo, user }) => {
   const [loading, setLoading] = useState({ loading: "", state: false });
   const { name, email } = userInfo;
   const { data } = useGetUserQuery(email);
-  const [ppChange, setPpChange] = useState({
-    img: "",
+  const [updateUser] = useUpdateUserMutation();
+  const [imageState, setImageState] = useState({
+    imgFile: "",
     previewImg: "",
-    imgbbUrl: "",
+    hostedUrl: "",
   });
-  const [nameChange, setNameChange] = useState({
+  const [nameState, setNameState] = useState({
     name: data?.name,
     changed: false,
   });
-  const [phoneChange, setPhoneChange] = useState({
+  const [phoneState, setPhoneState] = useState({
     phone: data?.phoneNumber,
     changed: false,
   });
-  const [updateUser] = useUpdateUserMutation();
 
-  // functions
-
-  // handling edit state
+  // edit on/off function
   const handleEdit = (value) => {
     if (data?.method === "google") {
       return;
     } else if (value === false) {
-      handleEditComplete(value);
+      saveChanges(value);
       // setEdit(value);
     } else {
       setEdit(value);
     }
   };
 
-  // changing profile picture
-  const handleChangeProfilePicture = (e) => {
-    e.preventDefault();
-    const imgFile = e.target.files[0];
-    if (!imgFile) {
-      return;
-    }
-    const previewUrl = URL.createObjectURL(imgFile);
-    setPpChange({ img: imgFile, previewImg: previewUrl });
-  };
-
-  // uploading img to imgbb
-  const uploadToImgbb = async (imgFile) => {
-    setLoading({ text: "Uploading to imgbb...", state: true });
-    try {
-      const response = await fetch(
-        `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_IMGBB_apiKey
-        }`,
-        {
-          method: "POST",
-          body: imgFile,
-        }
-      );
-      const data = await response.json();
-      // console.log(data.data.url);
-      setLoading({ ...loading, text: "Uploading Complete &#10003;" });
-      setLoading({ text: "", state: false });
-      return setPpChange({ ...ppChange, imgbbUrl: data.data.url });
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      return null;
-    }
-  };
-
-  const NameChange = (e) => {
+  //first state handle
+  //edit the new input fields handle them
+  const changeName = (e) => {
     e.preventDefault();
     const newName = e.target.value;
     if (newName !== name) {
-      setNameChange({ name: newName, changed: true });
+      setNameState({ name: newName, changed: true });
     } else if (newName === name) {
-      setNameChange({ name: name, changed: false });
+      setNameState({ name: name, changed: false });
     }
   };
-
-  const PhoneNumberChange = (e) => {
+  const changePhoneNumber = (e) => {
     e.preventDefault();
     const newPhoneNumber = e.target.value;
 
     if (newPhoneNumber !== data?.phoneNumber) {
-      setPhoneChange({ phone: newPhoneNumber, changed: true });
+      setPhoneState({ phone: newPhoneNumber, changed: true });
     } else if (newPhoneNumber === data?.phoneNumber) {
-      setPhoneChange({ phone: data?.phoneNumber, changed: false });
+      setPhoneState({ phone: data?.phoneNumber, changed: false });
     }
   };
+  const changeProfilePicture = (e) => {
+    e.preventDefault();
+    // get the new image file
+    const File = e.target.files[0];
+    // if there is no image file return from this function
+    if (!File) {
+      return;
+    }
+    // get a preview image so that you can show the user directly which image the user choose
+    const previewImg = URL.createObjectURL(File);
+    //now set these images to state
+    setImageState((prevState) => ({ ...prevState, imgFile:File, previewImg }));
+  };
 
-  // console.log(data);
+  // console.log("nameState", nameState);
+  // console.log("phoneState", phoneState);
+  // console.log("imageState", imageState);
 
-  const handleEditComplete = (value) => {
+  // now save the new Changes
+  const saveChanges = async () => {
     try {
-      // Upload image and get URL
-      uploadToImgbb(ppChange.img);
-
-      // Update Firebase user profile
-      setLoading({ text: "updating Firebase user profile", state: true });
-      if (nameChange.changed) {
-        dispatch(
-          updateFirebaseUser({
-            name: nameChange.name,
-            image: ppChange.imgbbUrl,
-          })
-        ).unwrap();
+      // Ensure the image is uploaded first
+      if (!imageState.hostedUrl && imageState.imgFile) {
+        const uploadedUrl = await imageSizeFixingAndHosting(imageState.imgFile);
+        if (!uploadedUrl) {
+          toast.error("Failed to upload the image");
+          return;
+        }
+        setImageState((prevState) => ({ ...prevState, hostedUrl: uploadedUrl }));
       }
-      setLoading({ ...loading, text: "Updating complete." });
-      setLoading({ ...loading, text: "Sending data to backend." });
-
-      // Update user in your database
-      const userObj = {
-        ...data,
-        lastUpdated: fullDate,
-        image: ppChange.imgbbUrl,
-        name: nameChange.name,
-        phoneNumber: phoneChange.phone,
-      };
-
-      const res = updateUser({ _id: data._id, data: userObj }).unwrap();
-      setLoading({ ...loading, text: "Updating Done." });
-      setLoading({ text: "", state: false });
-      setNameChange({ ...nameChange, changed: false });
-      setPhoneChange({ ...phoneChange, changed: false });
-      toast.success(res.message);
+  
+      if (imageState.hostedUrl || nameState.changed || phoneState.changed) {
+        // Dispatch the Firebase update and await its result
+        const resultAction = await dispatch(
+          updateFirebaseUser({
+            name: nameState.name,
+            image: imageState.hostedUrl,
+          })
+        );
+  
+        if (updateFirebaseUser.fulfilled.match(resultAction)) {
+          toast.success("User has been updated in Firebase");
+  
+          // Proceed to update the backend database
+          const updatedUserData = {
+            ...data,
+            name: nameState.name,
+            phoneNumber: phoneState.phone,
+            image: imageState.hostedUrl,
+            lastUpdated: fullDate,
+          };
+  
+          // console.log(imageState);
+          const result = await updateUser({
+            _id: data._id,
+            data: updatedUserData,
+          }).unwrap();
+  
+          toast.success(result.message);
+          resetEverything();
+          setEdit(false);
+        } else {
+          toast.error("There was an error updating the user. Please try again.");
+        }
+      }
     } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-      setEdit(value);
+      console.error("Error saving changes:", error);
+      toast.error("Error saving changes. Please try again.");
     }
   };
+  
+  
+
+  // This function compresses and uploads an image to Imgbb
+const imageSizeFixingAndHosting = async (imgfile) => {
+  try {
+    // Check if the input is a valid Blob or File instance
+    if (!(imgfile instanceof Blob || imgfile instanceof File)) {
+      console.error("The file is not an instance of Blob or File:", imgfile);
+      return null; // Early return if the file is invalid
+    }
+
+    // Define compression options to target 30KB
+    const options = {
+      maxSizeMB: 0.03, // 30KB max size
+      maxWidthOrHeight: 800, // Optional: Resize the image to reduce size, adjust based on your needs
+      useWebWorker: true, // For faster compression
+    };
+
+    // Compress the image
+    const compressedFile = await imageCompression(imgfile, options);
+    console.log("Compressed file:", compressedFile);
+
+    // Check the compressed file size
+    const compressedSizeInKB = compressedFile.size / 1024;
+    console.log(`Compressed file size: ${compressedSizeInKB.toFixed(2)} KB`);
+
+    // Ensure file size is less than or equal to 30KB
+    if (compressedSizeInKB > 30) {
+      console.error(
+        "Compressed file exceeds 30KB, please try a smaller image."
+      );
+      return null; // Return or handle the error accordingly
+    }
+
+    // Prepare the image for uploading (convert to base64)
+    const base64Image = await imageCompression.getDataUrlFromFile(
+      compressedFile
+    );
+
+    // Create FormData for the upload
+    const formData = new FormData();
+    formData.append("image", base64Image.split(",")[1]); // Removing the 'data:image/jpeg;base64,' part
+
+    // Upload the image to Imgbb
+    const response = await fetch(
+      `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_IMGBB_apiKey
+      }`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const result = await response.json();
+
+    // Check if the upload was successful
+    if (result.success) {
+      console.log("Image uploaded successfully:", result.data.url);
+      setImageState((prevState) => ({ ...prevState, hostedUrl: result.data.url }));
+      return result.data.url; // Return the hosted image URL
+    } else {
+      console.error("Image upload failed:", result);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error during image compression or upload:", error);
+    return null;
+  }
+};
+
+//reset function
+const resetEverything = () => {
+  setImageState({
+    imgFile: "",
+    previewImg: "",
+    hostedUrl: "",
+  })
+  setNameState({
+    name: data?.name,
+    changed: false,
+  });
+  setPhoneState({
+    phone: data?.phoneNumber,
+    changed: false,
+  });
+  setLoading({ loading: "", state: false });
+
+}
 
   // cancel edit
   const cancelEdit = () => {
-    setPpChange({
-      img: "",
-      previewImg: "",
-      imgbbUrl: "",
-    });
-    setNameChange({
-      name: data?.name,
-      changed: false,
-    })
-    setPhoneChange({
-      phone: data?.phoneNumber,
-      changed: false,
-    });
-    setLoading({ loading: "", state: false });
-    setEdit(false)
+    resetEverything();
+    setEdit(false);
   };
 
   // handling logout
@@ -185,7 +254,7 @@ const UserModal = ({ userInfo, user }) => {
       >
         {data?.image ? (
           <img
-            className="rounded-full hover:p-0.5 duration-500"
+            className="rounded-full h-full w-full object-cover hover:p-0.5 duration-500"
             src={data?.image}
             alt="userImage"
           />
@@ -205,20 +274,20 @@ const UserModal = ({ userInfo, user }) => {
             <div className="flex  justify-center items-center w-fit h-full ml-6">
               <div className="relative">
                 {data?.image ? (
-                  <div>
+                  <div className="w-[80px] h-[80px]">
                     {edit ? (
                       <img
-                        className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
+                        className="rounded-full border-[3px] object-cover w-full h-full  duration-500"
                         src={
-                          ppChange?.previewImg
-                            ? ppChange?.previewImg
+                          imageState?.previewImg
+                            ? imageState?.previewImg
                             : data?.image
                         }
                         alt="userImage"
                       />
                     ) : (
                       <img
-                        className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
+                        className="rounded-full border-[3px] w-full h-full object-cover object-center duration-500"
                         src={data?.image}
                         alt="userImage"
                       />
@@ -230,8 +299,8 @@ const UserModal = ({ userInfo, user }) => {
                       <img
                         className="rounded-full border-[3px] w-[80px] h-[80px] duration-500"
                         src={
-                          ppChange?.previewImg
-                            ? ppChange?.previewImg
+                          imageState?.previewImg
+                            ? imageState?.previewImg
                             : data?.image
                         }
                         alt="userImage"
@@ -250,11 +319,12 @@ const UserModal = ({ userInfo, user }) => {
                   <div className="bg-white w-7 h-7 absolute bottom-0 right-0 rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-200 duration-300 p-1 overflow-hidden">
                     <TbCameraPlus className="z-0 absolute" />
                     <input
-                      onChange={handleChangeProfilePicture}
+                      onChange={changeProfilePicture}
                       className="z-20 opacity-0 cursor-pointer"
                       type="file"
                       placeholder="upload new profile picture"
                       name="profile-picture"
+                      accept="image/jpeg, image/png"
                       id="profile-picture"
                       disabled={loading.state}
                     />
@@ -274,7 +344,7 @@ const UserModal = ({ userInfo, user }) => {
                   </button>
                   <button
                     title="Done"
-                    onClick={() => handleEdit(false)}
+                    onClick={saveChanges}
                     className=" p-1 rounded-full hover:bg-[#4b4b4b6b] duration-300"
                   >
                     <FaCircleCheck className="text-green-500 text-xl" />
@@ -325,9 +395,9 @@ const UserModal = ({ userInfo, user }) => {
                     type="text"
                     placeholder="Change Name"
                     defaultValue={data?.name}
-                    onChange={NameChange}
+                    onChange={changeName}
                   />
-                  {nameChange.changed && (
+                  {nameState.changed && (
                     <FaExclamationCircle
                       title="Changed"
                       className="mr-2 text-red-500 cursor-pointer"
@@ -366,9 +436,9 @@ const UserModal = ({ userInfo, user }) => {
                     type="number"
                     placeholder="Change Phone Number"
                     defaultValue={data?.phoneNumber}
-                    onChange={PhoneNumberChange}
+                    onChange={changePhoneNumber}
                   />
-                  {phoneChange.changed && (
+                  {phoneState.changed && (
                     <FaExclamationCircle
                       title="Changed"
                       className="mr-2 text-red-500 cursor-pointer"
@@ -406,6 +476,7 @@ const UserModal = ({ userInfo, user }) => {
 UserModal.propTypes = {
   userInfo: PropTypes.shape({
     name: PropTypes.string,
+    updateUserStatus: PropTypes.string,
     image: PropTypes.string,
     email: PropTypes.string,
     lastUpdated: PropTypes.string,

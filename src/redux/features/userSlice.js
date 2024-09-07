@@ -21,6 +21,7 @@ const initialState = {
   image: "",
   method: "",
   phoneNumber: "",
+  updateUserStatus:"",
   lastUpdated: "",
   isLoading: false,
   isError: false,
@@ -80,8 +81,17 @@ export const loginUser = createAsyncThunk(
 
 export const updateFirebaseUser = createAsyncThunk(
   "userSlice/updateFirebaseUser",
-  async (payload) => {
-    await updateProfile(auth.currentUser, { displayName: payload.name,photoURL: payload.image });
+  async (payload, { rejectWithValue }) => {
+    try {
+      const updateData = {};
+      if (payload.name) updateData.displayName = payload.name;
+      if (payload.image) updateData.photoURL = payload.image;
+
+      await updateProfile(auth.currentUser, updateData);
+      return updateData;
+    } catch (error) {
+      return rejectWithValue(error.message || "Error updating user");
+    }
   }
 );
 
@@ -208,6 +218,24 @@ const userSlice = createSlice({
       })
       .addCase(googleLogin.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
+        state.error = action.payload || action.error.message;
+      })
+
+      .addCase(updateFirebaseUser.pending, (state) => {
+        state.updateUserStatus = "loading";
+        state.isError = false;
+        state.error = "";
+      })
+      .addCase(updateFirebaseUser.fulfilled, (state, action) => {
+        state.name = action.payload.displayName || state.name;
+        state.image = action.payload.photoURL || state.image;
+        state.updateUserStatus = "succeeded";
+        state.lastUpdated = new Date().toISOString();
+        state.isLoading = false;
+      })
+      .addCase(updateFirebaseUser.rejected, (state, action) => {
+        state.updateUserStatus = "failed";
         state.isError = true;
         state.error = action.payload || action.error.message;
       });

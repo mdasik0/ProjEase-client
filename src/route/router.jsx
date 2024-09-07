@@ -6,6 +6,8 @@ import Tasks from "../pages/HomeLayout/Tasks";
 import Chats from "../pages/HomeLayout/Chats";
 import VideoCall from "../pages/HomeLayout/VideoCall";
 import HomeLayout from "../layout/HomeLayout";
+import CreateProject from "../pages/HomeLayout/CreateProject";
+import JoinProject from "../pages/HomeLayout/JoinProject";
 
 const router = createBrowserRouter([
   {
@@ -17,16 +19,25 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "create-project",
+        element: <CreateProject />,
+      },
+      {
+        path: "join-project",
+        element: <JoinProject />, 
+      },
+      {
         path: "tasks",
         element: <Tasks />,
       },
       {
         path: "chats",
-        element: <Chats />
-      }, {
+        element: <Chats />,
+      },
+      {
         path: "video-call",
         element: <VideoCall />,
-      }
+      },
     ],
   },
   {

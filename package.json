@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.19",
     "@reduxjs/toolkit": "^2.2.3",
+    "browser-image-compression": "^2.0.2",
     "firebase": "^10.11.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
