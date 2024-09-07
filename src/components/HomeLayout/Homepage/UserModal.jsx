@@ -91,41 +91,46 @@ const UserModal = ({ userInfo, user }) => {
   // console.log("phoneState", phoneState);
   // console.log("imageState", imageState);
 
-  // now save the new Changes
   const saveChanges = async () => {
     try {
+      let uploadedUrl = imageState.hostedUrl;
+  
       // Ensure the image is uploaded first
-      if (!imageState.hostedUrl && imageState.imgFile) {
-        const uploadedUrl = await imageSizeFixingAndHosting(imageState.imgFile);
+      if (!uploadedUrl && imageState.imgFile) {
+        setLoading({ loading: "Uploading Image", state: true });
+        uploadedUrl = await imageSizeFixingAndHosting(imageState.imgFile);
         if (!uploadedUrl) {
           toast.error("Failed to upload the image");
-          return;
+          setLoading({ loading: "", state: false });
+          return; // Stop if there's an error
         }
         setImageState((prevState) => ({ ...prevState, hostedUrl: uploadedUrl }));
       }
   
-      if (imageState.hostedUrl || nameState.changed || phoneState.changed) {
-        // Dispatch the Firebase update and await its result
+      // Now, continue with the remaining operations (e.g., update Firebase, backend)
+      if (uploadedUrl || nameState.changed || phoneState.changed) {
+        setLoading({ loading: "Updating user info", state: true });
+  
+        // Dispatch the Firebase update
         const resultAction = await dispatch(
           updateFirebaseUser({
             name: nameState.name,
-            image: imageState.hostedUrl,
+            image: uploadedUrl,
           })
         );
   
         if (updateFirebaseUser.fulfilled.match(resultAction)) {
           toast.success("User has been updated in Firebase");
   
-          // Proceed to update the backend database
+          // Update the backend database
           const updatedUserData = {
             ...data,
             name: nameState.name,
             phoneNumber: phoneState.phone,
-            image: imageState.hostedUrl,
+            image: uploadedUrl,
             lastUpdated: fullDate,
           };
   
-          // console.log(imageState);
           const result = await updateUser({
             _id: data._id,
             data: updatedUserData,
@@ -135,85 +140,76 @@ const UserModal = ({ userInfo, user }) => {
           resetEverything();
           setEdit(false);
         } else {
-          toast.error("There was an error updating the user. Please try again.");
+          toast.error("Error updating user. Please try again.");
         }
       }
     } catch (error) {
       console.error("Error saving changes:", error);
       toast.error("Error saving changes. Please try again.");
+    } finally {
+      setLoading({ loading: "", state: false });
     }
   };
   
-  
-
-  // This function compresses and uploads an image to Imgbb
-const imageSizeFixingAndHosting = async (imgfile) => {
-  try {
-    // Check if the input is a valid Blob or File instance
-    if (!(imgfile instanceof Blob || imgfile instanceof File)) {
-      console.error("The file is not an instance of Blob or File:", imgfile);
-      return null; // Early return if the file is invalid
-    }
-
-    // Define compression options to target 30KB
-    const options = {
-      maxSizeMB: 0.03, // 30KB max size
-      maxWidthOrHeight: 800, // Optional: Resize the image to reduce size, adjust based on your needs
-      useWebWorker: true, // For faster compression
-    };
-
-    // Compress the image
-    const compressedFile = await imageCompression(imgfile, options);
-    console.log("Compressed file:", compressedFile);
-
-    // Check the compressed file size
-    const compressedSizeInKB = compressedFile.size / 1024;
-    console.log(`Compressed file size: ${compressedSizeInKB.toFixed(2)} KB`);
-
-    // Ensure file size is less than or equal to 30KB
-    if (compressedSizeInKB > 30) {
-      console.error(
-        "Compressed file exceeds 30KB, please try a smaller image."
-      );
-      return null; // Return or handle the error accordingly
-    }
-
-    // Prepare the image for uploading (convert to base64)
-    const base64Image = await imageCompression.getDataUrlFromFile(
-      compressedFile
-    );
-
-    // Create FormData for the upload
-    const formData = new FormData();
-    formData.append("image", base64Image.split(",")[1]); // Removing the 'data:image/jpeg;base64,' part
-
-    // Upload the image to Imgbb
-    const response = await fetch(
-      `https://api.imgbb.com/1/upload?key=${
-        import.meta.env.VITE_IMGBB_apiKey
-      }`,
-      {
-        method: "POST",
-        body: formData,
+  // This function compresses and uploads an image
+  const imageSizeFixingAndHosting = async (imgfile) => {
+    try {
+      if (!(imgfile instanceof Blob || imgfile instanceof File)) {
+        console.error("The file is not an instance of Blob or File:", imgfile);
+        return null;
       }
-    );
-
-    const result = await response.json();
-
-    // Check if the upload was successful
-    if (result.success) {
-      console.log("Image uploaded successfully:", result.data.url);
-      setImageState((prevState) => ({ ...prevState, hostedUrl: result.data.url }));
-      return result.data.url; // Return the hosted image URL
-    } else {
-      console.error("Image upload failed:", result);
+  
+      let compressedFile = imgfile;
+      let compressedSizeInKB;
+      const targetSizeKB = 30; // Target size 30KB
+      let quality = 0.9;
+      let widthOrHeight = 800;
+  
+      do {
+        const options = {
+          maxSizeMB: targetSizeKB / 1024,
+          maxWidthOrHeight: widthOrHeight,
+          useWebWorker: true,
+          initialQuality: quality,
+        };
+  
+        compressedFile = await imageCompression(imgfile, options);
+        compressedSizeInKB = compressedFile.size / 1024;
+  
+        quality -= 0.1;
+        widthOrHeight -= 100;
+  
+      } while (compressedSizeInKB > targetSizeKB && quality > 0.2 && widthOrHeight > 300);
+  
+      if (compressedSizeInKB > targetSizeKB) {
+        toast.error("Unable to compress the file to 30KB, try a smaller image.");
+        return null;
+      }
+  
+      const base64Image = await imageCompression.getDataUrlFromFile(compressedFile);
+      const formData = new FormData();
+      formData.append("image", base64Image.split(",")[1]);
+  
+      const response = await fetch(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_apiKey}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+  
+      const result = await response.json();
+      if (result.success) {
+        return result.data.url;
+      } else {
+        console.error("Image upload failed:", result);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error during image compression or upload:", error);
       return null;
     }
-  } catch (error) {
-    console.error("Error during image compression or upload:", error);
-    return null;
-  }
-};
+  };
 
 //reset function
 const resetEverything = () => {
