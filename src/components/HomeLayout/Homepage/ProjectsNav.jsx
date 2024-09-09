@@ -2,6 +2,7 @@ import { BiDownArrow } from "react-icons/bi";
 import { GoPlus } from "react-icons/go";
 import { TiGroup } from "react-icons/ti";
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ProjectsNav = () => {
   const [open, setIsOpen] = useState(false);
@@ -49,13 +50,13 @@ const ProjectsNav = () => {
             <div className="h-7 w-7 bg-white flex items-center justify-center rounded-full">
               <GoPlus />
             </div>
-            <span className="ps-1.5 pe-3">Create</span>
+            <Link to={'/create-project'} className="ps-1.5 pe-3">Create</Link>
           </div>
           <div className="dropdown-join flex items-center bg-gray-200 rounded-full p-1 cursor-pointer hover:bg-gray-300 duration-500">
             <div className="h-7 w-7 bg-white flex items-center justify-center rounded-full">
               <TiGroup />
             </div>
-            <span className="ps-1.5 pe-3">Join</span>
+            <Link to={'/join-project'} className="ps-1.5 pe-3">Join</Link>
           </div>
         </div>
       )}
