@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { TiWarning } from "react-icons/ti";
+import { useCreateProjectMutation } from "../../redux/api/projectsApi";
+import toast from "react-hot-toast";
+import { useGetUserQuery } from "../../redux/api/userApi";
+import { useSelector } from "react-redux";
 
 const CreateProject = () => {
   const [info, setInfo] = useState({
@@ -15,10 +19,10 @@ const CreateProject = () => {
       if (info.password.length < 8) {
         setError((prevState) => ({
           ...prevState,
-          password: "Password must be at least 8 characters.", 
+          password: "Password must be at least 8 characters.",
         }));
       } else {
-        setError((prevState) => ({...prevState, password: ""}))
+        setError((prevState) => ({ ...prevState, password: "" }));
       }
     }
     if (info.confirmPassword.length > 0) {
@@ -28,12 +32,43 @@ const CreateProject = () => {
           confirmPassword: "Password didn't matched.",
         }));
       } else {
-        setError((prevState) => ({...prevState, confirmPassword: ""}))
+        setError((prevState) => ({ ...prevState, confirmPassword: "" }));
       }
     }
   }, [info.password, info.confirmPassword]);
-  const handleSubmit = (e) => {
+  const [
+    createProject,
+    { data: createProjectData, error: createProjectError },
+  ] = useCreateProjectMutation();
+  const userInfo = useSelector((state) => state.userSlice);
+
+  const { data } = useGetUserQuery(userInfo?.email);
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    //mock data replace this with current user data
+    const projectObj = {
+      projectName: info.name,
+      projectPassword: info.password,
+      companyName: info.companyName,
+      companyWebsite: info.companyWebsite,
+      projectCreatorId: data?._id,
+      members: [
+        {
+          userId: data?._id,
+          role: "admin",
+        },
+      ],
+    };
+    try {
+      await createProject(projectObj).unwrap();
+      if (createProjectData) {
+        toast.success(createProjectData.message);
+      } else {
+        toast.error(createProjectError.message);
+      }
+    } catch (err) {
+      toast.error("there was an error creating the project :" + err);
+    }
     // project uid (step)
     // project name
     // project password
@@ -115,11 +150,15 @@ const CreateProject = () => {
             name="password"
             placeholder="Enter your project password"
           />
-          
-            <span className={`text-xs text-red-500 text-end flex items-center gap-0.5 mb-1 justify-end ${error.password ? "opacity-100" : "opacity-0"}`}>
-              <TiWarning />
-              {error.password}
-            </span>
+
+          <span
+            className={`text-xs text-red-500 text-end flex items-center gap-0.5 mb-1 justify-end ${
+              error.password ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <TiWarning />
+            {error.password}
+          </span>
         </div>
         <div className="flex flex-col">
           <label className="text-sm text-gray-500" htmlFor="confirmPassword">
@@ -135,16 +174,32 @@ const CreateProject = () => {
             name="confirmPassword"
             placeholder="Confirm your password"
           />
-          <span className={`text-xs text-red-500 opacity text-end flex items-center gap-0.5 justify-end mb-1 ${error.confirmPassword ? "opacity-100" : "opacity-0"}`}>
+          <span
+            className={`text-xs text-red-500 opacity text-end flex items-center gap-0.5 justify-end mb-1 ${
+              error.confirmPassword ? "opacity-100" : "opacity-0"
+            }`}
+          >
             <TiWarning />
-           {error.confirmPassword}
+            {error.confirmPassword}
           </span>
         </div>
 
         <button
-          className={`mt-4 text-center rounded-[5px] px-2 py-1.5 ${(!info.password || !info.confirmPassword || error.password || error.confirmPassword) ? "bg-[#414141] cursor-not-allowed" : "bg-[#222222]"}  hover:bg-[#2e2e2e] duration-300  w-full text-white`}
+          className={`mt-4 text-center rounded-[5px] px-2 py-1.5 ${
+            !info.password ||
+            !info.confirmPassword ||
+            error.password ||
+            error.confirmPassword
+              ? "bg-[#414141] cursor-not-allowed"
+              : "bg-[#222222]"
+          }  hover:bg-[#2e2e2e] duration-300  w-full text-white`}
           type="submit"
-          disabled={!info.password || !info.confirmPassword || error.password || error.confirmPassword }
+          disabled={
+            !info.password ||
+            !info.confirmPassword ||
+            error.password ||
+            error.confirmPassword
+          }
         >
           Join
         </button>
