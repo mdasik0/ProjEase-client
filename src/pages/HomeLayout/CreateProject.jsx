@@ -15,7 +15,7 @@ const CreateProject = () => {
       if (info.password.length < 8) {
         setError((prevState) => ({
           ...prevState,
-          password: "Password must be at least 8 characters.",
+          password: "Password must be at least 8 characters.", 
         }));
       } else {
         setError((prevState) => ({...prevState, password: ""}))
@@ -34,6 +34,17 @@ const CreateProject = () => {
   }, [info.password, info.confirmPassword]);
   const handleSubmit = (e) => {
     e.preventDefault();
+    // project uid (step)
+    // project name
+    // project password
+    // member capacity (choice)
+    // personal/company use (choice)
+    // company name
+    // company website
+    // task id (passive)
+    // chat id (passive)
+    // project creator: "" (passive)
+    // members:[{_id:01, position:admin},] (passive)
 
     console.log(info);
   };
