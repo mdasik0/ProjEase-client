@@ -14,6 +14,13 @@ const CreateProject = () => {
     companyWebsite: "",
   });
   const [error, setError] = useState({ password: "", confirmPassword: "" });
+  const [
+    createProject,
+    { data: createProjectData, error: createProjectError },
+  ] = useCreateProjectMutation();
+  const userInfo = useSelector((state) => state.userSlice);
+  const { data } = useGetUserQuery(userInfo?.email);
+
   useEffect(() => {
     if (info.password.length > 0) {
       if (info.password.length < 8) {
@@ -36,13 +43,6 @@ const CreateProject = () => {
       }
     }
   }, [info.password, info.confirmPassword]);
-  const [
-    createProject,
-    { data: createProjectData, error: createProjectError },
-  ] = useCreateProjectMutation();
-  const userInfo = useSelector((state) => state.userSlice);
-
-  const { data } = useGetUserQuery(userInfo?.email);
   const handleSubmit = async (e) => {
     e.preventDefault();
     //mock data replace this with current user data
@@ -59,12 +59,14 @@ const CreateProject = () => {
         },
       ],
     };
+    console.log(projectObj);
     try {
-      await createProject(projectObj).unwrap();
+      await createProject(projectObj);
       if (createProjectData) {
         toast.success(createProjectData.message);
       } else {
-        toast.error(createProjectError.message);
+        console.log(createProjectError)
+        toast.error(createProjectError);
       }
     } catch (err) {
       toast.error("there was an error creating the project :" + err);

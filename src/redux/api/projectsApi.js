@@ -5,10 +5,10 @@ const projectsApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl:'http://localhost:5000'}),
     endpoints: (builder) => ({
         createProject: builder.mutation({
-            query: (body) => ({
-                url: 'createProject',
+            query: (projectObj) => ({
+                url: '/createProject',
                 method: 'POST',
-                body:body,
+                body:projectObj,
             })
         }),
         getProject : builder.query({
