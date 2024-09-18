@@ -1,5 +1,5 @@
-import miniLogo from "/logo/projease_logo-mini-white.svg";
-import miniLogoblack from "/logo/projease_logo-mini-black.svg";
+import miniLogo from "/logo/MINI_LOGO_FOR_BLACK_BG.svg";
+import miniLogoblack from "/logo/MINI_LOGO_FOR_WHITE_BG.svg";
 import { FiArrowUpRight } from "react-icons/fi";
 import { FaArrowRight } from "react-icons/fa";
 import { IoMdArrowForward } from "react-icons/io";
@@ -10,7 +10,7 @@ const Header = () => {
       {/* header text */}
       <div className="flex flex-col justify-center items-center ">
         {/* TODO: add small pngs and decorate the header section */}
-        <div className="text-center mt-10">
+        <div className="text-center mt-10 poppins">
           <h1 className="text-6xl mb-10 font-semibold">
             Centralize and
             <span className="bg-gray-200  rounded-3xl px-3 pb-3">Manage</span>

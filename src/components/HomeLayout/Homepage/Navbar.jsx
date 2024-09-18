@@ -1,6 +1,6 @@
 import { GoHome } from "react-icons/go";
 import { FaExclamation } from "react-icons/fa";
-import logo from "/logo/svg-projease-logo.svg";
+import logo from "/logo/logo-white.png";
 import ProjectsNav from "./ProjectsNav";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";

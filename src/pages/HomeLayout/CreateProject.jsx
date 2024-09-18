@@ -83,10 +83,16 @@ const CreateProject = () => {
     // project creator: "" (passive)
     // members:[{_id:01, position:admin},] (passive)
 
+    // edit this page to create a better ui
+    // first create a modal like div that will float over the screen 
+    // then within that make some slider like steps to register a project 
+    // finally add some additional info box 
+
     console.log(info);
   };
   return (
     <div className="w-screen h-screen flex justify-center items-center">
+      {/* create a modal with very big screen here also responsive right away is a mustP */}
       <form
         className="border border-[#1d1d1d] shadow-lg shadow-[#c4c3c3] p-8 rounded-[10px] w-[350px]"
         onSubmit={handleSubmit}

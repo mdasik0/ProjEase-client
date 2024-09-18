@@ -1,5 +1,6 @@
 /* font */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,6 +17,10 @@ html {
 }
 .montserrat {
   font-family: "Montserrat", sans-serif;
+  font-style: normal;
+}
+.roboto {
+  font-family: "Roboto", sans-serif;
   font-style: normal;
 }
 
@@ -171,3 +176,54 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.modal-black-backdrop {
+  background: rgba(0, 0, 0, 0.36);
+}
+
+.add-modal-black-backdrop {
+  opacity: 0%;
+  transition: all 1s ease-in-out;
+  animation: 0.5s ease-in-out slowBackdrop forwards;
+}
+
+@keyframes slowBackdrop {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.remove-modal-black-backdrop {
+  opacity: 100%;
+  transition: all 1s ease-in-out;
+  animation: 0.5s ease-in-out slowBackdropDisappar forwards;
+
+}
+
+@keyframes slowBackdropDisappar {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+.animate-modal-box {
+  transform: translateY(-400px) ;
+  transition: all 1s ease-out;
+  animation: 0.3s ease-out slideFromTop forwards;
+}
+
+@keyframes slideFromTop {
+  0% {
+    transform: translateY(-100px) scale(50%);
+  }
+  100% {
+    transform: translateY(0px) scale(100%);
+  }
+}
+
