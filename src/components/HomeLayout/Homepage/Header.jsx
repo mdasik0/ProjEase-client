@@ -9,6 +9,7 @@ const Header = () => {
     <section>
       {/* header text */}
       <div className="flex flex-col justify-center items-center ">
+
         {/* TODO: add small pngs and decorate the header section */}
         <div className="text-center mt-10 poppins">
           <h1 className="text-6xl mb-10 font-semibold">
@@ -20,7 +21,7 @@ const Header = () => {
           <h1 className="text-6xl font-semibold">in One Environment</h1>
         </div>
         {/* subtitle section */}
-        <div className="flex w-full justify-between items-center px-[80px] ">
+        <div className="flex w-full justify-between items-center px-[80px] font-sans">
           <p className="w-[270px]">
             Manage All Your Applications in One Centralized Platform. Eliminate
             the Need for Multiple Tools and Interfaces

@@ -24,7 +24,7 @@ const Navbar = () => {
           <span className="ps-1.5 pe-3">Home</span>
         </li>{" "}
         <li className="flex items-center bg-gray-200 rounded-full p-1 cursor-pointer hover:bg-gray-300 duration-500">
-          <div className="h-7 w-7 bg-white flex items-center justify-center rounded-full ">
+          <div className="h-7 w-7 bg-white flex items-center justify-center rounded-full">
             <FaExclamation />{" "}
           </div>
           <span className="ps-1.5 pe-3">About</span>
