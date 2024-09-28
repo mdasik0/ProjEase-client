@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import darkModeLogo from "/logo/logo-black.png"
-import lightModeLogo from "../../../public/logo/MINI_LOGO_FOR_WHITE_BG.svg"
+import darkModeLogo from "../../../public/logo/mini-logo/MINI_LOGO_FOR_BLACK_BG.svg"
+import lightModeLogo from "../../../public/logo/mini-logo/MINI_LOGO_FOR_WHITE_BG.svg"
 const Logo = () => {
     const {themes} = useSelector((state) => state.otherSlice)
 

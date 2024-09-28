@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { IoAtSharp } from "react-icons/io5";
-import avatarImg from "../../../public/Join_Project/join-project-avatar.png";
 import { IoMdUnlock } from "react-icons/io";
 
 const JoinProject = () => {
