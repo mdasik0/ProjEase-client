@@ -26,7 +26,7 @@ const App = ({ children }) => {
   }, [dispatch]);
 
   return (
-    <div className="h-screen w-screen">
+    <div className="poppins w-screen h-screen">
       <Toaster position="top-center" reverseOrder={false} />
       {children}
     </div>

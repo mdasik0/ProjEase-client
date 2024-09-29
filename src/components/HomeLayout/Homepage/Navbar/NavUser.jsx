@@ -37,7 +37,7 @@ const NavUser = ({ user }) => {
       {user ? (
         <div
           onClick={() => setDropdown(!dropdown)}
-          className="border border-gray-300 p-2 pe-3 rounded-xl bg-gray-100 hover:bg-gray-200 duration-300 active:scale-95 select-none flex gap-2 poppins cursor-pointer"
+          className="border border-gray-300 p-2 pe-3 rounded-xl bg-gray-100 hover:bg-gray-200 duration-300 active:scale-95 select-none flex gap-2  cursor-pointer"
         >
           <div className="avatar online">
             <div className="w-10 h-10 object-cover rounded-full">

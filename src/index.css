@@ -228,3 +228,68 @@ input[type="number"] {
   }
 }
 
+:root {
+  --bar-width: 30px;
+  --bar-height: 3px;
+  --bar-gap: 6px;
+  --forground: #333;
+  --background: white;
+  --hamburger-margin: 30px;
+  --animation-timing: 200ms ease-out;
+  --rotate-animation-timing: 300ms ease-in-out;
+  --hamburger-height: calc(var(--bar-height) * 3 + var(--bar-gap) * 2);
+
+
+}
+
+.hamburger-menu {
+  /* hamburger height x square root of 2 = hamburger-bar diagonal width */
+  --x-width:calc(var(--hamburger-height) * 1.41421356237);
+  display: flex;
+  flex-direction: column;
+  gap: var(--bar-gap);
+  width: max-content;
+  position: absolute;
+  top: var(--hamburger-margin);
+  right: var(--hamburger-margin);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.hamburger-menu::before,
+.hamburger-menu::after,
+.hamburger-menu input {
+  content: "";
+  width: var(--bar-width);
+  height: var(--bar-height);
+  background-color: var(--forground);
+  border-radius: 100vw;
+  transform-origin: left center;
+
+  transition: opacity var(--animation-timing), width var(--animation-timing), rotate var(--rotate-animation-timing);
+}
+
+.hamburger-menu input {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  pointer-events: none;
+}
+
+.hamburger-menu:has(input:checked)::before {
+  rotate: 45deg;
+  width: var(--x-width);
+  translate: 0 calc(var(--bar-height) / -2);
+}
+
+.hamburger-menu:has(input:checked)::after {
+  rotate: -45deg;
+  width: var(--x-width);
+  translate: 0 calc(var(--bar-height) / 2);
+}
+
+.hamburger-menu input:checked {
+  width: 0;
+  opacity: 0;
+}
