@@ -69,6 +69,15 @@ const MobileNav = () => {
       <label className="hamburger-menu">
         <input type="checkbox" />
       </label>
+      <aside>
+        <ul className="sidebar here">
+          <li>Home</li>
+          <li>Home</li>
+          <li>Home</li>
+          <li>Home</li>
+          <li>Home</li>
+        </ul>
+      </aside>
     </div>
    </div>
   );
