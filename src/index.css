@@ -266,7 +266,7 @@ input[type="number"] {
   border-radius: 100vw;
   transform-origin: left center;
 
-  transition: opacity var(--animation-timing), width var(--animation-timing), rotate var(--rotate-animation-timing);
+  transition: opacity var(--animation-timing), width var(--animation-timing), rotate var(--rotate-animation-timing), background-color var(--animation-timing);
 }
 
 .hamburger-menu input {
@@ -275,21 +275,37 @@ input[type="number"] {
   padding: 0;
   outline: none;
   pointer-events: none;
+
 }
 
 .hamburger-menu:has(input:checked)::before {
   rotate: 45deg;
   width: var(--x-width);
   translate: 0 calc(var(--bar-height) / -2);
+  background-color: white;
+  
 }
 
 .hamburger-menu:has(input:checked)::after {
   rotate: -45deg;
   width: var(--x-width);
   translate: 0 calc(var(--bar-height) / 2);
+  background-color: white;
 }
 
 .hamburger-menu input:checked {
   width: 0;
   opacity: 0;
 }
+
+.sidebar {
+  transition: translate var(--rotate-animation-timing);
+  padding: 0.5rem 2rem;
+  translate: 100% ;
+  padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 1rem);
+  background: var(--forground);
+  color: var(--background);
+  right:0;
+}
+
+

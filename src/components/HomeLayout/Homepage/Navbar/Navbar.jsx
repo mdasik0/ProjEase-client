@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import fullLogo from "/logo/Full-logo/Full-logo-Projease.png";
 import miniLogo from "/logo/mini-logo/MINI_LOGO_FOR_WHITE_BG.png";
 import NavUser from "./NavUser";
+import { useEffect } from "react";
 const Navbar = () => {
   return (
     <>
@@ -60,6 +61,17 @@ const DesktopAndTabNav = () => {
 };
 
 const MobileNav = () => {
+  useEffect(() => {
+    document.querySelector('.hamburger-menu input').addEventListener('change', function() {
+      const sidebar = document.querySelector('.sidebar');
+      if (this.checked) {
+        sidebar.style.translate = '0';
+      } else {
+        sidebar.style.translate = '100%';
+      }
+    });
+    
+  },[])
   return (
    <div className="flex justify-between items-center mx-6 mt-5">
     <div>
@@ -69,14 +81,16 @@ const MobileNav = () => {
       <label className="hamburger-menu">
         <input type="checkbox" />
       </label>
-      <aside>
-        <ul className="sidebar here">
-          <li>Home</li>
-          <li>Home</li>
-          <li>Home</li>
-          <li>Home</li>
-          <li>Home</li>
-        </ul>
+      
+    </div>
+    <div className="backdrop bg-[#00000071] w-screen h-screen absolute top-0 right-0 flex justify-end">
+    <aside className="sidebar w-1/3">
+       <nav className="flex flex-col gap-4 ">
+        <Link to={'/'}>Home</Link>
+        <Link to={'/'}>About</Link>
+        <Link to={'/'}>Project</Link>
+        <Link to={'/'}>User dashboard</Link>
+       </nav>
       </aside>
     </div>
    </div>
