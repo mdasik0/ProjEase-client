@@ -1,6 +1,6 @@
 /* font */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -9,7 +9,7 @@
 body,
 html {
   overflow-x: hidden;
-  font-family:  sans-serif;
+  font-family: sans-serif;
 }
 
 .poppins {
@@ -201,7 +201,6 @@ input[type="number"] {
   opacity: 100%;
   transition: all 1s ease-in-out;
   animation: 0.5s ease-in-out slowBackdropDisappar forwards;
-
 }
 
 @keyframes slowBackdropDisappar {
@@ -214,7 +213,7 @@ input[type="number"] {
 }
 
 .animate-modal-box {
-  transform: translateY(-400px) ;
+  transform: translateY(-400px);
   transition: all 1s ease-out;
   animation: 0.3s ease-out slideFromTop forwards;
 }
@@ -238,13 +237,11 @@ input[type="number"] {
   --animation-timing: 200ms ease-out;
   --rotate-animation-timing: 300ms ease-in-out;
   --hamburger-height: calc(var(--bar-height) * 3 + var(--bar-gap) * 2);
-
-
 }
 
 .hamburger-menu {
   /* hamburger height x square root of 2 = hamburger-bar diagonal width */
-  --x-width:calc(var(--hamburger-height) * 1.41421356237);
+  --x-width: calc(var(--hamburger-height) * 1.41421356237);
   display: flex;
   flex-direction: column;
   gap: var(--bar-gap);
@@ -252,7 +249,7 @@ input[type="number"] {
   position: absolute;
   top: var(--hamburger-margin);
   right: var(--hamburger-margin);
-  z-index: 2;
+  z-index: 10;
   cursor: pointer;
 }
 
@@ -265,8 +262,9 @@ input[type="number"] {
   background-color: var(--forground);
   border-radius: 100vw;
   transform-origin: left center;
-
-  transition: opacity var(--animation-timing), width var(--animation-timing), rotate var(--rotate-animation-timing);
+  transition: opacity var(--animation-timing), width var(--animation-timing),
+    rotate var(--rotate-animation-timing),
+    background-color var(--animation-timing);
 }
 
 .hamburger-menu input {
@@ -281,15 +279,50 @@ input[type="number"] {
   rotate: 45deg;
   width: var(--x-width);
   translate: 0 calc(var(--bar-height) / -2);
+  background-color: var(--background);
 }
 
 .hamburger-menu:has(input:checked)::after {
   rotate: -45deg;
   width: var(--x-width);
   translate: 0 calc(var(--bar-height) / 2);
+  background-color: var(--background);
 }
 
 .hamburger-menu input:checked {
   width: 0;
   opacity: 0;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 3rem 2rem;
+  padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 1rem);
+  min-height: 100vh;
+  width: 60%;
+  background: var(--forground);
+  color: var(--background);
+  translate: 100%;
+
+  transition: translate var(--rotate-animation-timing);
+}
+
+.hamburger-menu:has(input:checked) + .sidebar {
+  translate: 0;
+}
+
+.sidebar-backdrop {
+  background: #0000006c;
+  backdrop-filter: blur(5px);
+  height: 100vh;
+  width: 100vw;
+  position:absolute;
+  top: 0;
+  left: 0;
 }

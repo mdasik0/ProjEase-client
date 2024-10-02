@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import fullLogo from "/logo/Full-logo/Full-logo-Projease.png";
 import miniLogo from "/logo/mini-logo/MINI_LOGO_FOR_WHITE_BG.png";
 import NavUser from "./NavUser";
+import { useEffect } from "react";
 const Navbar = () => {
   return (
     <>
@@ -60,24 +61,42 @@ const DesktopAndTabNav = () => {
 };
 
 const MobileNav = () => {
+  useEffect(() => {
+    const inputElement = document.querySelector('.hamburger-menu input');
+    const backdrop = document.querySelector('.sidebar-backdrop');
+
+    const handleMenuChange = function() {
+      if (this.checked) {
+        backdrop.classList.remove("hidden")
+      } else {
+        backdrop.classList.add("hidden")
+      }
+    };
+
+    inputElement.addEventListener('change', handleMenuChange);
+
+    return () => {
+      inputElement.removeEventListener('change', handleMenuChange);
+    };
+  }, []);
   return (
-   <div className="flex justify-between items-center mx-6 mt-5">
+   <div className="flex md:hidden justify-between items-center mx-4 mt-4">
     <div>
-      <img className="w-14 h-14" src={miniLogo} alt="mini logo of projease" />
+      <img className="w-12 h-12" src={miniLogo} alt="mini logo of projease" />
     </div>
     <div>
       <label className="hamburger-menu">
         <input type="checkbox" />
       </label>
-      <aside>
-        <ul className="sidebar here">
-          <li>Home</li>
-          <li>Home</li>
-          <li>Home</li>
-          <li>Home</li>
-          <li>Home</li>
-        </ul>
+      <aside className="sidebar">
+          <Link to={'/'}>Home</Link>
+          <Link to={'/'}>About</Link>
+          <Link to={'/'}>Project</Link>
+          <Link to={'/'}>User Dashboard</Link>
       </aside>
+    </div>
+    <div className="sidebar-backdrop">
+
     </div>
    </div>
   );
