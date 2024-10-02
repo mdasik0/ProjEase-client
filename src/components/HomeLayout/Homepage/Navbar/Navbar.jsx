@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import fullLogo from "/logo/Full-logo/Full-logo-Projease.png";
+import fullLogo from "/logo/Full-logo/logo-white-ov2.png";
 import miniLogo from "/logo/mini-logo/MINI_LOGO_FOR_WHITE_BG.png";
 import NavUser from "./NavUser";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ const DesktopAndTabNav = () => {
   
   return (
     <nav
-    className={`max-w-[92vw] mx-auto hidden md:flex items-center justify-between ${
+    className={`max-w-[90vw] mx-auto hidden md:flex items-center justify-between ${
       user ? "my-4" : "my-8"
     }`}
     >
