@@ -24,7 +24,7 @@ const DesktopAndTabNav = () => {
     }`}
     >
       <div>
-        <img className="h-8" src={fullLogo} alt="projease website logo" />
+        <img className="h-10" src={fullLogo} alt="projease website logo" />
       </div>
       <div className="flex items-center">
         <ul className="flex items-center gap-6 pr-6">
