@@ -95,7 +95,7 @@ const MobileNav = () => {
           <Link to={'/'}>User Dashboard</Link>
       </aside>
     </div>
-    <div className="sidebar-backdrop">
+    <div className="sidebar-backdrop hidden">
 
     </div>
    </div>
