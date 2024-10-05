@@ -12,6 +12,7 @@ html {
   font-family: sans-serif;
 }
 
+/* all fonts here */
 .poppins {
   font-family: "Poppins", sans-serif;
   font-style: normal;
@@ -25,6 +26,7 @@ html {
   font-style: normal;
 }
 
+/* nav Link active status color change here */
 nav .active {
   @apply text-red-500;
 }
@@ -38,7 +40,7 @@ nav .active {
   width: 100%;
 }
 
-/* scrollbar */
+/*custom scrollbar here */
 
 .scrollbar::-webkit-scrollbar {
   width: 8px;
@@ -75,57 +77,6 @@ nav .active {
 
 .scrollbar-sidebar::-webkit-scrollbar-thumb:hover {
   background: lightgray;
-}
-
-/* navbar dropdown animation */
-
-.dropdown-container {
-  background: transparent;
-  animation: fadeIn 0.5s ease-in forwards;
-}
-
-@keyframes fadeIn {
-  0% {
-    background: transparent;
-  }
-  100% {
-    background: #6b7280;
-  }
-}
-
-.dropdown-create {
-  transform: translateY(-44px);
-  opacity: 0%;
-  animation: 0.3s positionDrop 0.1s ease-out forwards;
-}
-
-@keyframes positionDrop {
-  0% {
-    transform: translateY(-44px);
-    opacity: 0%;
-  }
-  100% {
-    transform: translateY(0px);
-    opacity: 100%;
-  }
-}
-
-.dropdown-join {
-  transform: translateY(-44px);
-  opacity: 0%;
-  /* animation-delay: 2s; */
-  animation: 0.3s positionDropTwo 0.4s ease-out forwards;
-}
-
-@keyframes positionDropTwo {
-  0% {
-    transform: translateY(-44px);
-    opacity: 0%;
-  }
-  100% {
-    transform: translateY(0px);
-    opacity: 100%;
-  }
 }
 
 /* navbar dropdown ends here */
@@ -227,6 +178,8 @@ input[type="number"] {
   }
 }
 
+/* mobile sidebar code here */
+
 :root {
   --bar-width: 30px;
   --bar-height: 3px;
@@ -326,3 +279,6 @@ input[type="number"] {
   top: 0;
   left: 0;
 }
+
+/* company slider code */
+
