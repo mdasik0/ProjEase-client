@@ -7,6 +7,7 @@ import MobileNavUser from "./MobileNavUser";
 import { GoFileDirectory, GoHome } from "react-icons/go";
 import { LuUserCircle } from "react-icons/lu";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
+import { MdOutlineLogout } from "react-icons/md";
 const Navbar = () => {
   return (
     <>
@@ -20,12 +21,12 @@ export default Navbar;
 
 const DesktopAndTabNav = () => {
   const user = true;
-  
+
   return (
     <nav
-    className={`max-w-[90vw] mx-auto hidden md:flex items-center justify-between ${
-      user ? "my-4" : "my-8"
-    }`}
+      className={`max-w-[90vw] mx-auto hidden md:flex items-center justify-between ${
+        user ? "my-4" : "my-8"
+      }`}
     >
       <div>
         <img className="h-10" src={fullLogo} alt="projease website logo" />
@@ -36,7 +37,7 @@ const DesktopAndTabNav = () => {
             <Link
               className="hover:bg-gray-300 bg-gray-100 border border-gray-300 px-4 py-1.5 duration-500 rounded-full"
               to={"/"}
-              >
+            >
               Home
             </Link>
           </li>
@@ -44,7 +45,7 @@ const DesktopAndTabNav = () => {
             <Link
               className="hover:bg-gray-300 bg-gray-100 border border-gray-300 px-4 py-1.5 duration-500 rounded-full"
               to={"/"}
-              >
+            >
               About
             </Link>
           </li>
@@ -52,7 +53,7 @@ const DesktopAndTabNav = () => {
             <Link
               className="hover:bg-gray-300 bg-gray-100 border border-gray-300 px-4 py-1.5 duration-500 rounded-full"
               to={"/"}
-              >
+            >
               Projects
             </Link>
           </li>
@@ -66,43 +67,74 @@ const DesktopAndTabNav = () => {
 
 const MobileNav = () => {
   useEffect(() => {
-    const inputElement = document.querySelector('.hamburger-menu input');
-    const backdrop = document.querySelector('.sidebar-backdrop');
+    const inputElement = document.querySelector(".hamburger-menu input");
+    const backdrop = document.querySelector(".sidebar-backdrop");
 
-    const handleMenuChange = function() {
+    const handleMenuChange = function () {
       if (this.checked) {
-        backdrop.classList.remove("hidden")
+        backdrop.classList.remove("hidden");
       } else {
-        backdrop.classList.add("hidden")
+        backdrop.classList.add("hidden");
       }
     };
 
-    inputElement.addEventListener('change', handleMenuChange);
+    inputElement.addEventListener("change", handleMenuChange);
 
     return () => {
-      inputElement.removeEventListener('change', handleMenuChange);
+      inputElement.removeEventListener("change", handleMenuChange);
     };
   }, []);
   return (
-   <div className="flex md:hidden justify-between items-center mx-4 mt-4">
-    <div>
-      <img className="w-12 h-12" src={miniLogo} alt="mini logo of projease" />
+    <div className="flex md:hidden justify-between items-center mx-4 mt-4">
+      <div>
+        <img className="w-12 h-12" src={miniLogo} alt="mini logo of projease" />
+      </div>
+      <div>
+        <label className="hamburger-menu">
+          <input type="checkbox" />
+        </label>
+        <aside className="sidebar">
+          <div>
+            <MobileNavUser />
+            <Link
+              className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+              to={"/"}
+            >
+              <GoHome className="text-lg" />
+              Home
+            </Link>
+            <Link
+              className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+              to={"/"}
+            >
+              <TbArrowRoundaboutRight />
+              About
+            </Link>
+            <Link
+              className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+              to={"/"}
+            >
+              <GoFileDirectory />
+              Project
+            </Link>
+            <Link
+              className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+              to={"/"}
+            >
+              <LuUserCircle className="text-lg" />
+              User Dashboard
+            </Link>
+          </div>
+          <button
+            className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-red-500 hover:bg-red-500 flex gap-1.5 items-center"
+            to={"/"}
+          >
+            <MdOutlineLogout className="text-lg" />
+            Log out
+          </button>
+        </aside>
+      </div>
+      <div className="sidebar-backdrop hidden"></div>
     </div>
-    <div>
-      <label className="hamburger-menu">
-        <input type="checkbox" />
-      </label>  
-      <aside className="sidebar">
-          <MobileNavUser />
-          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><GoHome className="text-lg" />Home</Link>
-          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><TbArrowRoundaboutRight />About</Link>
-          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><GoFileDirectory />Project</Link>
-          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><LuUserCircle className="text-lg" />User Dashboard</Link>
-      </aside>
-    </div>
-    <div className="sidebar-backdrop hidden">
-
-    </div>
-   </div>
   );
 };
