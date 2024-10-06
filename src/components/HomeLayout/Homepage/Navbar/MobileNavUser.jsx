@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FaMoon } from "react-icons/fa";
+import { LuUserCircle } from "react-icons/lu";
 import { MdDoNotDisturbOn } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const MobileNavUser = () => {
   const [statusOn, setStatusOn] = useState(false);
@@ -54,6 +56,13 @@ const MobileNavUser = () => {
           </ul>
         </div>
       </div>
+      <Link
+        className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+        to={"/"}
+      >
+        <LuUserCircle className="text-lg" />
+        User Dashboard
+      </Link>
     </>
   );
 };

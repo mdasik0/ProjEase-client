@@ -7,21 +7,20 @@ import MobileNavUser from "./MobileNavUser";
 import { GoFileDirectory, GoHome } from "react-icons/go";
 import { LuUserCircle } from "react-icons/lu";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
-import { MdOutlineLogout } from "react-icons/md";
+import { MdLogin, MdOutlineLogout } from "react-icons/md";
 const Navbar = () => {
+  const user = true;
   return (
     <>
-      <DesktopAndTabNav />
-      <MobileNav />
+      <DesktopAndTabNav user={user} />
+      <MobileNav user={user} />
     </>
   );
 };
 
 export default Navbar;
 
-const DesktopAndTabNav = () => {
-  const user = true;
-
+const DesktopAndTabNav = ({ user }) => {
   return (
     <nav
       className={`max-w-[90vw] mx-auto hidden md:flex items-center justify-between ${
@@ -65,7 +64,7 @@ const DesktopAndTabNav = () => {
   );
 };
 
-const MobileNav = () => {
+const MobileNav = ({ user }) => {
   useEffect(() => {
     const inputElement = document.querySelector(".hamburger-menu input");
     const backdrop = document.querySelector(".sidebar-backdrop");
@@ -94,8 +93,8 @@ const MobileNav = () => {
           <input type="checkbox" />
         </label>
         <aside className="sidebar">
-          <div>
-            <MobileNavUser />
+          <div className="flex flex-col gap-[10px]">
+            {user && <MobileNavUser />}
             <Link
               className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
               to={"/"}
@@ -117,21 +116,36 @@ const MobileNav = () => {
               <GoFileDirectory />
               Project
             </Link>
+            {!user && <>
             <Link
-              className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
-              to={"/"}
-            >
-              <LuUserCircle className="text-lg" />
-              User Dashboard
-            </Link>
+                className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+                to={"/"}
+              >
+                <MdLogin className="text-lg" />
+                Login
+              </Link>
+            <Link
+                className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+                to={"/"}
+              >
+                <LuUserCircle className="text-lg" />
+                Register
+              </Link>
+            </>}
           </div>
-          <button
-            className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-red-500 hover:bg-red-500 flex gap-1.5 items-center"
-            to={"/"}
-          >
-            <MdOutlineLogout className="text-lg" />
-            Log out
-          </button>
+              
+          {user && (
+            <>
+              <button
+                className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-red-500 hover:bg-red-500 flex gap-1.5 items-center"
+                to={"/"}
+              >
+                <MdOutlineLogout className="text-lg" />
+                Log out
+              </button>
+            </>)
+            
+          }
         </aside>
       </div>
       <div className="sidebar-backdrop hidden"></div>
