@@ -41,7 +41,10 @@ const NavUser = ({ user }) => {
         >
           <div className="avatar online">
             <div className="w-10 h-10 object-cover rounded-full">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User Avatar" />
+              <img
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                alt="User Avatar"
+              />
             </div>
           </div>
           <div className="flex flex-col items-start gap-0">
@@ -65,7 +68,9 @@ const NavUser = ({ user }) => {
       <div
         ref={dropdownRef}
         className={`border p-3 rounded-2xl absolute text-sm ${
-          dropdown ? "top-[80px] opacity-100 scale-100" : "top-[-100px] disable opacity-0 scale-50"
+          dropdown
+            ? "top-[80px] opacity-100 scale-100"
+            : "top-[-100px] disable opacity-0 scale-50"
         } duration-500 right-0 w-[190px] bg-gray-100 border-gray-300`}
       >
         <ul className="flex flex-col gap-1 relative">
@@ -73,10 +78,12 @@ const NavUser = ({ user }) => {
             onClick={() => setStatus(!status)}
             className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2"
           >
-            <p className="bg-green-500 w-3 h-3 rounded-full border border-white"></p> Change Status
+            <p className="bg-green-500 w-3 h-3 rounded-full border border-white"></p>{" "}
+            Change Status
           </li>
           <li className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2">
-            <LuUserSquare2 className="text-lg" />User Dashboard
+            <LuUserSquare2 className="text-lg" />
+            User Dashboard
           </li>
           <li className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2">
             <MdOutlineLogout className="text-lg" /> Log out
@@ -84,20 +91,25 @@ const NavUser = ({ user }) => {
           <ul
             ref={statusRef}
             className={`absolute top-[-13px] ${
-              status ? "right-[190px] opacity-100 scale-100" : "right-[-300px] opacity-0 scale-50"
+              status
+                ? "right-[190px] opacity-100 scale-100"
+                : "right-[-300px] opacity-0 scale-50"
             } bg-gray-100 border p-3 rounded-xl w-[170px] duration-500`}
           >
             <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
-              <p className="bg-green-500 w-4 h-4 rounded-full border border-white"></p> Online
+              <p className="bg-green-500 w-4 h-4 rounded-full border border-white"></p>{" "}
+              Online
             </li>
             <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
               <FaMoon className=" text-yellow-500" /> Idle
             </li>
             <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
-              <MdDoNotDisturbOn className="text-red-500 text-lg" /> Do not disturb
+              <MdDoNotDisturbOn className="text-red-500 text-lg" /> Do not
+              disturb
             </li>
             <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
-              <p className="w-4 h-4 border-4 border-gray-400 rounded-full"></p> Invisible
+              <p className="w-4 h-4 border-4 border-gray-400 rounded-full"></p>{" "}
+              Invisible
             </li>
           </ul>
         </ul>

@@ -184,7 +184,7 @@ input[type="number"] {
   --bar-width: 30px;
   --bar-height: 3px;
   --bar-gap: 6px;
-  --forground: #333;
+  --forground: #1a1a1a;
   --background: white;
   --hamburger-margin: 30px;
   --animation-timing: 200ms ease-out;
@@ -258,7 +258,7 @@ input[type="number"] {
   padding: 3rem 2rem;
   padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 1rem);
   min-height: 100vh;
-  width: 60%;
+  width: 55%;
   background: var(--forground);
   color: var(--background);
   translate: 100%;
@@ -331,4 +331,8 @@ input[type="number"] {
 
 .slider .item:hover {
   filter: grayscale(0);
+}
+
+.expanded-max-height {
+  max-height: 203px;
 }

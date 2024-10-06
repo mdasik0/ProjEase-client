@@ -3,6 +3,10 @@ import fullLogo from "/logo/Full-logo/logo-white-ov2.png";
 import miniLogo from "/logo/mini-logo/MINI_LOGO_FOR_WHITE_BG.png";
 import NavUser from "./NavUser";
 import { useEffect } from "react";
+import MobileNavUser from "./MobileNavUser";
+import { GoFileDirectory, GoHome } from "react-icons/go";
+import { LuUserCircle } from "react-icons/lu";
+import { TbArrowRoundaboutRight } from "react-icons/tb";
 const Navbar = () => {
   return (
     <>
@@ -87,12 +91,13 @@ const MobileNav = () => {
     <div>
       <label className="hamburger-menu">
         <input type="checkbox" />
-      </label>
+      </label>  
       <aside className="sidebar">
-          <Link to={'/'}>Home</Link>
-          <Link to={'/'}>About</Link>
-          <Link to={'/'}>Project</Link>
-          <Link to={'/'}>User Dashboard</Link>
+          <MobileNavUser />
+          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><GoHome className="text-lg" />Home</Link>
+          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><TbArrowRoundaboutRight />About</Link>
+          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><GoFileDirectory />Project</Link>
+          <Link className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center" to={'/'}><LuUserCircle className="text-lg" />User Dashboard</Link>
       </aside>
     </div>
     <div className="sidebar-backdrop hidden">

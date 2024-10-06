@@ -6,7 +6,7 @@
     import img6 from '/company-logos/logo-six-d2.png'
     const Companies = () => {
         return (
-            <section className='slider max-w-[90vw] mx-auto mb-10' style={{'--width':'100px','--height':'50px', '--quantity': '6'}}>
+            <section className='slider max-w-[90vw] mx-auto mt-6 mb-10' style={{'--width':'100px','--height':'50px', '--quantity': '6'}}>
                 <div className="list">
 
                 <div className="item" style={{'--position': '1'}}><img src={img1} alt="" /></div>
