@@ -31,7 +31,7 @@ const MobileNavUser = () => {
     Change Status
   </div>
   <div
-    className={`overflow-hidden transition-[max-height] duration-500 ${
+    className={`overflow-hidden transition-[max-height] duration-700 ${
       statusOn ? "expanded-max-height" : "max-h-0"
     }`}
   >
