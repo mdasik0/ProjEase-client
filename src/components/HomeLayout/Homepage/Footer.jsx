@@ -1,12 +1,15 @@
+
 const Footer = () => {
   return (
-    <footer className="bg-[#1a1a1a] text-white">
-      <div className="max-w-[90vw] mx-auto py-8">
-        <div>logo section</div>
-        <div>links</div>
-        <div>links</div>
+    <section className="footer w-full flex flex-col gap-0">
+      <div className="newsletter bg-[url('https://i.ibb.co.com/7S3gSbB/alejandro-escamilla-N7-Xod-Rrbz-S0-unsplash.jpg')] bg-no-repeat bg-cover bg-center py-10 w-full">
+      Subscribe to our weekly newsletter
+
       </div>
-    </footer>
+      <footer className="px-[5vw] py-10 bg-[#1a1a1a] w-full">
+t series 
+      </footer>
+    </section>
   );
 };
 

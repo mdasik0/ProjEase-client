@@ -10,17 +10,12 @@ export const listenForAuthChanges = (dispatch) => {
   const unsubscribe = onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in
-      const { displayName, email, photoURL } = user;
-      const method = localStorage.getItem('authMethod') || "auth-state-change";
+      const { email } = user;
       dispatch(setUser({
-        name: displayName || "",
         email: email || "",
-        image: photoURL || "",
-        method: method,
       }));
     } else {
       // User is signed out
-      localStorage.removeItem('authMethod');
       dispatch(resetUser());
     }
     // Stop loading after auth state is determined

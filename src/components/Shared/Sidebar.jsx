@@ -1,4 +1,3 @@
-import Logo from "./Logo";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { MdTaskAlt } from "react-icons/md";
@@ -19,7 +18,6 @@ const Sidebar = () => {
   return (
     <div className={`shadow-lg shadow-gray-300 h-screen w-1/6 duration-300 `}>
       <div className=" flex flex-col items-center justify-center my-6">
-        <Logo />
         {/* 2 menus */}
         {/* main menu example: home, video call, tasks, chat etc.. */}
         {/* page specific menu. for tasks example: archive, my tasks, priority tasks etc.. */}

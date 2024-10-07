@@ -17,9 +17,14 @@ const Navbar = () => {
     </>
   );
 };
-
+ 
 export default Navbar;
 
+// first get the user from rtk query
+// then show the user image and name
+// import the logout state from aync thunk
+// then use props validation on the navbar
+// fix how redux stores and handles state.
 const DesktopAndTabNav = ({ user }) => {
   return (
     <nav
