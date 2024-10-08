@@ -19,7 +19,7 @@ const Footer = () => {
         </div>
       </div>
       <footer className="bg-[#1a1a1a] text-white w-full flex flex-col gap-0">
-        <div className="max-w-[90vw] mx-auto w-full py-16 border-b-2 border-stone-800 flex items-start gap-10">
+        <div className="max-w-[90vw] mx-auto w-full py-16 border-b-4 border-gray-500 flex items-start gap-10">
           <div className="logo-description w-1/5">
             <div className="logo">
               <img
@@ -76,7 +76,14 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="bg-stone-800 px-[5vw] mx-auto w-full">hellow</div>
+        <div className="bg-[#2a2a2a] px-[5vw] mx-auto w-full py-8 flex justify-between items-center">
+          <ul className="uppercase flex items-center gap-10 montserrat font-[500]">
+            <li>Terms & Conditions</li>
+            <li>Privacy policy</li>
+            <li>Sitemap</li>
+          </ul>
+          <p className="text-xs text-[#b1b1b1] leading-[18px]">Copyright 2024 @ Projease Company <br /> website by <a className="underline" href="">Md Asik</a></p>
+        </div>
       </footer>
     </section>
   );
