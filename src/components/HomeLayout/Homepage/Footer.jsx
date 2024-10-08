@@ -5,7 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 const Footer = () => {
   return (
     <section className="footer w-full flex flex-col gap-0">
-      <div className="newsletter uppercase bg-no-repeat bg-cover bg-center py-10 w-full flex md:flex-row flex-col justify-center items-center gap-10">
+      <div className="newsletter uppercase bg-no-repeat bg-cover bg-center py-10 w-full flex md:flex-row flex-col justify-center items-center md:gap-10 gap-4">
         <p className="text-white">Subscribe to our weekly newsletter</p>
         <div className=" p-1 rounded-full bg-gray-100 ">
           <input
@@ -19,11 +19,11 @@ const Footer = () => {
         </div>
       </div>
       <footer className="bg-[#1a1a1a] text-white w-full flex flex-col gap-0">
-        <div className="max-w-[90vw] mx-auto w-full py-16 border-b-4 border-gray-500 flex items-start gap-10">
-          <div className="logo-description w-1/5">
+        <div className="max-w-[90vw] mx-auto w-full md:py-16 p-10 border-b-4 border-gray-500 flex md:flex-row flex-col items-start  md:gap-10 gap-6">
+          <div className="logo-description md:w-1/5 w-full md:text-start text-center">
             <div className="logo">
               <img
-                className="h-10 mb-4"
+                className="h-10 w-full object-contain md:object-left  mb-4"
                 src={fullLogo}
                 alt="projease full logo"
               />
@@ -35,8 +35,8 @@ const Footer = () => {
             </p>
             <p className="montserrat mt-4">projease@gmail.com</p>
           </div>
-          <div className="w-1/5 montserrat">
-            <h4 className="font-[500] my-4 uppercase ">ProjEase</h4>
+          <div className="md:w-1/5 w-full montserrat md:text-start text-center">
+            <h4 className="font-[500] my-4 uppercase text-gray-400 ">ProjEase</h4>
             <ul className="flex flex-col gap-1">
               <li className="cursor-pointer hover:text-gray-400 duration-500">Home</li>
               <li className="cursor-pointer hover:text-gray-400 duration-500">About</li>
@@ -45,8 +45,8 @@ const Footer = () => {
               <li className="cursor-pointer hover:text-gray-400 duration-500">Contact</li>
             </ul>
           </div>
-          <div className="w-1/5 montserrat">
-            <h4 className="font-[500] my-4 uppercase ">Feature Overview</h4>
+          <div className="md:w-1/5 w-full montserrat md:text-start text-center">
+            <h4 className="font-[500] my-4 uppercase text-gray-400 ">Feature Overview</h4>
             <ul className="flex flex-col gap-1">
               <li className="cursor-pointer hover:text-gray-400 duration-500">Chats</li>
               <li className="cursor-pointer hover:text-gray-400 duration-500">Video Call</li>
@@ -54,17 +54,17 @@ const Footer = () => {
               <li className="cursor-pointer hover:text-gray-400 duration-500">User Dashboard</li>
             </ul>
           </div>
-          <div className="w-1/5 montserrat">
-            <h4 className="font-[500] my-4 uppercase ">resource</h4>
+          <div className="md:w-1/5 w-full montserrat md:text-start text-center">
+            <h4 className="font-[500] my-4 uppercase text-gray-400 ">resource</h4>
             <ul className="flex flex-col gap-1">
               <li className="cursor-pointer hover:text-gray-400 duration-500">Community</li>
               <li className="cursor-pointer hover:text-gray-400 duration-500">Feedback</li>
               <li className="cursor-pointer hover:text-gray-400 duration-500">Updates</li>
             </ul>
           </div>
-          <div className="w-1/5 montserrat">
-            <h4 className="font-[500] my-4 uppercase ">Follow</h4>
-            <ul className="flex gap-4 text-lg">
+          <div className="md:w-1/5 w-full montserrat md:text-start text-center">
+            <h4 className="font-[500] my-4 uppercase text-gray-400 ">Follow</h4>
+            <ul className="flex md:justify-start justify-center gap-4 text-lg">
               <li className="cursor-pointer hover:text-gray-400 duration-500"><FaFacebookSquare /></li>
               <li className="cursor-pointer hover:text-gray-400 duration-500"><FaXTwitter /></li>
               <li className="cursor-pointer hover:text-gray-400 duration-500"><FaPinterestSquare /></li>
@@ -76,13 +76,13 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="bg-[#2a2a2a] px-[5vw] mx-auto w-full py-8 flex justify-between items-center">
+        <div className="bg-[#2a2a2a] px-[5vw] mx-auto w-full py-8 flex md:flex-row flex-col gap-6 justify-between items-center">
           <ul className="uppercase flex items-center gap-10 montserrat font-[500]">
             <li>Terms & Conditions</li>
             <li>Privacy policy</li>
             <li>Sitemap</li>
           </ul>
-          <p className="text-xs text-[#b1b1b1] leading-[18px]">Copyright 2024 @ Projease Company <br /> website by <a className="underline" href="">Md Asik</a></p>
+          <p className="text-xs md:text-start text-center text-[#b1b1b1] leading-[18px]">Copyright 2024 @ Projease Company <br /> website by <a className="underline" href="">Md Asik</a></p>
         </div>
       </footer>
     </section>
