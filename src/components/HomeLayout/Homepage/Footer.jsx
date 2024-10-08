@@ -19,7 +19,7 @@ const Footer = () => {
         </div>
       </div>
       <footer className="bg-[#1a1a1a] text-white w-full flex flex-col gap-0">
-        <div className="max-w-[90vw] mx-auto w-full py-10 border-b-2 border-stone-800 flex items-start gap-10">
+        <div className="max-w-[90vw] mx-auto w-full py-16 border-b-2 border-stone-800 flex items-start gap-10">
           <div className="logo-description w-1/5">
             <div className="logo">
               <img
@@ -38,39 +38,39 @@ const Footer = () => {
           <div className="w-1/5 montserrat">
             <h4 className="font-[500] my-4 uppercase ">ProjEase</h4>
             <ul className="flex flex-col gap-1">
-              <li>Home</li>
-              <li>About</li>
-              <li>Projects</li>
-              <li>Blog</li>
-              <li>Contact</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Home</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">About</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Projects</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Blog</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Contact</li>
             </ul>
           </div>
           <div className="w-1/5 montserrat">
             <h4 className="font-[500] my-4 uppercase ">Feature Overview</h4>
             <ul className="flex flex-col gap-1">
-              <li>Chats</li>
-              <li>Video Call</li>
-              <li>Tasks</li>
-              <li>User Dashboard</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Chats</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Video Call</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Tasks</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">User Dashboard</li>
             </ul>
           </div>
           <div className="w-1/5 montserrat">
             <h4 className="font-[500] my-4 uppercase ">resource</h4>
             <ul className="flex flex-col gap-1">
-              <li>Community</li>
-              <li>Feedback</li>
-              <li>Updates</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Community</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Feedback</li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500">Updates</li>
             </ul>
           </div>
           <div className="w-1/5 montserrat">
             <h4 className="font-[500] my-4 uppercase ">Follow</h4>
             <ul className="flex gap-4 text-lg">
-              <li><FaFacebookSquare /></li>
-              <li><FaXTwitter /></li>
-              <li><FaPinterestSquare /></li>
-              <li><FaYoutube /></li>
-              <li><FaGooglePlusG /></li>
-              <li><FaInstagram /></li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500"><FaFacebookSquare /></li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500"><FaXTwitter /></li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500"><FaPinterestSquare /></li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500"><FaYoutube /></li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500"><FaGooglePlusG /></li>
+              <li className="cursor-pointer hover:text-gray-400 duration-500"><FaInstagram /></li>
 
             </ul>
           </div>
