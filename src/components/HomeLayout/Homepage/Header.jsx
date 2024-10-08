@@ -11,9 +11,9 @@ const Header = () => {
           Your Project <p>Management .</p>
         </h1>
         <p className=" lg:my-6 md:my-4 mt-2 mb-6 md:text-base text-sm text-gray-600 ">ProjEase lets you manage all your projects in one place. With built-in tasks, chat, and video calls, there’s no need to switch between tools.</p>
-        <div className="flex bg-white rounded-full p-[2px] lg:mr-10 border border-gray-300 lg:text-base md:text-sm">
-          <input className="md:px-3 px-2 focus:outline-none bg-transparent flex-grow" type="email" placeholder="Enter your email" />
-          <button className="bg-[#1a1a1a]  text-white md:px-4 px-2 text-sm  py-2 rounded-full" type="submit">Get Started</button>
+        <div className=" p-1 rounded-full bg-gray-200 text-sm flex items-center">
+          <input className="px-3 py-2 bg-transparent flex-grow focus:outline-none" type="email" placeholder="Enter your email" />
+          <button className="uppercase text-white px-3 py-2 bg-[#1a1a1a] hover:bg-[#2a2a2a] duration-500 rounded-full">Get Started</button>
         </div>
       </div>
 

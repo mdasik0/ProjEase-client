@@ -337,3 +337,8 @@ input[type="number"] {
 .expanded-max-height {
   max-height: 203px;
 }
+
+/* newsletter bg img */
+.newsletter {
+  background-image: linear-gradient(60deg, rgba(0, 0, 0, 0.692), rgba(0, 0, 0, 0.692)), url('https://i.ibb.co/zGn4wrL/alejandro-escamilla-N7-Xod-Rrbz-S0.jpg');
+}
