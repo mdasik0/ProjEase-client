@@ -9,7 +9,7 @@ import { LuUserCircle } from "react-icons/lu";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
 import { MdLogin, MdOutlineLogout } from "react-icons/md";
 const Navbar = () => {
-  const user = true;
+  const user = false;
   return (
     <>
       <DesktopAndTabNav user={user} />
@@ -35,7 +35,7 @@ const DesktopAndTabNav = ({ user }) => {
       <div>
         <img className="h-10" src={fullLogo} alt="projease website logo" />
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center gap-24">
         <ul className="flex items-center gap-6 pr-6">
           <li>
             <Link
@@ -124,7 +124,7 @@ const MobileNav = ({ user }) => {
             {!user && <>
             <Link
                 className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
-                to={"/"}
+                to={"/auth/sign-in"}
               >
                 <MdLogin className="text-lg" />
                 Login

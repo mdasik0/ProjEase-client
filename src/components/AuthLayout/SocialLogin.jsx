@@ -47,17 +47,7 @@ const SocialLogin = () => {
     createUser(obj);
   };
 
-  //! toast for a new user created successfully
-  useEffect(() => {
-    if (data) {
-      toast.success("Welcome Back");
-      return navigate("/");
-    }
-    if (isServerError) {
-      toast.error(serverError);
-      return navigate("/");
-    }
-  }, [data, isServerError, serverError, navigate]);
+  
 
   return (
     <>

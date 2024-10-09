@@ -60,85 +60,89 @@ export const FooterSocialLinks = () => {
 };
 
 export const FooterResource = () => {
-  return <div className="md:w-1/5 w-full montserrat md:text-start text-center">
-  <h4 className="font-[500] my-4 uppercase text-gray-400 ">
-    resource
-  </h4>
-  <ul className="flex flex-col gap-1">
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Community
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Feedback
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Updates
-    </li>
-  </ul>
-</div>
-}
+  return (
+    <div className="md:w-1/5 w-full montserrat md:text-start text-center">
+      <h4 className="font-[500] my-4 uppercase text-gray-400 ">resource</h4>
+      <ul className="flex flex-col gap-1">
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Community
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Feedback
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Updates
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 export const FooterOverview = () => {
-  return <div className="md:w-1/5 w-full montserrat md:text-start text-center">
-  <h4 className="font-[500] my-4 uppercase text-gray-400 ">
-    Feature Overview
-  </h4>
-  <ul className="flex flex-col gap-1">
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Chats
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Video Call
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Tasks
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      User Dashboard
-    </li>
-  </ul>
-</div>
-}
+  return (
+    <div className="md:w-1/5 w-full montserrat md:text-start text-center">
+      <h4 className="font-[500] my-4 uppercase text-gray-400 ">
+        Feature Overview
+      </h4>
+      <ul className="flex flex-col gap-1">
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Chats
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Video Call
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Tasks
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          User Dashboard
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 export const FooterImportantLinks = () => {
-  return <div className="md:w-1/5 w-full montserrat md:text-start text-center">
-  <h4 className="font-[500] my-4 uppercase text-gray-400 ">
-    ProjEase
-  </h4>
-  <ul className="flex flex-col gap-1">
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Home
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      About
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Projects
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Blog
-    </li>
-    <li className="cursor-pointer hover:text-gray-400 duration-500">
-      Contact
-    </li>
-  </ul>
-</div>
-}
+  return (
+    <div className="md:w-1/5 w-full montserrat md:text-start text-center">
+      <h4 className="font-[500] my-4 uppercase text-gray-400 ">ProjEase</h4>
+      <ul className="flex flex-col gap-1">
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Home
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          About
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Projects
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Blog
+        </li>
+        <li className="cursor-pointer hover:text-gray-400 duration-500">
+          Contact
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 export const FooterCompanyInfo = () => {
-  return <div className="logo-description md:w-1/5 w-full md:text-start text-center">
-  <div className="logo">
-    <img
-      className="h-10 w-full object-contain md:object-left  mb-4"
-      src={fullLogo}
-      alt="projease full logo"
-    />
-  </div>
-  <p className="description montserrat">
-    1025 Evergreen Terrace <br />
-    Springfield, IL 62704 <br />
-    United States
-  </p>
-  <p className="montserrat mt-4">projease@gmail.com</p>
-</div>
-}
+  return (
+    <div className="logo-description md:w-1/5 w-full md:text-start text-center">
+      <div className="logo">
+        <img
+          className="h-10 w-full object-contain md:object-left  mb-4"
+          src={fullLogo}
+          alt="projease full logo"
+        />
+      </div>
+      <p className="description montserrat">
+        1025 Evergreen Terrace <br />
+        Springfield, IL 62704 <br />
+        United States
+      </p>
+      <p className="montserrat mt-4">projease@gmail.com</p>
+    </div>
+  );
+};
