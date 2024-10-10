@@ -39,36 +39,46 @@ const Login_Form = () => {
     }
   }, [error, method, name, navigate]);
   useEffect(() => {
-    // Set up animation if the element is rendered
     if (iconMenuRef.current) {
       const animationMenu = Lottie.loadAnimation({
-        container: iconMenuRef.current, // reference the DOM node
+        container: iconMenuRef.current,
         renderer: "svg",
         loop: false,
-        autoplay: true, // Automatically plays when loaded
+        autoplay: true,
         path: "../../../../public/Visibility V3/visibility-V3.json",
       });
   
       // Set initial animation direction
-      let directionMenu = -1; // Change to 1 for opening
+      let directionMenu = -1;
   
       // Toggle animation direction
       const toggleAnimation = () => {
-        animationMenu.setDirection(directionMenu); // Set the direction
-        animationMenu.play(); // Play the animation
-        directionMenu = -directionMenu; // Flip direction for next click
+        animationMenu.setDirection(directionMenu);
+        animationMenu.play();
+  
+        
+        // Flip direction for next click
+        directionMenu = -directionMenu;
+
+
+        if (directionMenu === -1) {
+          setFormData((prevData) => ({ ...prevData, show: false }));
+        } else {
+          setFormData((prevData) => ({ ...prevData, show: true }));
+        }
       };
   
       // Attach the click event listener
       iconMenuRef.current.addEventListener("click", toggleAnimation);
   
-      // Cleanup event and animation on component unmount
+      // Cleanup on component unmount
       return () => {
         iconMenuRef.current.removeEventListener("click", toggleAnimation);
-        animationMenu.destroy(); // Destroy the animation instance
+        animationMenu.destroy();
       };
     }
-  }, []);
+  }, [setFormData]);
+  
   
 
   return (
@@ -92,7 +102,7 @@ const Login_Form = () => {
           name="email"
           id="email"
         />
-        <div className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer">
+        <div className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open" data-tip='Email'>
           <MdAlternateEmail />
         </div>
       </div>
@@ -113,25 +123,14 @@ const Login_Form = () => {
         />
         <div
           ref={iconMenuRef} // Attach the ref to the container
-          className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim"
+          className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open" data-tip="Show password"
         >
           <div className="show-password-anim"></div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-1">
-          <input
-            onChange={() => {
-              setFormData({ ...formData, show: !formData.show });
-            }}
-            className="cursor-pointer"
-            type="checkbox"
-            name="show"
-            id="show"
-          />{" "}
-          <span className="text-sm">Show password</span>
-        </div>
+      <div className="flex items-center justify-end mb-4">
+        
         <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
           Forgot Password?
         </span>
