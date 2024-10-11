@@ -348,3 +348,21 @@ input[type="number"] {
   max-width: 28px;
   cursor: pointer;
 }
+
+.text-container-createOne {
+  position: relative;
+  overflow: hidden;
+}
+
+.yellow-text-create-one {
+  width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0; /* Start invisible */
+  transition: width 1s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.text-container-createOne:hover .yellow-text-create-one {
+  width: 100%;
+  opacity: 1; /* Fade in on hover */
+}

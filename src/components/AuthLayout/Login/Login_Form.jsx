@@ -50,36 +50,27 @@ const Login_Form = () => {
         path: "../../../../public/Visibility V3/visibility-V3.json",
       });
   
-      // Set initial animation direction
       let directionMenu = -1;
   
-      // Toggle animation direction
       const toggleAnimation = () => {
         animationMenu.setDirection(directionMenu);
         animationMenu.play();
   
-        
-        // Flip direction for next click
         directionMenu = -directionMenu;
-
-
-        if (directionMenu === -1) {
-          setFormData((prevData) => ({ ...prevData, show: false }));
-        } else {
-          setFormData((prevData) => ({ ...prevData, show: true }));
-        }
+        setFormData((prevData) => ({ ...prevData, show: directionMenu === 1 }));
       };
   
-      // Attach the click event listener
       iconMenuRef.current.addEventListener("click", toggleAnimation);
   
-      // Cleanup on component unmount
       return () => {
-        iconMenuRef.current.removeEventListener("click", toggleAnimation);
+        if (iconMenuRef.current) {
+          iconMenuRef.current.removeEventListener("click", toggleAnimation);
+        }
         animationMenu.destroy();
       };
     }
   }, [setFormData]);
+  
   
   
 
