@@ -54,7 +54,7 @@ const SocialLogin = () => {
       {/* google */}
       <div
         onClick={() => handleGoogleLogin()}
-        className="flex items-center justify-center gap-3 border-2 border-gray-300 p-2 rounded-full w-full mx-6  pr-6 hover:bg-gray-300 duration-500 cursor-pointer"
+        className="flex items-center justify-center gap-3 border-2 border-gray-300 p-2 rounded-lg w-full mx-6 pr-6 hover:bg-gray-300 duration-500 cursor-pointer"
       >
         <img
           className="w-7 h-7 object-cover"

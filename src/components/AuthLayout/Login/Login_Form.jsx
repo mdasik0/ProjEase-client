@@ -5,6 +5,7 @@ import { loginUser } from "../../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { MdAlternateEmail } from "react-icons/md";
 import Lottie from "lottie-web";
+import { BiError } from "react-icons/bi";
 
 const Login_Form = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const Login_Form = () => {
   const { isLoading, error, name, method } = useSelector(
     (state) => state.userSlice
   );
+
 
   const iconMenuRef = useRef(null);
 
@@ -83,8 +85,8 @@ const Login_Form = () => {
 
   return (
     <form onSubmit={handleSubmit} className="px-6">
-      <div className="mb-10">
-        <h2 className="text-5xl font-[500] mb-3">Login</h2>
+      <div className="mb-8">
+        <h2 className="text-[2.5rem] font-[500]">Login</h2>
         <p className="text-gray-500">Please enter your email & password</p>
       </div>
       <div className="mb-4 relative">
@@ -106,7 +108,7 @@ const Login_Form = () => {
           <MdAlternateEmail />
         </div>
       </div>
-      <div className="mb-4 relative">
+      <div className="relative">
         <label className="text-sm  block mb-1" htmlFor="password">
           Password
         </label>
@@ -129,31 +131,22 @@ const Login_Form = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-end mb-4">
-        
+      <div className="flex items-center justify-between mb-4 mt-1">
+        <p className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${error ? "opacity-100" : "opacity-0"}`}><BiError />error text</p>
         <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
           Forgot Password?
         </span>
       </div>
       <button
         type="submit"
-        className="block bg-zinc-800 font-semibold w-full text-white py-2.5 rounded-lg hover:bg-zinc-700 duration-500 active:scale-90 mb-3"
+        className="block bg-[#1a1a1a] border-[#1a1a1a] border hover:bg-white hover:text-black font-[500] w-full text-white py-2.5 rounded-lg duration-500 active:scale-90"
       >
         {isLoading ? (
           <span className="loading loading-spinner loading-sm"></span>
         ) : (
           <span>Submit</span>
         )}
-      </button>
-      <span className="text-sm w-full flex items-center gap-1 justify-end ">
-        Don&apos;t have an Account?{" "}
-        <Link
-          to={`/auth/sign-up`}
-          className="hover:underline hover:text-blue-500 duration-200 cursor-pointer"
-        >
-          Register!
-        </Link>{" "}
-      </span>
+      </button> 
     </form>
   );
 };
