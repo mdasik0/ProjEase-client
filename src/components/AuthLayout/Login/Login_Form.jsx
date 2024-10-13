@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { MdAlternateEmail } from "react-icons/md";
@@ -120,7 +120,7 @@ const Login_Form = () => {
         >
           <div className="show-password-anim"></div>
         </div>
-      </div>
+      </div> 
 
       <div className="flex items-center justify-between mb-4 mt-1">
         <p className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${error ? "opacity-100" : "opacity-0"}`}><BiError />error text</p>

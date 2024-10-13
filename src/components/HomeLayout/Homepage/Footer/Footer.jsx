@@ -15,7 +15,7 @@ const Footer = () => {
     <section className="footer w-full flex flex-col gap-0">
       <Newsletter />
       <footer className="bg-[#1a1a1a] text-white w-full flex flex-col gap-0">
-        <div className="max-w-[90vw] mx-auto w-full md:py-16 p-10 border-b-4 border-gray-500 flex md:flex-row flex-col items-start  md:gap-10 gap-6">
+        <div className="max-w-[90vw] mx-auto w-full md:py-16 py-10 border-b-4 border-gray-500 flex md:flex-row flex-col items-start  md:gap-10 gap-6">
           <FooterCompanyInfo />
           <FooterImportantLinks />
           <FooterOverview />
