@@ -24,10 +24,6 @@ const Navbar = () => {
     toast.success("User logged out successfully")
   };
 
-  //first show a loading when the user is getting fetched. done
-  //logout reminder done
-  //props validation 
-
   return (
     <>
       <DesktopAndTabNav

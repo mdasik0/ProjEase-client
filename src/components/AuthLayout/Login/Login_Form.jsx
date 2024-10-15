@@ -13,11 +13,6 @@ const Login_Form = () => {
     password: "",
     show: false,
   });
-
-  // first phase has been completed : user can perfectly login,
-  // two things left
-  // 1. when user loggs in we will congratulate our user
-  // 2. second redirect him to the homepage (temporarily)
   const { isLoading, error, email } = useSelector(
     (state) => state.userSlice
   );
