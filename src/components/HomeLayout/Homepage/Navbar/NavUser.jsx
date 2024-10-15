@@ -4,11 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { MdDoNotDisturbOn, MdOutlineLogout } from "react-icons/md";
 import { LuUserSquare2 } from "react-icons/lu";
 import { FaMoon } from "react-icons/fa";
+import avatar from '../../../../../public/avatar/avatar.png'
 
-const NavUser = ({ user,logOut }) => {
+const NavUser = ({ user,userData, logOut, isLoading }) => {
   const [dropdown, setDropdown] = useState(false);
   const [status, setStatus] = useState(false);
-
   const dropdownRef = useRef();
   const statusRef = useRef();
 
@@ -42,15 +42,15 @@ const NavUser = ({ user,logOut }) => {
           <div className="avatar online">
             <div className="w-10 h-10 object-cover rounded-full">
               <img
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                src={userData?.image ? userData?.image : avatar}
                 alt="User Avatar"
               />
             </div>
           </div>
           <div className="flex flex-col items-start gap-0">
-            <span>Md Asik</span>
+            <span>{userData?.name ? userData?.name : ((userData?.email)?.split('@')[0])}</span>
             <div className="-mt-1">
-              <span className="text-[12px] text-gray-500 ">Online</span>
+              <span className="text-[12px] text-gray-500 ">{userData?.status ? userData?.status : 'online'}</span>
             </div>
           </div>
         </div>

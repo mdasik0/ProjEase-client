@@ -27,7 +27,9 @@ const App = ({ children }) => {
 
   return (
     <div className="poppins w-screen">
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-left" reverseOrder={false} toastOptions={{
+    duration: 3000,
+  }} />
       {children}
     </div>
   );

@@ -10,32 +10,44 @@ import { TbArrowRoundaboutRight } from "react-icons/tb";
 import { MdLogin, MdOutlineLogout } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../redux/features/userSlice";
+import toast from "react-hot-toast";
 const Navbar = () => {
   const dispatch = useDispatch();
-  const {email, userData} = useSelector((state) => state.userSlice)
+  const {
+    email: user,
+    userData,
+    isLoading,
+  } = useSelector((state) => state.userSlice);
   const logOut = () => {
     dispatch(logoutUser());
+    toast.success("User logged out successfully")
   };
 
-  // console.log(email)
-const user = false;
-  //after the user logs out here will be the user
+  //first show a loading when the user is getting fetched. done
+  //logout reminder done
+  //props validation 
+
   return (
     <>
-      <DesktopAndTabNav logOut={logOut} user={user} />
-      <MobileNav logOut={logOut} user={user} />
+      <DesktopAndTabNav
+        isLoading={isLoading}
+        logOut={logOut}
+        user={user}
+        userData={userData}
+      />
+      <MobileNav
+        isLoading={isLoading}
+        logOut={logOut}
+        user={user}
+        userData={userData}
+      />
     </>
   );
 };
 
 export default Navbar;
 
-// first get the user from rtk query
-// then show the user image and name
-// import the logout state from aync thunk
-// then use props validation on the navbar
-// fix how redux stores and handles state.
-const DesktopAndTabNav = ({ user, logOut }) => {
+const DesktopAndTabNav = ({ user, userData, logOut, isLoading }) => {
   return (
     <nav
       className={`max-w-[90vw] mx-auto hidden md:flex items-center justify-between ${
@@ -73,13 +85,25 @@ const DesktopAndTabNav = ({ user, logOut }) => {
           </li>
         </ul>
         {/* user box */}
-        <NavUser user={user} logOut={logOut} />
+        {isLoading ? (
+          <div className="border border-gray-300 w-[128px] h-[53px] p-2 pe-3 rounded-xl bg-gray-100 hover:bg-gray-200 duration-300 active:scale-95 select-none flex items-center justify-center gap-2  cursor-pointer">
+          <span className="loading loading-spinner loading-md"></span>
+
+          </div>
+        ) : (
+          <NavUser
+            user={user}
+            userData={userData}
+            logOut={logOut}
+            isLoading={isLoading}
+          />
+        )}
       </div>
     </nav>
   );
 };
 
-const MobileNav = ({ user, logOut }) => {
+const MobileNav = ({ user, userData, logOut, isLoading }) => {
   useEffect(() => {
     const inputElement = document.querySelector(".hamburger-menu input");
     const backdrop = document.querySelector(".sidebar-backdrop");
@@ -109,7 +133,9 @@ const MobileNav = ({ user, logOut }) => {
         </label>
         <aside className="sidebar">
           <div className="flex flex-col gap-[10px]">
-            {user && <MobileNavUser />}
+            {user && (
+              <MobileNavUser userData={userData} isLoading={isLoading} />
+            )}
             <Link
               className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
               to={"/"}

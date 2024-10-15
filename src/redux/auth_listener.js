@@ -1,6 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { resetUser, setUser, setLoading } from "./features/userSlice";
-import { useGetUserQuery } from "./api/userApi";
 
 export const listenForAuthChanges = (dispatch) => {
   const auth = getAuth();
@@ -16,15 +15,20 @@ export const listenForAuthChanges = (dispatch) => {
         email: email || "",
       }));
 
+
+      dispatch(setLoading(true));
+      // just fetch the data normally here
       try {
-        const {data ,error} = await dispatch(useGetUserQuery(email)).unwrap();
-        if(data){
-          dispatch(setUser({email: email, userData : data}))
-        } else if(error) {
-          console.error('Failed to fetch user data :', error);
+        const response = await fetch(`http://localhost:5000/getUser/${email}`);
+        const data = await response.json();
+        // console.log(data);
+        if(data) {
+          dispatch(setUser({email: email, userData: data}));
+          dispatch(setLoading(false))
         }
       } catch (err) {
-        console.error('Error fetching user data :', err)
+        console.error('There was an Error Fetching the user:', err.message)
+        dispatch(setLoading(false))
       }
 
     } else {

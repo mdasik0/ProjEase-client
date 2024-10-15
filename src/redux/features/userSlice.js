@@ -16,14 +16,8 @@ const AUTH_METHODS = {
 };
 
 const initialState = {
-  name: "",
   userData: {},
   email: "",
-  image: "",
-  method: "",
-  phoneNumber: "",
-  updateUserStatus:"",
-  lastUpdated: "",
   isLoading: false,
   isError: false,
   error: "",
@@ -97,7 +91,6 @@ export const logoutUser = createAsyncThunk(
   "/userSlice/logoutUser",
   async () => {
     await signOut(auth);
-    localStorage.removeItem("authMethod");
     return { email: "", userData: {} };
   }
 );
@@ -129,11 +122,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, { payload }) => {
-      state.name = payload.name;
       state.email = payload.email;
-      state.image = payload.image;
-      state.method = payload.method;
       state.isLoading = false;
+      state.userData = payload.userData
     },
     resetUser: (state) => {
       state.name = "";
@@ -174,9 +165,7 @@ const userSlice = createSlice({
         state.error = "";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.name = action.payload.name;
         state.email = action.payload.email;
-        state.image = action.payload.image;
         state.isLoading = false;
         state.method = action.payload.method;
       })
@@ -187,17 +176,19 @@ const userSlice = createSlice({
       })
 
       // Logout
-      .addCase(logoutUser.fulfilled, (state, action) => {
-        state.name = action.payload.name;
-        state.email = action.payload.email;
-        state.image = action.payload.image;
-        state.isLoading = false;
-        state.method = action.payload.method;
+      .addCase(logoutUser.pending,(state) => {
+        state.isLoading = true;
+        state.isError = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.error = action.payload || action.error.message;
+        state.error = action.payload.error.message;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.email = '';
+        state.userData = {}
+        state.isLoading = false;
       })
 
       // Google Login
