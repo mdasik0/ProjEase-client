@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import fullLogo from "/logo/Full-logo/logo-white-ov2.png";
 import miniLogo from "/logo/mini-logo/MINI_LOGO_FOR_WHITE_BG.png";
 import NavUser from "./NavUser";
@@ -103,6 +104,13 @@ const DesktopAndTabNav = ({ user, userData, logOut, isLoading }) => {
   );
 };
 
+DesktopAndTabNav.propTypes = {
+  user: PropTypes.string,
+  userData: PropTypes.object,
+  logOut: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
+
 const MobileNav = ({ user, userData, logOut, isLoading }) => {
   useEffect(() => {
     const inputElement = document.querySelector(".hamburger-menu input");
@@ -193,4 +201,11 @@ const MobileNav = ({ user, userData, logOut, isLoading }) => {
       <div className="sidebar-backdrop hidden"></div>
     </div>
   );
+};
+
+MobileNav.propTypes = {
+  user: PropTypes.string,
+  userData: PropTypes.object,
+  logOut: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
