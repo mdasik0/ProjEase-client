@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { FaMoon } from "react-icons/fa";
 import { LuUserCircle } from "react-icons/lu";
 import { MdDoNotDisturbOn } from "react-icons/md";
@@ -78,6 +79,16 @@ const MobileNavUser = ({ userData, isLoading }) => {
       )}
     </>
   );
+};
+
+MobileNavUser.propTypes = {
+  userData: PropTypes.shape({
+    image: PropTypes.string,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    status: PropTypes.string,
+  }),
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default MobileNavUser;
