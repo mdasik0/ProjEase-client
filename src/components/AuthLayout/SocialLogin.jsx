@@ -9,16 +9,24 @@ const SocialLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //! createUser api from rtk query
-  const [createUser, { data, isError: isServerError, error: serverError }] =
-    useCreateUserMutation();
+  //social login logic
+  // user is already not authenticated
+  // if not email redux state store
+  // if not database data store {email, method, created}
+  // if not redirect to the name creation page
+  // user already authenticated.
+  // fetch user information from database
+  // if the user has no name then redirect to the name creation page
+  // if the user has no image then redirect to the profile picture upload page.
 
-  //! handle google login
+  //! createUser api from rtk query
+  const [createUser, { data, isError: isServerError, error: serverError }] = useCreateUserMutation();
+
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
   };
 
-  const { isError, error, name, email, image, method } = useSelector(
+  const { isError, error, email, isLoading } = useSelector(
     (state) => state.userSlice
   );
 
@@ -35,19 +43,12 @@ const SocialLogin = () => {
   //! sending data to backend
   const createUserInBackend = async () => {
     const obj = {
-      image,
-      name,
       email,
-      method,
-      lastUpdated: "",
       created: new Date(),
-      joinedProjects: [],
     };
 
     createUser(obj);
   };
-
-  
 
   return (
     <>
@@ -61,7 +62,11 @@ const SocialLogin = () => {
           alt="google social icon"
           src={googleIcon}
         />
-        <span className="text-black hover:text-black">Login with Google</span>
+        {isLoading ? (
+          <span className="loading loading-spinner loading-md"></span>
+        ) : (
+          <span className="text-black hover:text-black">Login with Google</span>
+        )}
       </div>
     </>
   );
