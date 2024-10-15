@@ -5,7 +5,7 @@ import { MdDoNotDisturbOn, MdOutlineLogout } from "react-icons/md";
 import { LuUserSquare2 } from "react-icons/lu";
 import { FaMoon } from "react-icons/fa";
 
-const NavUser = ({ user }) => {
+const NavUser = ({ user,logOut }) => {
   const [dropdown, setDropdown] = useState(false);
   const [status, setStatus] = useState(false);
 
@@ -85,7 +85,7 @@ const NavUser = ({ user }) => {
             <LuUserSquare2 className="text-lg" />
             User Dashboard
           </li>
-          <li className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2">
+          <li onClick={() => logOut()} className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2">
             <MdOutlineLogout className="text-lg" /> Log out
           </li>
           <ul

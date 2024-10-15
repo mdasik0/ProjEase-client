@@ -14,7 +14,11 @@ const Login_Form = () => {
     show: false,
   });
 
-  const { isLoading, error, name, method } = useSelector(
+  // first phase has been completed : user can perfectly login,
+  // two things left
+  // 1. when user loggs in we will congratulate our user
+  // 2. second redirect him to the homepage (temporarily)
+  const { isLoading, error, email } = useSelector(
     (state) => state.userSlice
   );
 
@@ -31,15 +35,17 @@ const Login_Form = () => {
     dispatch(loginUser({ email, password }));
   };
 
+  
   useEffect(() => {
     if (error) {
       toast.error(error);
-    } else if (method == "sign-in") {
+    } else if (email) {
       // Use else if to prevent both toasts from firing
-      toast.success(`Welcome back ${name}`);
+      toast.success(`Login successfull. Welcome back to projease.`);
       navigate("/");
     }
-  }, [error, method, name, navigate]);
+  }, [error, email, navigate]);
+  
   useEffect(() => {
     if (iconMenuRef.current) {
       const animationMenu = Lottie.loadAnimation({
@@ -123,7 +129,7 @@ const Login_Form = () => {
       </div> 
 
       <div className="flex items-center justify-between mb-4 mt-1">
-        <p className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${error ? "opacity-100" : "opacity-0"}`}><BiError />error text</p>
+        <p className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${error ? "opacity-100" : "opacity-0"}`}><BiError />{error}</p>
         <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
           Forgot Password?
         </span>

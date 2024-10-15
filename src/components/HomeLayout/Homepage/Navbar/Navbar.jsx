@@ -8,16 +8,26 @@ import { GoFileDirectory, GoHome } from "react-icons/go";
 import { LuUserCircle } from "react-icons/lu";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
 import { MdLogin, MdOutlineLogout } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../../../redux/features/userSlice";
 const Navbar = () => {
-  const user = false;
+  const dispatch = useDispatch();
+  const {email, userData} = useSelector((state) => state.userSlice)
+  const logOut = () => {
+    dispatch(logoutUser());
+  };
+
+  // console.log(email)
+const user = false;
+  //after the user logs out here will be the user
   return (
     <>
-      <DesktopAndTabNav user={user} />
-      <MobileNav user={user} />
+      <DesktopAndTabNav logOut={logOut} user={user} />
+      <MobileNav logOut={logOut} user={user} />
     </>
   );
 };
- 
+
 export default Navbar;
 
 // first get the user from rtk query
@@ -25,7 +35,7 @@ export default Navbar;
 // import the logout state from aync thunk
 // then use props validation on the navbar
 // fix how redux stores and handles state.
-const DesktopAndTabNav = ({ user }) => {
+const DesktopAndTabNav = ({ user, logOut }) => {
   return (
     <nav
       className={`max-w-[90vw] mx-auto hidden md:flex items-center justify-between ${
@@ -63,13 +73,13 @@ const DesktopAndTabNav = ({ user }) => {
           </li>
         </ul>
         {/* user box */}
-        <NavUser user={user} />
+        <NavUser user={user} logOut={logOut} />
       </div>
     </nav>
   );
 };
 
-const MobileNav = ({ user }) => {
+const MobileNav = ({ user, logOut }) => {
   useEffect(() => {
     const inputElement = document.querySelector(".hamburger-menu input");
     const backdrop = document.querySelector(".sidebar-backdrop");
@@ -121,36 +131,37 @@ const MobileNav = ({ user }) => {
               <GoFileDirectory />
               Project
             </Link>
-            {!user && <>
-            <Link
-                className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
-                to={"/auth/sign-in"}
-              >
-                <MdLogin className="text-lg" />
-                Login
-              </Link>
-            <Link
-                className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
-                to={"/"}
-              >
-                <LuUserCircle className="text-lg" />
-                Register
-              </Link>
-            </>}
+            {!user && (
+              <>
+                <Link
+                  className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+                  to={"/auth/sign-in"}
+                >
+                  <MdLogin className="text-lg" />
+                  Login
+                </Link>
+                <Link
+                  className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-[#3f3f3f] hover:bg-[#3f3f3f] flex gap-1.5 items-center"
+                  to={"/"}
+                >
+                  <LuUserCircle className="text-lg" />
+                  Register
+                </Link>
+              </>
+            )}
           </div>
-              
+
           {user && (
             <>
               <button
+                onClick={() => logOut()}
                 className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-red-500 hover:bg-red-500 flex gap-1.5 items-center"
-                to={"/"}
               >
                 <MdOutlineLogout className="text-lg" />
                 Log out
               </button>
-            </>)
-            
-          }
+            </>
+          )}
         </aside>
       </div>
       <div className="sidebar-backdrop hidden"></div>

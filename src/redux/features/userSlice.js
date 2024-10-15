@@ -17,6 +17,7 @@ const AUTH_METHODS = {
 
 const initialState = {
   name: "",
+  userData: {},
   email: "",
   image: "",
   method: "",
@@ -66,12 +67,8 @@ export const loginUser = createAsyncThunk(
         payload.email,
         payload.password
       );
-      localStorage.setItem("authMethod", "sign-in");
       return {
-        name: data.user.displayName || "",
         email: data.user.email,
-        image: data.user.photoURL || "",
-        method: AUTH_METHODS.SIGN_IN,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -101,7 +98,7 @@ export const logoutUser = createAsyncThunk(
   async () => {
     await signOut(auth);
     localStorage.removeItem("authMethod");
-    return { name: "", email: "", image: "", method: "" };
+    return { email: "", userData: {} };
   }
 );
 
