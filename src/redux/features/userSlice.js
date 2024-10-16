@@ -19,6 +19,7 @@ const initialState = {
   userData: {},
   email: "",
   isLoading: false,
+  socialLoginLoading:false,
   isError: false,
   error: "",
 };
@@ -188,16 +189,16 @@ const userSlice = createSlice({
 
       // Google Login
       .addCase(googleLogin.pending, (state) => {
-        state.isLoading = true;
+        state.socialLoginLoading = true;
         state.isError = false;
         state.error = "";
       })
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.email = action.payload.email;
-        state.isLoading = false;
+        state.socialLoginLoading = false;
       })
       .addCase(googleLogin.rejected, (state, action) => {
-        state.isLoading = false;
+        state.socialLoginLoading = false;
         state.isError = true;
         state.error = action.payload || action.error.message;
       })

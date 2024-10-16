@@ -6,6 +6,12 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useCreateUserMutation } from "../../redux/api/userApi";
 const SocialLogin = () => {
+  const { isError, error, email, socialLoginLoading } = useSelector(
+    (state) => state.userSlice
+  );
+
+  const [createUser, { data, isError: isServerError, error: serverError }] = useCreateUserMutation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,15 +26,11 @@ const SocialLogin = () => {
   // if the user has no image then redirect to the profile picture upload page.
 
   //! createUser api from rtk query
-  const [createUser, { data, isError: isServerError, error: serverError }] = useCreateUserMutation();
 
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
   };
 
-  const { isError, error, email, isLoading } = useSelector(
-    (state) => state.userSlice
-  );
 
   //! managing toast on success/rejection
   useEffect(() => {
@@ -40,10 +42,10 @@ const SocialLogin = () => {
     }
   }, [error, email, isError]);
 
-  //! sending data to backend
   const createUserInBackend = async () => {
     const obj = {
       email,
+      login_method: 'google',
       created: new Date(),
     };
 
@@ -62,7 +64,7 @@ const SocialLogin = () => {
           alt="google social icon"
           src={googleIcon}
         />
-        {isLoading ? (
+        {socialLoginLoading ? (
           <span className="loading loading-spinner loading-md"></span>
         ) : (
           <span className="text-black hover:text-black">Login with Google</span>
