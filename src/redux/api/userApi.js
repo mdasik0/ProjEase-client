@@ -11,6 +11,7 @@ const userApi = createApi({
         method: "POST",
         body: body,
       }),
+      providesTags: ['users']
     }),
     getUser: builder.query({
       query: (email) => ({
