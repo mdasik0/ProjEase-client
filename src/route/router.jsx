@@ -8,6 +8,8 @@ import VideoCall from "../pages/HomeLayout/VideoCall";
 import HomeLayout from "../layout/HomeLayout";
 import CreateProject from "../pages/HomeLayout/CreateProject";
 import JoinProject from "../pages/HomeLayout/JoinProject";
+import Upload_your_profile_picture from "../pages/AuthLayout/Upload_your_profile_picture";
+import Enter_your_name from "../pages/AuthLayout/Enter_your_name";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
         path: "sign-up",
         element: <Signup />,
       },
+      {
+        path:'profileUpdate/upload-profile-picture',
+        element: <Upload_your_profile_picture />
+      },
+      {
+        path:'profileUpdate/enter-your-name',
+        element: <Enter_your_name />
+      }
     ],
   },
 ]);

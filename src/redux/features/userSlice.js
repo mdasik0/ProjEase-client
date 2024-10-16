@@ -18,6 +18,7 @@ const AUTH_METHODS = {
 const initialState = {
   userData: {},
   email: "",
+  login_method: '',
   isLoading: false,
   socialLoginLoading:false,
   isError: false,
@@ -162,6 +163,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.email = action.payload.email;
+        state.login_method = 'email-login'
         state.isLoading = false;
         state.method = action.payload.method;
       })
@@ -183,6 +185,7 @@ const userSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.email = '';
+        state.login_method= '';
         state.userData = {}
         state.isLoading = false;
       })
@@ -195,6 +198,7 @@ const userSlice = createSlice({
       })
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.email = action.payload.email;
+        state.login_method = 'google-login';
         state.socialLoginLoading = false;
       })
       .addCase(googleLogin.rejected, (state, action) => {

@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { MdAlternateEmail } from "react-icons/md";
 import Lottie from "lottie-web";
 import { BiError } from "react-icons/bi";
+import { useEmailLoginQuery } from "../../../redux/api/userApi";
 
 const Login_Form = () => {
   const [formData, setFormData] = useState({
@@ -13,10 +14,10 @@ const Login_Form = () => {
     password: "",
     show: false,
   });
-  const { isLoading, error, email } = useSelector(
+  const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
-
+  const { data: userData } = useEmailLoginQuery(formData.email, { skip: !email }); // Fetch user data after logging in
 
   const iconMenuRef = useRef(null);
 
@@ -30,17 +31,28 @@ const Login_Form = () => {
     dispatch(loginUser({ email, password }));
   };
 
-  
   useEffect(() => {
     if (error) {
       toast.error(error);
-    } else if (email) {
-      // Use else if to prevent both toasts from firing
-      toast.success(`Login successfull. Welcome back to projease.`);
-      navigate("/");
+    } else if (email && login_method === 'email-login') {
+      toast.success(`Login successful. Welcome back to ProjEase.`);
+      
+      if (userData.success === true) {
+        toast.success(userData.message)
+        if (!userData.userImageExists) {
+          navigate("/profileUpdate/upload-profile-picture");
+        } 
+        if(!userData.userNameExists) {
+          navigate("/profileUpdate/enter-your-name");
+
+        }
+        else {
+          navigate("/");
+        }
+      }
     }
-  }, [error, email, navigate]);
-  
+  }, [error, email, navigate, userData]);
+
   useEffect(() => {
     if (iconMenuRef.current) {
       const animationMenu = Lottie.loadAnimation({

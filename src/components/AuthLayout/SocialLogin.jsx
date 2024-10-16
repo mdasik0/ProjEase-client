@@ -6,14 +6,11 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useCreateUserMutation } from "../../redux/api/userApi";
 const SocialLogin = () => {
-  const { isError, error, email, socialLoginLoading } = useSelector(
+  const { isError, error, email, login_method, socialLoginLoading } = useSelector(
     (state) => state.userSlice
   );
 
-  const [
-    createUser,
-    { data, isSuccess},
-  ] = useCreateUserMutation();
+  const [createUser, { data, isSuccess }] = useCreateUserMutation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,12 +43,25 @@ const SocialLogin = () => {
     const response = await createUser(obj);
     console.log(response);
     if (response?.data?.success === false) {
-      toast.success(response.data.message)
+      toast.success(response.data.message);
+      if (!response.data.userImageExists) {
+        navigate("/profileUpdate/upload-profile-picture");
+      }
+      if (!response.data.userNameExists) {
+        navigate("/profileUpdate/enter-your-name");
+      }
       // response.data.userImageExists = এটা ব্যাবহার করে জানা যাবে যে ইউজারটি কি নিজের ছবি অলরেডি আপলোড করেছে কিনা।
-      // response.data.userNameExists = এর মাধ্যমে জানা যাবে যে ইউজারটি কি তার নতুন নাম দিয়েছে কিনা। 
-      // এগুলোর মাধ্যমে ইউজারকে একটি পেজে redirect করতে পারি। 
+      // response.data.userNameExists = এর মাধ্যমে জানা যাবে যে ইউজারটি কি তার নতুন নাম দিয়েছে কিনা।
+      // এগুলোর মাধ্যমে ইউজারকে একটি পেজে redirect করতে পারি।
     } else if (response?.data?.success === true) {
-      console.log("User has been created successfully.")
+      toast.success(response.data.message);
+      if (!response.data.userImageExists) {
+        navigate("/profileUpdate/upload-profile-picture");
+      }
+      if (!response.data.userNameExists) {
+        navigate("/profileUpdate/enter-your-name");
+      }
+      console.log("User has been created successfully.");
     }
   };
 
@@ -60,16 +70,11 @@ const SocialLogin = () => {
     if (isError) {
       toast.error(error);
     }
-    if(isSuccess) {
-      console.log(isSuccess);
-    }
-    if(data) {
-      console.log(data);
-    }
-    if (email) {
+    
+    if (email && login_method === 'google-login') {
       createUserInBackend();
     }
-  }, [error, email, isError, isSuccess, data]);
+  }, [error, email, isError, login_method, isSuccess, data]);
 
   return (
     <>

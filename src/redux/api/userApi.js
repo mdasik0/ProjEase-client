@@ -19,6 +19,12 @@ const userApi = createApi({
       }),
       providesTags: ['users']
     }),
+    emailLogin: builder.query({
+      query: (email) => ({
+        url: `/emailLogin/${email}`,
+      }),
+      providesTags: ['users']
+    }),
     updateUser: builder.mutation({
       query: ({_id,data}) => ({
         url: `/updateUser/${_id}`,
@@ -42,6 +48,7 @@ export const {
   useGetUserQuery,
   useUpdateUserMutation,
   useAddProjectsQuery,
+  useEmailLoginQuery
 } = userApi;
 
 export default userApi;
