@@ -134,15 +134,8 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
 };
 
 NavUser.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string,
-  }),
-  userData: PropTypes.shape({
-    image: PropTypes.string,
-    name: PropTypes.string,
-    email: PropTypes.string,
-    status: PropTypes.string,
-  }),
+  user: PropTypes.string,
+  userData: PropTypes.object,
   logOut: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };

@@ -17,10 +17,10 @@ const Login_Form = () => {
 
   //is login form complete?
   //does it logs the user? yes
-  //when the user logs in with firebase and formData.email used to fetch user data from backend
-  //does it checks if the user has entered a new name?
-  //does it checks if the user has entered a new profile picture?
-  //does it fetchs user data from backend upon login?
+  //when the user logs in with firebase and formData.email used to fetch user data from backend? yes
+  //does it fetchs user data from backend upon login? yes
+  //does it checks if the user has entered a new name? don't know
+  //does it checks if the user has entered a new profile picture? don't know
 
   const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
