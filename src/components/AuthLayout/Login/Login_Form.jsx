@@ -14,10 +14,21 @@ const Login_Form = () => {
     password: "",
     show: false,
   });
+
+  //is login form complete?
+  //does it logs the user? yes
+  //when the user logs in with firebase and formData.email used to fetch user data from backend
+  //does it checks if the user has entered a new name?
+  //does it checks if the user has entered a new profile picture?
+  //does it fetchs user data from backend upon login?
+
   const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
-  const { data: userData } = useEmailLoginQuery(formData.email, { skip: !email }); // Fetch user data after logging in
+  const shouldFetchEmailData = email && login_method === 'email-login';
+
+const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFetchEmailData });
+
 
   const iconMenuRef = useRef(null);
 
@@ -34,18 +45,19 @@ const Login_Form = () => {
   useEffect(() => {
     if (error) {
       toast.error(error);
-    } else if (email && login_method === 'email-login') {
-      toast.success(`Login successful. Welcome back to ProjEase.`);
-      
+    }
+    else if (email && login_method === 'email-login') {
+      console.log(userData)
       if (userData.success === true) {
         toast.success(userData.message)
+        // name check
+        if(!userData.userNameExists) {
+          navigate("/profileUpdate/enter-your-name");
+        }
+        //profile picture check
         if (!userData.userImageExists) {
           navigate("/profileUpdate/upload-profile-picture");
         } 
-        if(!userData.userNameExists) {
-          navigate("/profileUpdate/enter-your-name");
-
-        }
         else {
           navigate("/");
         }

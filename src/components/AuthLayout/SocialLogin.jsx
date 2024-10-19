@@ -6,9 +6,8 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useCreateUserMutation } from "../../redux/api/userApi";
 const SocialLogin = () => {
-  const { isError, error, email, login_method, socialLoginLoading } = useSelector(
-    (state) => state.userSlice
-  );
+  const { isError, error, email, login_method, socialLoginLoading } =
+    useSelector((state) => state.userSlice);
 
   const [createUser] = useCreateUserMutation();
 
@@ -31,10 +30,12 @@ const SocialLogin = () => {
     if (response?.data?.success === false) {
       toast.success(response.data.message);
       if (!response.data.userNameExists) {
-       return navigate("/profileUpdate/enter-your-name");
+        return navigate("/profileUpdate/enter-your-name");
       }
       if (!response.data.userImageExists) {
-       return navigate("/profileUpdate/upload-profile-picture");
+        return navigate("/profileUpdate/upload-profile-picture");
+      } else {
+        navigate("/");
       }
     } else if (response?.data?.success === true) {
       toast.success(response.data.message);
@@ -42,9 +43,10 @@ const SocialLogin = () => {
         return navigate("/profileUpdate/enter-your-name");
       }
       if (!response.data.userImageExists) {
-       return  navigate("/profileUpdate/upload-profile-picture");
+        return navigate("/profileUpdate/upload-profile-picture");
+      } else {
+        navigate("/");
       }
-      console.log("User has been created successfully.");
     }
   };
 
@@ -52,7 +54,7 @@ const SocialLogin = () => {
     if (isError) {
       toast.error(error);
     }
-    if (email && login_method === 'google-login') {
+    if (email && login_method === "google-login") {
       createUserInBackend();
     }
   }, [error, email, isError, login_method]);
