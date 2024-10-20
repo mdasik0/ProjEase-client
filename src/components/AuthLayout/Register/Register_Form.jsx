@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { MdAlternateEmail, MdError } from "react-icons/md";
 import Lottie from "lottie-web";
@@ -15,12 +14,19 @@ const Register_Form = () => {
     show: false,
   });
 
-  const [RTError, setRTError] = useState({emailError: "", passwordError: ""})
+  const [RTError, setRTError] = useState({ emailError: "", passwordError: "" });
 
-  useEffect(()=> {
-    if(formData.email )
-  })
-
+  const emailRTCheck = (e) => {
+    e.preventDefault();
+    const email = e.target.value;
+    setFormData({...formData, email:email})
+    console.log(email);
+    if(!email || email === "hello"){
+      setRTError({...RTError,emailError: 'Enter a valid email address'});
+    } else {
+      setRTError({...RTError,emailError: ""})
+    }
+  };
   //is register form complete?
   //when a user enters an invalid email does it gives an error?
   //when a user enters an email that already exists in database does it give an error?
@@ -46,7 +52,7 @@ const Register_Form = () => {
     e.preventDefault();
     const email = formData.email;
     const password = formData.password;
-    dispatch(loginUser({ email, password }));
+    // dispatch(loginUser({ email, password }));
   };
 
   useEffect(() => {
@@ -115,7 +121,7 @@ const Register_Form = () => {
         </label>
         <input
           onChange={(e) => {
-            setFormData({ ...formData, email: e.target.value });
+            emailRTCheck(e);
           }}
           className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-lg"
           placeholder="example@gmail.com"
@@ -136,11 +142,11 @@ const Register_Form = () => {
         >
           <p
             className={`text-sm text-red-500 flex items-center gap-1 ${
-              EmailError ? "opacity-100" : "opacity-0"
+              RTError.emailError ? "opacity-100" : "opacity-0"
             }`}
           >
             <MdError className="text-base" />
-            {EmailError}
+            {RTError.emailError}
           </p>
         </div>
       </div>
