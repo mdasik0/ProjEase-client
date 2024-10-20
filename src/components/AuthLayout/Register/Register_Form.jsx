@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../redux/features/userSlice";
 import toast from "react-hot-toast";
-import { MdAlternateEmail } from "react-icons/md";
+import { MdAlternateEmail, MdError } from "react-icons/md";
 import Lottie from "lottie-web";
 import { BiError } from "react-icons/bi";
 import { useEmailLoginQuery } from "../../../redux/api/userApi";
@@ -15,20 +15,27 @@ const Register_Form = () => {
     show: false,
   });
 
-  //is login form complete?
-  //does it logs the user? yes
-  //when the user logs in with firebase and formData.email used to fetch user data from backend? yes
-  //does it fetchs user data from backend upon login? yes
-  //does it checks if the user has entered a new name? don't know
-  //does it checks if the user has entered a new profile picture? don't know
+  const [RTError, setRTError] = useState({emailError: "", passwordError: ""})
+
+  useEffect(()=> {
+    if(formData.email )
+  })
+
+  //is register form complete?
+  //when a user enters an invalid email does it gives an error?
+  //when a user enters an email that already exists in database does it give an error?
+  //when a user enters an weak medium and strong password does it gives an warning?
+  //until user enters an proper email and password, does the submit button stays disabled until then?
+  //once the user creates a new account, does it checks that user's account is created or not? and redirects them to the name creation page?
 
   const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
-  const shouldFetchEmailData = email && login_method === 'email-login';
+  const shouldFetchEmailData = email && login_method === "email-login";
 
-const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFetchEmailData });
-
+  const { data: userData } = useEmailLoginQuery(formData.email, {
+    skip: !shouldFetchEmailData,
+  });
 
   const iconMenuRef = useRef(null);
 
@@ -45,20 +52,18 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
   useEffect(() => {
     if (error) {
       toast.error(error);
-    }
-    else if (email && login_method === 'email-login') {
-      console.log(userData)
+    } else if (email && login_method === "email-login") {
+      console.log(userData);
       if (userData.success === true) {
-        toast.success(userData.message)
+        toast.success(userData.message);
         // name check
-        if(!userData.userNameExists) {
+        if (!userData.userNameExists) {
           navigate("/profileUpdate/enter-your-name");
         }
         //profile picture check
         if (!userData.userImageExists) {
           navigate("/profileUpdate/upload-profile-picture");
-        } 
-        else {
+        } else {
           navigate("/");
         }
       }
@@ -74,19 +79,19 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
         autoplay: true,
         path: "../../../../public/Visibility V3/visibility-V3.json",
       });
-  
+
       let directionMenu = -1;
-  
+
       const toggleAnimation = () => {
         animationMenu.setDirection(directionMenu);
         animationMenu.play();
-  
+
         directionMenu = -directionMenu;
         setFormData((prevData) => ({ ...prevData, show: directionMenu === 1 }));
       };
-  
+
       iconMenuRef.current.addEventListener("click", toggleAnimation);
-  
+
       return () => {
         if (iconMenuRef.current) {
           iconMenuRef.current.removeEventListener("click", toggleAnimation);
@@ -95,9 +100,8 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
       };
     }
   }, [setFormData]);
-  
-  
-  
+
+  const EmailError = "this email is not valid";
 
   return (
     <form onSubmit={handleSubmit} className="px-6">
@@ -120,8 +124,24 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
           name="email"
           id="email"
         />
-        <div className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open" data-tip='Email'>
+        <div
+          className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open"
+          data-tip="Email"
+        >
           <MdAlternateEmail />
+        </div>
+        <div
+          id="Email-Error"
+          className="flex items-center absolute right-0 -bottom-5"
+        >
+          <p
+            className={`text-sm text-red-500 flex items-center gap-1 ${
+              EmailError ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <MdError className="text-base" />
+            {EmailError}
+          </p>
         </div>
       </div>
       <div className="relative">
@@ -141,17 +161,22 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
         />
         <div
           ref={iconMenuRef} // Attach the ref to the container
-          className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open" data-tip="Show password"
+          className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open"
+          data-tip="Show password"
         >
           <div className="show-password-anim"></div>
         </div>
-      </div> 
+      </div>
 
-      <div className="flex items-center justify-between mb-4 mt-1">
-        <p className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${error ? "opacity-100" : "opacity-0"}`}><BiError />{error}</p>
-        <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
-          Forgot Password?
-        </span>
+      <div className="flex items-center justify-end mb-4 mt-1">
+        <p
+          className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${
+            error ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <BiError />
+          {error}
+        </p>
       </div>
       <button
         type="submit"
@@ -162,7 +187,7 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
         ) : (
           <span>Submit</span>
         )}
-      </button> 
+      </button>
     </form>
   );
 };
