@@ -14,18 +14,30 @@ const Register_Form = () => {
     show: false,
   });
 
-  const [RTError, setRTError] = useState({ emailError: "", passwordError: "" });
+  const [RTError, setRTError] = useState({ emailError: "", passwordError: "", passwordStrength: '' });
 
   const emailRTCheck = (e) => {
     e.preventDefault();
     const email = e.target.value;
-    setFormData({...formData, email:email})
-    console.log(email);
+    setFormData({ ...formData, email: email });
     if (!email || !/^[A-Za-z._\-0-9]+@[A-Za-z]+\.[a-z]{2,4}$/.test(email)) {
-      setRTError({ ...RTError, emailError: 'Enter a valid email address' });
-  } else {
-      setRTError({ ...RTError, emailError: '' });
-  }  
+      setRTError({ ...RTError, emailError: "Enter a valid email address" });
+    } else {
+      setRTError({ ...RTError, emailError: "" });
+    }
+  };
+
+  const passwordRTCheck = (e) => {
+    e.preventDefault();
+    const password = e.target.value;
+    setFormData({ ...formData, password: password });
+    if (!password) {
+      setRTError({ ...RTError, passwordError: "Please enter a password" });
+    } else if (/^(?:\d+|[a-zA-Z]+|[^a-zA-Z\d]+)$/.test(password)) {
+      setRTError({ ...RTError, passwordError: "Weak password ", passwordStrength: 'weak' });
+    } else {
+      setRTError({ ...RTError, passwordError: "", passwordStrength: '' });
+    }
   };
   //is register form complete?
   //when a user enters an invalid email does it gives an error?
@@ -107,8 +119,6 @@ const Register_Form = () => {
     }
   }, [setFormData]);
 
-  const EmailError = "this email is not valid";
-
   return (
     <form onSubmit={handleSubmit} className="px-6">
       <div className="mb-8">
@@ -123,7 +133,11 @@ const Register_Form = () => {
           onChange={(e) => {
             emailRTCheck(e);
           }}
-          className={`border-[2px] duration-500  ${RTError.emailError ? "focus:outline-red-500 border-red-300" : 'focus:outline-green-500'} border-gray-300 block w-full  px-3 py-2 rounded-lg`}
+          className={`border-[2px] duration-500  ${
+            RTError.emailError
+              ? "focus:outline-red-500 border-red-300"
+              : "focus:outline-green-500"
+          } border-gray-300 block w-full  px-3 py-2 rounded-lg`}
           placeholder="example@gmail.com"
           required
           type="email"
@@ -150,21 +164,27 @@ const Register_Form = () => {
           </p>
         </div>
       </div>
-      <div className="relative">
+      <div className="relative mb-10">
         <label className="text-sm  block mb-1" htmlFor="password">
           Password
         </label>
         <input
-          onChange={(e) => {
-            setFormData({ ...formData, password: e.target.value });
-          }}
-          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-lg"
-          placeholder="########"
-          required
-          type={formData.show ? "text" : "password"}
-          name="password"
-          id="password"
-        />
+  onChange={(e) => {
+    passwordRTCheck(e);
+  }}
+  className={`border-[2px] duration-500 
+    ${RTError.passwordStrength === 'weak' ? 'focus:outline-yellow-500 border-yellow-500' : 
+      RTError.passwordStrength === 'medium' ? 'focus:outline-pink-500 border-orange-500' : 
+      RTError.passwordStrength === 'strong' ? 'focus:outline-green-500 border-green-500' : 
+      'border-gray-300'} 
+    block w-full px-3 py-2 rounded-lg`}
+  placeholder="########"
+  required
+  type={formData.show ? "text" : "password"}
+  name="password"
+  id="password"
+/>
+
         <div
           ref={iconMenuRef} // Attach the ref to the container
           className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open"
@@ -172,18 +192,27 @@ const Register_Form = () => {
         >
           <div className="show-password-anim"></div>
         </div>
+        <div
+          id="Password-Error"
+          className="flex items-center absolute right-0 -bottom-5"
+        >
+          <p
+            className={`text-sm
+              ${RTError.passwordStrength === 'weak' ? 'text-yellow-500' : 
+                RTError.passwordStrength === 'medium' ? 'text-orange-500' : 
+                RTError.passwordStrength === 'strong' ? 'text-green-500' : 
+                'text-red-500'}
+              
+              flex items-center gap-1 ${
+              RTError.passwordError ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <MdError className="text-base" />
+            {RTError.passwordError}
+          </p>
+        </div>
       </div>
 
-      <div className="flex items-center justify-end mb-4 mt-1">
-        <p
-          className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${
-            error ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <BiError />
-          {error}
-        </p>
-      </div>
       <button
         type="submit"
         className="block bg-[#1a1a1a] border-[#1a1a1a] border hover:bg-white hover:text-black font-[500] w-full text-white py-2.5 rounded-lg duration-500 active:scale-90"
