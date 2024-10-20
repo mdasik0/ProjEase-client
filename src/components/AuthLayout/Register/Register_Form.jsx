@@ -14,7 +14,11 @@ const Register_Form = () => {
     show: false,
   });
 
-  const [RTError, setRTError] = useState({ emailError: "", passwordError: "", passwordStrength: '' });
+  const [RTError, setRTError] = useState({
+    emailError: "",
+    passwordError: "",
+    passwordStrength: "",
+  });
 
   const emailRTCheck = (e) => {
     e.preventDefault();
@@ -31,14 +35,49 @@ const Register_Form = () => {
     e.preventDefault();
     const password = e.target.value;
     setFormData({ ...formData, password: password });
+  
     if (!password) {
-      setRTError({ ...RTError, passwordError: "Please enter a password" });
-    } else if (/^(?:\d+|[a-zA-Z]+|[^a-zA-Z\d]+)$/.test(password)) {
-      setRTError({ ...RTError, passwordError: "Weak password ", passwordStrength: 'weak' });
-    } else {
-      setRTError({ ...RTError, passwordError: "", passwordStrength: '' });
+      setRTError({ ...RTError, passwordError: "Please enter a password", passwordStrength: "" });
+    } 
+    // First, check for minimum length
+    else if (password.length < 8) {
+      setRTError({ ...RTError, passwordError: "Password must be at least 8 characters long", passwordStrength: "" });
+    }
+    // Weak password: Contains only one type (numbers, characters, or symbols)
+    else if (/^(?:\d+|[a-zA-Z]+|[^a-zA-Z\d]+)$/.test(password)) {
+      setRTError({
+        ...RTError,
+        passwordError: "Weak password",
+        passwordStrength: "weak",
+      });
+    }
+    // Medium password: Contains exactly 2 types (numbers + characters, characters + symbols, or numbers + symbols)
+    else if (
+      (/(?=.*[A-Za-z])(?=.*\d)(?!.*[!@#$%^&*()]).{8,}$/.test(password) || 
+       /(?=.*[A-Za-z])(?=.*[!@#$%^&*()])(?!.*\d).{8,}$/.test(password) || 
+       /(?=.*\d)(?=.*[!@#$%^&*()])(?!.*[A-Za-z]).{8,}$/.test(password))
+    ) {
+      setRTError({
+        ...RTError,
+        passwordError: "Medium password",
+        passwordStrength: "medium",
+      });
+    }
+    // Strong password: Contains all 3 types (numbers + characters + symbols)
+    else if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}:<>?~]).{8,}$/.test(password)) {
+      setRTError({
+        ...RTError,
+        passwordError: "Strong password",
+        passwordStrength: "strong",
+      });
+    }
+    // Reset in case no errors
+    else {
+      setRTError({ ...RTError, passwordError: "", passwordStrength: "" });
     }
   };
+  
+  
   //is register form complete?
   //when a user enters an invalid email does it gives an error?
   //when a user enters an email that already exists in database does it give an error?
@@ -169,21 +208,26 @@ const Register_Form = () => {
           Password
         </label>
         <input
-  onChange={(e) => {
-    passwordRTCheck(e);
-  }}
-  className={`border-[2px] duration-500 
-    ${RTError.passwordStrength === 'weak' ? 'focus:outline-yellow-500 border-yellow-500' : 
-      RTError.passwordStrength === 'medium' ? 'focus:outline-pink-500 border-orange-500' : 
-      RTError.passwordStrength === 'strong' ? 'focus:outline-green-500 border-green-500' : 
-      'border-gray-300'} 
+          onChange={(e) => {
+            passwordRTCheck(e);
+          }}
+          className={`border-[2px] duration-500 
+    ${
+      RTError.passwordStrength === "weak"
+        ? "focus:outline-yellow-500 border-yellow-500"
+        : RTError.passwordStrength === "medium"
+        ? "focus:outline-pink-500 border-orange-500"
+        : RTError.passwordStrength === "strong"
+        ? "focus:outline-green-500 border-green-500"
+        : "border-gray-300"
+    } 
     block w-full px-3 py-2 rounded-lg`}
-  placeholder="########"
-  required
-  type={formData.show ? "text" : "password"}
-  name="password"
-  id="password"
-/>
+          placeholder="########"
+          required
+          type={formData.show ? "text" : "password"}
+          name="password"
+          id="password"
+        />
 
         <div
           ref={iconMenuRef} // Attach the ref to the container
@@ -198,14 +242,19 @@ const Register_Form = () => {
         >
           <p
             className={`text-sm
-              ${RTError.passwordStrength === 'weak' ? 'text-yellow-500' : 
-                RTError.passwordStrength === 'medium' ? 'text-orange-500' : 
-                RTError.passwordStrength === 'strong' ? 'text-green-500' : 
-                'text-red-500'}
+              ${
+                RTError.passwordStrength === "weak"
+                  ? "text-yellow-500"
+                  : RTError.passwordStrength === "medium"
+                  ? "text-orange-500"
+                  : RTError.passwordStrength === "strong"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }
               
               flex items-center gap-1 ${
-              RTError.passwordError ? "opacity-100" : "opacity-0"
-            }`}
+                RTError.passwordError ? "opacity-100" : "opacity-0"
+              }`}
           >
             <MdError className="text-base" />
             {RTError.passwordError}
