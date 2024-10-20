@@ -21,11 +21,11 @@ const Register_Form = () => {
     const email = e.target.value;
     setFormData({...formData, email:email})
     console.log(email);
-    if(!email || email === "hello"){
-      setRTError({...RTError,emailError: 'Enter a valid email address'});
-    } else {
-      setRTError({...RTError,emailError: ""})
-    }
+    if (!email || !/^[A-Za-z._\-0-9]+@[A-Za-z]+\.[a-z]{2,4}$/.test(email)) {
+      setRTError({ ...RTError, emailError: 'Enter a valid email address' });
+  } else {
+      setRTError({ ...RTError, emailError: '' });
+  }  
   };
   //is register form complete?
   //when a user enters an invalid email does it gives an error?
@@ -123,7 +123,7 @@ const Register_Form = () => {
           onChange={(e) => {
             emailRTCheck(e);
           }}
-          className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-lg"
+          className={`border-[2px] duration-500  ${RTError.emailError ? "focus:outline-red-500 border-red-300" : 'focus:outline-green-500'} border-gray-300 block w-full  px-3 py-2 rounded-lg`}
           placeholder="example@gmail.com"
           required
           type="email"
