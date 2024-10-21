@@ -9,12 +9,6 @@ import {
 import auth from "../../utils/firebase.config";
 import { GoogleAuthProvider } from "firebase/auth";
 
-// Enum-like constants for method types
-const AUTH_METHODS = {
-  SIGN_IN: "sign-in",
-  GOOGLE: "google",
-};
-
 const initialState = {
   userData: {},
   email: "",
@@ -37,15 +31,8 @@ export const signUpUser = createAsyncThunk(
         payload.password
       );
 
-      // update the username
-      await updateProfile(auth.currentUser, { displayName: payload.name });
-
-      // storing information in the state
       return {
-        name: data.user.displayName,
         email: data.user.email,
-        image: data.user.photoURL || "",
-        method: AUTH_METHODS.SIGN_IN,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -143,11 +130,8 @@ const userSlice = createSlice({
         state.error = "";
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
-        state.name = action.payload.name;
         state.email = action.payload.email;
-        state.image = action.payload.image;
         state.isLoading = false;
-        state.method = action.payload.method;
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.isLoading = false;

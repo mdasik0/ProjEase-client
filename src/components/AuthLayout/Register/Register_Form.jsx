@@ -2,9 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { MdAlternateEmail, MdError, MdOutlineDoNotDisturb } from "react-icons/md";
+import {
+  MdAlternateEmail,
+  MdError,
+  MdOutlineDoNotDisturb,
+} from "react-icons/md";
 import Lottie from "lottie-web";
 import { useEmailLoginQuery } from "../../../redux/api/userApi";
+import { signUpUser } from "../../../redux/features/userSlice";
 
 const Register_Form = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +19,10 @@ const Register_Form = () => {
   });
 
   const [RTError, setRTError] = useState({
-emailError: false,
+    emailError: false,
     emailErrMessage: "",
     passwordError: false,
-    passwordErrMessage:'',
+    passwordErrMessage: "",
     passwordStrength: "",
   });
 
@@ -26,9 +31,13 @@ emailError: false,
     const email = e.target.value;
     setFormData({ ...formData, email: email });
     if (!email || !/^[A-Za-z._\-0-9]+@[A-Za-z]+\.[a-z]{2,4}$/.test(email)) {
-      setRTError({ ...RTError, emailErrMessage: "Enter a valid email address", emailError: true });
+      setRTError({
+        ...RTError,
+        emailErrMessage: "Enter a valid email address",
+        emailError: true,
+      });
     } else {
-      setRTError({ ...RTError, emailErrMessage: "",emailError:false });
+      setRTError({ ...RTError, emailErrMessage: "", emailError: false });
     }
   };
 
@@ -94,7 +103,12 @@ emailError: false,
       }
       // Reset in case no errors
       else {
-        setRTError({ ...RTError, passwordError: false, passwordStrength: "", passwordErrMessage: "" });
+        setRTError({
+          ...RTError,
+          passwordError: false,
+          passwordStrength: "",
+          passwordErrMessage: "",
+        });
       }
     }
   };
@@ -125,7 +139,7 @@ emailError: false,
     const email = formData.email;
     const password = formData.password;
     console.log(email, password);
-    // dispatch(loginUser({ email, password }));
+    dispatch(signUpUser({ email, password }));
   };
 
   useEffect(() => {
@@ -292,7 +306,12 @@ emailError: false,
         {isLoading ? (
           <span className="loading loading-spinner loading-sm"></span>
         ) : (
-          <span className="flex items-center justify-center gap-2">{(RTError.passwordError || RTError.emailError) && <MdOutlineDoNotDisturb className="text-lg" />}Submit</span>
+          <span className="flex items-center justify-center gap-2">
+            {(RTError.passwordError || RTError.emailError) && (
+              <MdOutlineDoNotDisturb className="text-lg" />
+            )}
+            Submit
+          </span>
         )}
       </button>
     </form>
