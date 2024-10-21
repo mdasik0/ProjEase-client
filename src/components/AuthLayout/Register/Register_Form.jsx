@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { MdAlternateEmail, MdError } from "react-icons/md";
+import { MdAlternateEmail, MdError, MdOutlineDoNotDisturb } from "react-icons/md";
 import Lottie from "lottie-web";
-import { BiError } from "react-icons/bi";
 import { useEmailLoginQuery } from "../../../redux/api/userApi";
 
 const Register_Form = () => {
@@ -15,8 +14,10 @@ const Register_Form = () => {
   });
 
   const [RTError, setRTError] = useState({
-    emailError: "",
-    passwordError: "",
+emailError: false,
+    emailErrMessage: "",
+    passwordError: false,
+    passwordErrMessage:'',
     passwordStrength: "",
   });
 
@@ -25,9 +26,9 @@ const Register_Form = () => {
     const email = e.target.value;
     setFormData({ ...formData, email: email });
     if (!email || !/^[A-Za-z._\-0-9]+@[A-Za-z]+\.[a-z]{2,4}$/.test(email)) {
-      setRTError({ ...RTError, emailError: "Enter a valid email address" });
+      setRTError({ ...RTError, emailErrMessage: "Enter a valid email address", emailError: true });
     } else {
-      setRTError({ ...RTError, emailError: "" });
+      setRTError({ ...RTError, emailErrMessage: "",emailError:false });
     }
   };
 
@@ -35,49 +36,69 @@ const Register_Form = () => {
     e.preventDefault();
     const password = e.target.value;
     setFormData({ ...formData, password: password });
-  
+
     if (!password) {
-      setRTError({ ...RTError, passwordError: "Please enter a password", passwordStrength: "" });
-    } 
+      setRTError({
+        ...RTError,
+        passwordError: true,
+        passwordErrMessage: "Please enter a password",
+        passwordStrength: "",
+      });
+    }
     // First, check for minimum length
     else if (password.length < 8) {
-      setRTError({ ...RTError, passwordError: "Password must be at least 8 characters long", passwordStrength: "" });
+      setRTError({
+        ...RTError,
+        passwordError: true,
+        passwordErrMessage: "Password must be at least 8 characters long",
+        passwordStrength: "",
+      });
     }
+
     // Weak password: Contains only one type (numbers, characters, or symbols)
-    else if (/^(?:\d+|[a-zA-Z]+|[^a-zA-Z\d]+)$/.test(password)) {
-      setRTError({
-        ...RTError,
-        passwordError: "Weak password",
-        passwordStrength: "weak",
-      });
-    }
-    // Medium password: Contains exactly 2 types (numbers + characters, characters + symbols, or numbers + symbols)
-    else if (
-      (/(?=.*[A-Za-z])(?=.*\d)(?!.*[!@#$%^&*()]).{8,}$/.test(password) || 
-       /(?=.*[A-Za-z])(?=.*[!@#$%^&*()])(?!.*\d).{8,}$/.test(password) || 
-       /(?=.*\d)(?=.*[!@#$%^&*()])(?!.*[A-Za-z]).{8,}$/.test(password))
-    ) {
-      setRTError({
-        ...RTError,
-        passwordError: "Medium password",
-        passwordStrength: "medium",
-      });
-    }
-    // Strong password: Contains all 3 types (numbers + characters + symbols)
-    else if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}:<>?~]).{8,}$/.test(password)) {
-      setRTError({
-        ...RTError,
-        passwordError: "Strong password",
-        passwordStrength: "strong",
-      });
-    }
-    // Reset in case no errors
     else {
-      setRTError({ ...RTError, passwordError: "", passwordStrength: "" });
+      if (/^(?:\d+|[a-zA-Z]+|[^a-zA-Z\d]+)$/.test(password)) {
+        setRTError({
+          ...RTError,
+          passwordError: false,
+          passwordErrMessage: "Weak password",
+          passwordStrength: "weak",
+        });
+      }
+      // Medium password: Contains exactly 2 types (numbers + characters, characters + symbols, or numbers + symbols)
+      else if (
+        /(?=.*[A-Za-z])(?=.*\d)(?!.*[!@#$%^&*()]).{8,}$/.test(password) ||
+        /(?=.*[A-Za-z])(?=.*[!@#$%^&*()])(?!.*\d).{8,}$/.test(password) ||
+        /(?=.*\d)(?=.*[!@#$%^&*()])(?!.*[A-Za-z]).{8,}$/.test(password)
+      ) {
+        setRTError({
+          ...RTError,
+          passwordError: false,
+          passwordErrMessage: "Medium password",
+          passwordStrength: "medium",
+        });
+      }
+      // Strong password: Contains all 3 types (numbers + characters + symbols)
+      //note: if any repitative characters are used like 12345 or $$$$$$ it will be considered medium strength password even if there is all types of characters avaiable and even if it exceeds 8 characters.
+      else if (
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}:<>?~]).{8,}$/.test(
+          password
+        )
+      ) {
+        setRTError({
+          ...RTError,
+          passwordError: false,
+          passwordErrMessage: "Strong password",
+          passwordStrength: "strong",
+        });
+      }
+      // Reset in case no errors
+      else {
+        setRTError({ ...RTError, passwordError: false, passwordStrength: "", passwordErrMessage: "" });
+      }
     }
   };
-  
-  
+
   //is register form complete?
   //when a user enters an invalid email does it gives an error?
   //when a user enters an email that already exists in database does it give an error?
@@ -103,6 +124,7 @@ const Register_Form = () => {
     e.preventDefault();
     const email = formData.email;
     const password = formData.password;
+    console.log(email, password);
     // dispatch(loginUser({ email, password }));
   };
 
@@ -199,7 +221,7 @@ const Register_Form = () => {
             }`}
           >
             <MdError className="text-base" />
-            {RTError.emailError}
+            {RTError.emailErrMessage}
           </p>
         </div>
       </div>
@@ -253,23 +275,24 @@ const Register_Form = () => {
               }
               
               flex items-center gap-1 ${
-                RTError.passwordError ? "opacity-100" : "opacity-0"
+                RTError.passwordErrMessage ? "opacity-100" : "opacity-0"
               }`}
           >
             <MdError className="text-base" />
-            {RTError.passwordError}
+            {RTError.passwordErrMessage}
           </p>
         </div>
       </div>
 
       <button
+        disabled={RTError.passwordError || RTError.emailError}
         type="submit"
-        className="block bg-[#1a1a1a] border-[#1a1a1a] border hover:bg-white hover:text-black font-[500] w-full text-white py-2.5 rounded-lg duration-500 active:scale-90"
+        className="block bg-[#1a1a1a] border-[#1a1a1a] border disabled:bg-gray-500 disabled:border-gray-500 disabled:text-white  hover:bg-white hover:text-black font-[500] w-full text-white py-2.5 rounded-lg duration-500 active:scale-90"
       >
         {isLoading ? (
           <span className="loading loading-spinner loading-sm"></span>
         ) : (
-          <span>Submit</span>
+          <span className="flex items-center justify-center gap-2">{(RTError.passwordError || RTError.emailError) && <MdOutlineDoNotDisturb className="text-lg" />}Submit</span>
         )}
       </button>
     </form>
