@@ -54,7 +54,7 @@ const SocialLogin = () => {
     if (isError) {
       toast.error(error);
     }
-    if (email && login_method === "google-login") {
+    if (email && login_method === "google") {
       createUserInBackend();
     }
   }, [error, email, isError, login_method]);

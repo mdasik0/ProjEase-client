@@ -8,10 +8,19 @@ import {
   MdOutlineDoNotDisturb,
 } from "react-icons/md";
 import Lottie from "lottie-web";
-import { useEmailLoginQuery } from "../../../redux/api/userApi";
+import { useCreateUserMutation } from "../../../redux/api/userApi";
 import { signUpUser } from "../../../redux/features/userSlice";
 
 const Register_Form = () => {
+
+  const { isLoading,isError, error, email, login_method } = useSelector(
+    (state) => state.userSlice
+  );
+  
+  const iconMenuRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -113,55 +122,60 @@ const Register_Form = () => {
     }
   };
 
-  //is register form complete?
-  //when a user enters an invalid email does it gives an error?
-  //when a user enters an email that already exists in database does it give an error?
-  //when a user enters an weak medium and strong password does it gives an warning?
-  //until user enters an proper email and password, does the submit button stays disabled until then?
-  //once the user creates a new account, does it checks that user's account is created or not? and redirects them to the name creation page?
+  const [createUser] = useCreateUserMutation();
 
-  const { isLoading, error, email, login_method } = useSelector(
-    (state) => state.userSlice
-  );
-  const shouldFetchEmailData = email && login_method === "email-login";
+  const createUserInBackend = async () => {
+    const obj = {
+      email,
+      login_method: "email",
+      created: new Date(),
+    };
 
-  const { data: userData } = useEmailLoginQuery(formData.email, {
-    skip: !shouldFetchEmailData,
-  });
+    const response = await createUser(obj);
 
-  const iconMenuRef = useRef(null);
+    if (response?.data?.success === false) {
+      return toast.error(response.data.message);
+    } else if (response?.data?.success === true) {
+      toast.success(response.data.message);
+      if (!response.data.userNameExists) {
+        return navigate("/profileUpdate/enter-your-name");
+      }
+      if (!response.data.userImageExists) {
+        return navigate("/profileUpdate/upload-profile-picture");
+      } else {
+        return navigate("/");
+      }
+    }
+  };
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
+
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = formData.email;
-    const password = formData.password;
-    console.log(email, password);
+    const password = formData.password; 
     dispatch(signUpUser({ email, password }));
+    setRTError({
+      emailError: false,
+      emailErrMessage: "",
+      passwordError: false,
+      passwordErrMessage: "",
+      passwordStrength: "",
+    })
+
   };
 
   useEffect(() => {
-    if (error) {
+    if (isError) {
       toast.error(error);
-    } else if (email && login_method === "email-login") {
-      console.log(userData);
-      if (userData.success === true) {
-        toast.success(userData.message);
-        // name check
-        if (!userData.userNameExists) {
-          navigate("/profileUpdate/enter-your-name");
-        }
-        //profile picture check
-        if (!userData.userImageExists) {
-          navigate("/profileUpdate/upload-profile-picture");
-        } else {
-          navigate("/");
-        }
-      }
+    } 
+    if (email && login_method === "email") {
+      createUserInBackend();
     }
-  }, [error, email, navigate, userData]);
+  }, [isError, error, email, navigate, login_method]);
 
   useEffect(() => {
     if (iconMenuRef.current) {

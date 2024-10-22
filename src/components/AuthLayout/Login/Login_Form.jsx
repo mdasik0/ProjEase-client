@@ -25,7 +25,7 @@ const Login_Form = () => {
   const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
-  const shouldFetchEmailData = email && login_method === 'email-login';
+  const shouldFetchEmailData = email && login_method === 'email';
 
 const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFetchEmailData });
 

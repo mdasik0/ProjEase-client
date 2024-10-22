@@ -131,6 +131,7 @@ const userSlice = createSlice({
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.email = action.payload.email;
+        state.login_method = 'email'
         state.isLoading = false;
       })
       .addCase(signUpUser.rejected, (state, action) => {
@@ -147,7 +148,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.email = action.payload.email;
-        state.login_method = 'email-login'
+        state.login_method = 'email';
         state.isLoading = false;
         state.method = action.payload.method;
       })
@@ -182,7 +183,7 @@ const userSlice = createSlice({
       })
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.email = action.payload.email;
-        state.login_method = 'google-login';
+        state.login_method = 'google';
         state.socialLoginLoading = false;
       })
       .addCase(googleLogin.rejected, (state, action) => {
