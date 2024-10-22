@@ -4,7 +4,7 @@ import { FaMoon } from "react-icons/fa";
 import { LuUserCircle } from "react-icons/lu";
 import { MdDoNotDisturbOn } from "react-icons/md";
 import { Link } from "react-router-dom";
-import avatar from "../../../../../public/avatar/avatar.png";
+import avatar from "/avatar/avatar.png";
 
 const MobileNavUser = ({ userData, isLoading }) => {
   const [statusOn, setStatusOn] = useState(false);

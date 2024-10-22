@@ -184,7 +184,7 @@ const Register_Form = () => {
         renderer: "svg",
         loop: false,
         autoplay: true,
-        path: "../../../../public/Visibility V3/visibility-V3.json",
+        path: "/Visibility V3/visibility-V3.json",
       });
 
       let directionMenu = -1;

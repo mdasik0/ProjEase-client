@@ -5,7 +5,7 @@ import {
   FaPinterestSquare,
   FaYoutube,
 } from "react-icons/fa";
-import fullLogo from "../../../../../public/logo/Full-logo/logo-black-ov2.png";
+import fullLogo from "/logo/Full-logo/logo-black-ov2.png";
 import { FaXTwitter } from "react-icons/fa6";
 import Newsletter from "./Newsletter";
 import FooterBottom from "./FooterBottom";

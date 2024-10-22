@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import googleIcon from "/public/auth/google.png";
+import googleIcon from "/auth/google.png";
 import { googleLogin } from "../../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";

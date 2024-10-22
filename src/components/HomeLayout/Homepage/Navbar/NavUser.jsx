@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { MdDoNotDisturbOn, MdOutlineLogout } from "react-icons/md";
 import { LuUserSquare2 } from "react-icons/lu";
 import { FaMoon } from "react-icons/fa";
-import avatar from "../../../../../public/avatar/avatar.png";
+import avatar from "/avatar/avatar.png";
 
 const NavUser = ({ user, userData, logOut, isLoading }) => {
   const [dropdown, setDropdown] = useState(false);
