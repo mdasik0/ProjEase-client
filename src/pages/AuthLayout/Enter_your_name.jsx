@@ -1,63 +1,78 @@
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { LuUserSquare } from "react-icons/lu";
+
 const Enter_your_name = () => {
+    const handleSubmit = (e) => {
+e.preventDefault();
+const firstname = e.target.firstname.value;
+const lastname = e.target.lastname.value;
+console.log(firstname,lastname);
+    }
   return (
     <div className="w-screen ">
       <div className="md:max-w-[92vw] md:mx-auto mx-8 md:mt-12 my-6">
         <img className="h-10 md:h-12" src={logo} alt="projease logo" />
         <div className="flex flex-col md:h-[80vh] h-[86vh]">
-          <div className="md:m-8 mt-4 flex-grow">
-            <h1 className="md:text-5xl text-4xl font-[500]">
-              Please enter your name
+          <div className="md:m-10 mt-4 flex-grow">
+            {/* Updated Header and Description */}
+            <h1 className="md:text-5xl text-4xl font-[600]">
+              Let’s Get to Know You!
             </h1>
             <p className="mt-2 text-gray-500">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor,
-              fugit.
+              Please provide your name to continue setting up your ProjEase account.
             </p>
-            <form className="mt-6">
-              <div className="mb-4 relative md:w-[500px]">
+            {/* Separator */}
+            <hr className="mt-2 border-gray-300" />
+            <form onSubmit={handleSubmit} className="mt-6">
+              {/* First Name Field */}
+              <div className="mb-6 relative md:w-[500px]">
                 <label className="text-sm block mb-1" htmlFor="firstname">
                   First name
                 </label>
                 <input
-                  className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-lg"
-                  placeholder="john"
+                  className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-lg"
+                  placeholder="John"
                   required
                   type="text"
                   name="firstname"
                   id="firstname"
                 />
                 <div
-                  className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open"
-                  data-tip="firstname"
+                  className="bg-gray-200 w-fit p-1.5 rounded absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open"
+                  data-tip="First name"
                 >
                   <LuUserSquare />
                 </div>
               </div>
-              <div className="mb-3 relative md:w-[500px]">
+
+              {/* Last Name Field */}
+              <div className="mb-6 relative md:w-[500px]">
                 <label className="text-sm block mb-1" htmlFor="lastname">
                   Last name
                 </label>
                 <input
-                  className="border-[2px] border-gray-300 block w-full  px-3 py-2 rounded-lg"
-                  placeholder="doe"
+                  className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-lg"
+                  placeholder="Doe"
                   required
                   type="text"
                   name="lastname"
                   id="lastname"
                 />
                 <div
-                  className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open"
-                  data-tip="lastname"
+                  className="bg-gray-200 w-fit p-1.5 rounded absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open"
+                  data-tip="Last name"
                 >
                   <LuUserSquare />
                 </div>
               </div>
-              <button className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer mt-6">
+
+              {/* Updated Button Style */}
+              <button className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer mt-">
                 Next
               </button>
             </form>
           </div>
+          {/* Step Indicator */}
           <p className="text-sm w-full text-center mt-auto text-gray-400">
             2 of 4
           </p>
