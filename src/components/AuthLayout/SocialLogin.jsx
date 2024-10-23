@@ -30,20 +30,20 @@ const SocialLogin = () => {
     if (response?.data?.success === false) {
       toast.success(response.data.message);
       if (!response.data.userNameExists) {
-        return navigate("/profileUpdate/enter-your-name");
+        return navigate("/auth/enter-your-name");
       }
       if (!response.data.userImageExists) {
-        return navigate("/profileUpdate/upload-profile-picture");
+        return navigate("/auth/upload-profile-picture");
       } else {
         navigate("/");
       }
     } else if (response?.data?.success === true) {
       toast.success(response.data.message);
       if (!response.data.userNameExists) {
-        return navigate("/profileUpdate/enter-your-name");
+        return navigate("/auth/enter-your-name");
       }
       if (!response.data.userImageExists) {
-        return navigate("/profileUpdate/upload-profile-picture");
+        return navigate("/auth/upload-profile-picture");
       } else {
         navigate("/");
       }

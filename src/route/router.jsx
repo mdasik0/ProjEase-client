@@ -54,11 +54,11 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path:'profileUpdate/upload-profile-picture',
+        path:'upload-profile-picture',
         element: <Upload_your_profile_picture />
       },
       {
-        path:'profileUpdate/enter-your-name',
+        path:'enter-your-name',
         element: <Enter_your_name />
       }
     ],

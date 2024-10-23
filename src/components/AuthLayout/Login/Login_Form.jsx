@@ -46,20 +46,20 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
     if (error) {
       toast.error(error);
     }
-    else if (email && login_method === 'email-login') {
+    else if (email && login_method === 'email') {
       console.log(userData)
-      if (userData.success === true) {
-        toast.success(userData.message)
+      if (userData?.success === true) {
+        toast.success(userData?.message)
         // name check
-        if(!userData.userNameExists) {
-          navigate("/profileUpdate/enter-your-name");
+        if(!userData?.userNameExists) {
+          return navigate("/auth/enter-your-name");
         }
         //profile picture check
-        if (!userData.userImageExists) {
-          navigate("/profileUpdate/upload-profile-picture");
+        if (!userData?.userImageExists) {
+          return navigate("/auth/upload-profile-picture");
         } 
         else {
-          navigate("/");
+          return navigate("/");
         }
       }
     }
