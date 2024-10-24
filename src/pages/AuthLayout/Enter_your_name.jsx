@@ -2,31 +2,34 @@ import { useSelector } from "react-redux";
 import { useUpdateNameMutation } from "../../redux/api/userApi";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { LuUserSquare } from "react-icons/lu";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Enter_your_name = () => {
   const [updateName] = useUpdateNameMutation();
-  const {email,userData} = useSelector((state) => state.userSlice)
-  console.log(email,userData?._id);
-    const handleSubmit = async (e) => {
-e.preventDefault();
-const firstname = e.target.firstname.value;
-const lastname = e.target.lastname.value;
-const data = {
-  firstname,
-  lastname
-}
-try {
-  const response = await updateName({_id:userData?._id, data})
-  console.log(response);
-  if(response.success) {
-    toast.success(response.message);
-    //redirect to the imgfield
-  }
-
-} catch (err) {
-  console.error('There was a problem updating the name',err.message)
-}
+  const { userData } = useSelector((state) => state.userSlice);
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const firstname = e.target.firstname.value;
+    const lastname = e.target.lastname.value;
+    const data = {
+      firstname,
+      lastname,
+    };
+    try {
+      const response = await updateName({ _id: userData?._id, data });
+      if (response?.data?.success) {
+        toast.success(response?.data?.message);
+        //redirect to the imgfield
+        navigate("/auth/upload-profile-picture");
+      } else {
+        toast.error(response?.data?.message);
+      }
+    } catch (err) {
+      console.error("There was a problem updating the name", err.message);
     }
+  };
   return (
     <div className="w-screen ">
       <div className="md:max-w-[92vw] md:mx-auto mx-8 md:mt-12 my-6">
@@ -38,7 +41,8 @@ try {
               Let’s Get to Know You!
             </h1>
             <p className="mt-2 text-gray-500">
-              Please provide your name to continue setting up your ProjEase account.
+              Please provide your name to continue setting up your ProjEase
+              account.
             </p>
             {/* Separator */}
             <hr className="mt-2 border-gray-300" />
