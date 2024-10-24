@@ -1,12 +1,31 @@
+import { useSelector } from "react-redux";
+import { useUpdateNameMutation } from "../../redux/api/userApi";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { LuUserSquare } from "react-icons/lu";
 
 const Enter_your_name = () => {
-    const handleSubmit = (e) => {
+  const [updateName] = useUpdateNameMutation();
+  const {email,userData} = useSelector((state) => state.userSlice)
+  console.log(email,userData?._id);
+    const handleSubmit = async (e) => {
 e.preventDefault();
 const firstname = e.target.firstname.value;
 const lastname = e.target.lastname.value;
-console.log(firstname,lastname);
+const data = {
+  firstname,
+  lastname
+}
+try {
+  const response = await updateName({_id:userData?._id, data})
+  console.log(response);
+  if(response.success) {
+    toast.success(response.message);
+    //redirect to the imgfield
+  }
+
+} catch (err) {
+  console.error('There was a problem updating the name',err.message)
+}
     }
   return (
     <div className="w-screen ">

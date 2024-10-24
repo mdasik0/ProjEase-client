@@ -25,6 +25,13 @@ const userApi = createApi({
       }),
       providesTags: ['users']
     }),
+    updateName: builder.mutation({
+      query: ({_id,data}) => ({
+        url: `/updateName/${_id}`,
+        method:'PATCH',
+        body:{data}
+      })
+    }),
     updateUser: builder.mutation({
       query: ({_id,data}) => ({
         url: `/updateUser/${_id}`,
@@ -47,6 +54,7 @@ export const {
   useCreateUserMutation,
   useGetUserQuery,
   useUpdateUserMutation,
+  useUpdateNameMutation,
   useAddProjectsQuery,
   useEmailLoginQuery
 } = userApi;
