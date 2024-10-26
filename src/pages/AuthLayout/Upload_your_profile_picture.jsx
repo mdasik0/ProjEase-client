@@ -35,7 +35,8 @@ const Upload_your_profile_picture = () => {
               Make your profile stand out. Let’s add a face to your name.
             </p>
             {/* Separator */}
-            <hr className="my-2 border-gray-300" />
+            <hr className="mt-2 md:mb-10 mb-6 border-gray-300" />
+            <div className="flex md:items-start items-center justify-center md:justify-start">
             <div className="h-[350px] w-[350px] rounded-3xl bg-gray-100 border border-gray-300 flex items-center justify-center">
               <div className="bg-gray-200 hover:bg-gray-300 duration-500 cursor-pointer border-[4px] border-gray-400 border-dashed relative w-3/4 h-3/4 rounded-full overflow-hidden">
               {
@@ -60,6 +61,8 @@ const Upload_your_profile_picture = () => {
                   onChange={handleImageChange}
                 />
               </div>
+            </div>
+
             </div>
           </div>
           {/* Step Indicator */}
