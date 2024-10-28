@@ -8,6 +8,12 @@ import avatar from "/avatar/avatar.png";
 
 const MobileNavUser = ({ userData, isLoading }) => {
   const [statusOn, setStatusOn] = useState(false);
+
+  
+  const fullName = userData?.name?.firstname + " " +userData?.name?.lastname ;
+  const nameCheck =  fullName.length > 7 ? fullName.slice(0,5) + '...' : fullName;
+
+
   return (
     <>
       {isLoading ? (
@@ -24,11 +30,11 @@ const MobileNavUser = ({ userData, isLoading }) => {
               </div>
             </div>
             <div className="flex flex-col items-start gap-0">
-              <span>
-                {userData?.name
-                  ? userData?.name
-                  : userData?.email?.split("@")[0]}
-              </span>
+            <span className="tooltip tooltip-bottom" data-tip={fullName}>
+                  {userData?.name
+                    ? nameCheck
+                    : userData?.email?.split("@")[0]}
+                </span>
               <div className="-mt-1">
                 <span className="text-[12px] text-gray-400 ">
                   {userData?.status ? userData?.status : "online"}

@@ -6,6 +6,9 @@ import { uploadImageToImgbb } from "../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { useUploadProfilePictureMutation } from "../../redux/api/userApi";
 const Upload_your_profile_picture = () => {
+
+  //TODO: redirect the user to an other page after profile picture has been uploaded 
+
   const [imageData, setImageData] = useState({
     selectedFile: null,
     previewURL: "",

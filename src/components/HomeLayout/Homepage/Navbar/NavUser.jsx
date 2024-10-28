@@ -12,6 +12,9 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
   const dropdownRef = useRef();
   const statusRef = useRef();
 
+  const fullName = userData?.name?.firstname + " " +userData?.name?.lastname ;
+  const nameCheck =  fullName.length > 7 ? fullName.slice(0,5) + '...' : fullName;
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -52,9 +55,9 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
                 </div>
               </div>
               <div className="flex flex-col items-start gap-0">
-                <span>
+                <span className="tooltip tooltip-bottom" data-tip={fullName}>
                   {userData?.name
-                    ? userData?.name
+                    ? nameCheck
                     : userData?.email?.split("@")[0]}
                 </span>
                 <div className="-mt-1">
