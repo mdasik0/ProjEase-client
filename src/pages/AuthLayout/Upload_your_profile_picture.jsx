@@ -1,6 +1,10 @@
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { useState } from "react";
 import { LuImagePlus } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadImageToImgbb } from "../../redux/features/userSlice";
+import toast from "react-hot-toast";
+import { useUploadProfilePictureMutation } from "../../redux/api/userApi";
 const Upload_your_profile_picture = () => {
   const [imageData, setImageData] = useState({
     selectedFile: null,
@@ -9,6 +13,9 @@ const Upload_your_profile_picture = () => {
   });
 
   const [hover, setHover] = useState(false)
+  const dispatch = useDispatch()
+  const { userData } = useSelector((state) => state.userSlice);
+  const [uploadProfilePicture] = useUploadProfilePictureMutation();
 
   const handleImageChange = (e) => {
     e.preventDefault;
@@ -18,8 +25,38 @@ const Upload_your_profile_picture = () => {
       setImageData({...imageData, selectedFile,previewURL})
     }
   }
+  
+  const handleSubmit = async () => {
+    if (!imageData.selectedFile) {
+        toast.error("Please select an image first!");
+        return;
+    }
 
-  console.log(imageData)
+    try {
+        // Upload image to Imgbb
+        const response = await dispatch(uploadImageToImgbb(imageData.selectedFile));
+
+        if (uploadImageToImgbb.fulfilled.match(response)) {
+            const uploadedURL = response.payload;
+
+            // Upload URL to backend
+            const responseFromBackend = await uploadProfilePicture({ _id: userData?._id, data: uploadedURL });
+
+            if (responseFromBackend.data?.success) {
+                toast.success(responseFromBackend.data.message);
+            } else {
+                toast.error(responseFromBackend.data.message || "Error uploading profile picture");
+            }
+        } else {
+            toast.error("Image upload failed!");
+        }
+    } catch (error) {
+        toast.error("An unexpected error occurred.");
+        console.error(error);
+    }
+};
+
+
 
   return (
     <div className="w-screen ">
@@ -35,9 +72,9 @@ const Upload_your_profile_picture = () => {
               Make your profile stand out. Let’s add a face to your name.
             </p>
             {/* Separator */}
-            <hr className="mt-2 md:mb-10 mb-6 border-gray-300" />
+            <hr className="mt-2 md:mb-8 mb-3 border-gray-300" />
             <div className="flex md:items-start items-center justify-center md:justify-start">
-            <div className="h-[350px] w-[350px] rounded-3xl bg-gray-100 border border-gray-300 flex items-center justify-center">
+            <div className="h-[300px] w-[300px] rounded-3xl bg-gray-100 border border-gray-300 flex items-center justify-center">
               <div className="bg-gray-200 hover:bg-gray-300 duration-500 cursor-pointer border-[4px] border-gray-400 border-dashed relative w-3/4 h-3/4 rounded-full overflow-hidden">
               {
                 imageData?.previewURL ? 
@@ -62,8 +99,10 @@ const Upload_your_profile_picture = () => {
                 />
               </div>
             </div>
-
             </div>
+            <button onClick={handleSubmit} className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer mt-8">
+                Next
+              </button>
           </div>
           {/* Step Indicator */}
           <p className="text-sm w-full text-center mt-auto text-gray-400">

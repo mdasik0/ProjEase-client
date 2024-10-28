@@ -32,6 +32,13 @@ const userApi = createApi({
         body:{data}
       })
     }),
+    uploadProfilePicture: builder.mutation({
+      query: ({_id,data}) => ({
+        url: `/updateProfilePicture/${_id}`,
+        method: 'PATCH',
+        body: {data},
+      })
+    }),
     updateUser: builder.mutation({
       query: ({_id,data}) => ({
         url: `/updateUser/${_id}`,
@@ -55,6 +62,7 @@ export const {
   useGetUserQuery,
   useUpdateUserMutation,
   useUpdateNameMutation,
+  useUploadProfilePictureMutation,
   useAddProjectsQuery,
   useEmailLoginQuery
 } = userApi;

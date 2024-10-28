@@ -19,6 +19,22 @@ const initialState = {
   error: "",
 };
 
+export const uploadImageToImgbb = createAsyncThunk(
+  'userSlice/imgbbHosting',
+  async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const imgbbApiKey = import.meta.env.VITE_IMGBB_apiKey
+    console.log(imgbbApiKey)
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await response.json();
+    return data.data.url; // Return the image URL
+  }
+);
+
 // Sign up new user
 export const signUpUser = createAsyncThunk(
   "userSlice/signUpUser",
