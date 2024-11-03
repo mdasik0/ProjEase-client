@@ -6,7 +6,7 @@ const Additional_info = () => {
   const [formData, setFormData] = useState({
     birthday: "",
     jobTitle: "",
-    address: "",
+    address: {street:"", city:"", state:"", country:""},
     bio: "",
   });
 
@@ -25,7 +25,7 @@ const Additional_info = () => {
     { id: 12, name: "UX/UI Designer" },
     { id: 13, name: "Network Engineer" },
     { id: 14, name: "Quality Assurance Tester" },
-    { id: 15, name: "Business Analyst" }
+    { id: 15, name: "Business Analyst" },
   ];
 
   const dateInputRef = useRef(null);
@@ -60,7 +60,6 @@ const Additional_info = () => {
                       setFormData({ ...formData, birthday: e.target.value });
                     }}
                     className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-lg"
-                    required
                     type="date"
                     name="birthday"
                     id="birthday"
@@ -81,18 +80,40 @@ const Additional_info = () => {
                     onChange={(e) => {
                       setFormData({ ...formData, jobTitle: e.target.value });
                     }}
-                    className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-lg"
-                    required
+                    className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-lg "
                     name="jobTitle"
                     id="jobTitle"
                   >
-                    <option value="" disabled selected>Select your job title</option>
-                    {jobFields.map(job => (
-                      <option key={job.id} value={job.name}>{job.name}</option>
+                    <option value="" disabled selected>
+                      Select your job title
+                    </option>
+                    {jobFields.map((job) => (
+                      <option key={job.id} value={job.name}>
+                        {job.name}
+                      </option>
                     ))}
                   </select>
                 </div>
               </div>
+              <div className="mb-4 relative w-fit">
+                <label className="text-sm block mb-1">Address</label>
+                <div className="border-[2px] border-gray-300 w-full rounded-lg grid grid-cols-[277px_277px] gap-4 md:p-6 p-3">
+                  <input  placeholder="Street" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
+                  <input  placeholder="City" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
+                  <input  placeholder="State" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
+                  <input  placeholder="Country" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
+                </div>
+              </div>
+              <div className="flex items-end gap-6">
+              <div className=" relative w-fit">
+                <label className="text-sm block mb-1">Bio</label>
+                <textarea className="border-[2px] border-gray-300 rounded-lg grid grid-cols-[277px_277px] gap-4 p-3 text-sm w-[300px] h-[100px]" />
+                  
+              </div>
+              <button className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer"  type="submit">Submit</button>
+              <button className="bg-gray-400 px-6 py-2 text-white rounded-lg border border-gray-400 hover:bg-gray-500 hover:border-gray-500 duration-500 cursor-pointer" >Skip</button>
+              </div>
+
             </form>
           </div>
         </div>
