@@ -6,7 +6,7 @@ const Additional_info = () => {
   const [formData, setFormData] = useState({
     birthday: "",
     jobTitle: "",
-    address: {street:"", city:"", state:"", country:""},
+    address: { street: "", city: "", state: "", country: "" },
     bio: "",
   });
 
@@ -97,23 +97,46 @@ const Additional_info = () => {
               </div>
               <div className="mb-4 relative w-fit">
                 <label className="text-sm block mb-1">Address</label>
-                <div className="border-[2px] border-gray-300 w-full rounded-lg grid grid-cols-[277px_277px] gap-4 md:p-6 p-3">
-                  <input  placeholder="Street" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
-                  <input  placeholder="City" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
-                  <input  placeholder="State" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
-                  <input  placeholder="Country" type="text" className="border-[2px] border-gray-300 block w-full px-3 py-[6px] rounded-lg " />
+                <div className="border-[2px] border-gray-300 w-full rounded-lg grid grid-cols-2 gap-4 md:p-6 p-3">
+                  <input
+                    placeholder="Street"
+                    type="text"
+                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                  />
+                  <input
+                    placeholder="City"
+                    type="text"
+                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                  />
+                  <input
+                    placeholder="State"
+                    type="text"
+                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                  />
+                  <input
+                    placeholder="Country"
+                    type="text"
+                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                  />
                 </div>
               </div>
-              <div className="flex items-end gap-6">
-              <div className=" relative w-fit">
-                <label className="text-sm block mb-1">Bio</label>
-                <textarea className="border-[2px] border-gray-300 rounded-lg grid grid-cols-[277px_277px] gap-4 p-3 text-sm w-[300px] h-[100px]" />
-                  
+              <div className="flex md:flex-row flex-col md:items-end items-start gap-6">
+                <div className=" relative w-fit">
+                  <label className="text-sm block mb-1">Bio</label>
+                  <textarea className="border-[2px] border-gray-300 rounded-lg grid  gap-4 p-3 text-sm md:w-[300px] w-[435px] h-[100px]" />
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer"
+                    type="submit"
+                  >
+                    Done
+                  </button>
+                  <button className="bg-gray-400 px-6 py-2 text-white rounded-lg border border-gray-400 hover:bg-gray-500 hover:border-gray-500 duration-500 cursor-pointer">
+                    Skip
+                  </button>
+                </div>
               </div>
-              <button className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer"  type="submit">Submit</button>
-              <button className="bg-gray-400 px-6 py-2 text-white rounded-lg border border-gray-400 hover:bg-gray-500 hover:border-gray-500 duration-500 cursor-pointer" >Skip</button>
-              </div>
-
             </form>
           </div>
         </div>
