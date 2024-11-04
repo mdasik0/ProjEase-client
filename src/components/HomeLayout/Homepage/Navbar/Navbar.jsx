@@ -54,7 +54,7 @@ const DesktopAndTabNav = ({ user, userData, logOut, isLoading }) => {
       <div>
         <img className="h-10" src={fullLogo} alt="projease website logo" />
       </div>
-      <div className="flex items-center gap-24">
+      <div className="flex items-center">
         <ul className="flex items-center gap-6 pr-6">
           <li>
             <Link
@@ -75,13 +75,12 @@ const DesktopAndTabNav = ({ user, userData, logOut, isLoading }) => {
           <li>
             <Link
               className="hover:bg-gray-300 bg-gray-100 border border-gray-300 px-4 py-1.5 duration-500 rounded-full"
-              to={"/"}
+              to={"/projects"}
             >
               Projects
             </Link>
           </li>
         </ul>
-        {/* user box */}
         {isLoading ? (
           <div className="border border-gray-300 w-[128px] h-[53px] p-2 pe-3 rounded-xl bg-gray-100 hover:bg-gray-200 duration-300 active:scale-95 select-none flex items-center justify-center gap-2  cursor-pointer">
           <span className="loading loading-spinner loading-md"></span>

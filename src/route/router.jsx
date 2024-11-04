@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path:"/project",
+    path:"/projects",
     element: <ProjectLayout />,
     children: [
       {

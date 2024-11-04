@@ -13,7 +13,7 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
   const statusRef = useRef();
 
   const fullName = userData?.name?.firstname + " " +userData?.name?.lastname ;
-  const nameCheck =  fullName.length > 7 ? fullName.slice(0,5) + '...' : fullName;
+  const nameCheck =  fullName.length > 8 ? fullName.slice(0,8) + '...' : fullName;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -44,7 +44,7 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
           {user ? (
             <div
               onClick={() => setDropdown(!dropdown)}
-              className="border border-gray-300 p-2 pe-3 rounded-xl bg-gray-100 hover:bg-gray-200 duration-300 active:scale-95 select-none flex gap-2  cursor-pointer"
+              className="border border-gray-300 p-2 pe-3 rounded-xl bg-gray-100 w-[150px] hover:bg-gray-200 duration-300 active:scale-95 select-none flex gap-2  cursor-pointer"
             >
               <div className="avatar online">
                 <div className="w-10 h-10 object-cover rounded-full">
