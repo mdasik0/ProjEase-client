@@ -11,6 +11,8 @@ import JoinProject from "../pages/HomeLayout/JoinProject";
 import Upload_your_profile_picture from "../pages/AuthLayout/Upload_your_profile_picture";
 import Enter_your_name from "../pages/AuthLayout/Enter_your_name";
 import Additional_info from "../pages/AuthLayout/Additional_info";
+import ProjectLayout from "../layout/ProjectLayout";
+import About from "../pages/HomeLayout/About";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: 'about',
+        element: <About />,
+      },
+      {
         path: "create-project",
         element: <CreateProject />,
       },
@@ -29,18 +35,7 @@ const router = createBrowserRouter([
         path: "join-project",
         element: <JoinProject />,
       },
-      {
-        path: "tasks",
-        element: <Tasks />,
-      },
-      {
-        path: "chats",
-        element: <Chats />,
-      },
-      {
-        path: "video-call",
-        element: <VideoCall />,
-      },
+     
     ],
   },
   {
@@ -68,6 +63,24 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:"/project",
+    element: <ProjectLayout />,
+    children: [
+      {
+        path: "tasks",
+        element: <Tasks />,
+      },
+      {
+        path: "chats",
+        element: <Chats />,
+      },
+      {
+        path: "video-call",
+        element: <VideoCall />,
+      },
+    ]
+  }
 ]);
 
 export default router;
