@@ -90,7 +90,7 @@ const MobileNavUser = ({ userData, isLoading }) => {
 MobileNavUser.propTypes = {
   userData: PropTypes.shape({
     image: PropTypes.string,
-    name: PropTypes.string,
+    name: PropTypes.object,
     email: PropTypes.string,
     status: PropTypes.string,
   }),
