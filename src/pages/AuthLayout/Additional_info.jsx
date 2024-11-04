@@ -1,6 +1,10 @@
 import { useState, useRef } from "react";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { CiCalendarDate } from "react-icons/ci";
+import { useSelector } from "react-redux";
+import { useUpdateUserMutation } from "../../redux/api/userApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Additional_info = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +13,10 @@ const Additional_info = () => {
     address: { street: "", city: "", state: "", country: "" },
     bio: "",
   });
+
+  const { userData } = useSelector((state) => state.userSlice);
+  const navigate = useNavigate();
+  const [updateUser] = useUpdateUserMutation();
 
   const jobFields = [
     { id: 1, name: "Software Engineer" },
@@ -34,6 +42,22 @@ const Additional_info = () => {
     dateInputRef.current.showPicker();
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await updateUser({ _id: userData?._id, data: formData }).unwrap();
+      if (response?.success) {
+        toast.success("Additional information updated");
+        navigate("/");
+      } else {
+        toast.error(response?.message || "Failed to update information.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while updating.");
+    }
+  };
+  
+
   return (
     <div className="w-screen ">
       <div className="md:max-w-[92vw] md:mx-auto mx-8 md:mt-12 my-6">
@@ -48,7 +72,7 @@ const Additional_info = () => {
               information for better personalizations.
             </p>
             <hr className="mt-2 mb-10 border-gray-300" />
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex gap-6">
                 <div className="mb-4 relative w-[300px]">
                   <label className="text-sm block mb-1" htmlFor="birthday">
@@ -77,14 +101,15 @@ const Additional_info = () => {
                     Job title
                   </label>
                   <select
+                    value={formData.jobTitle} // Bind the value to formData.jobTitle
                     onChange={(e) => {
                       setFormData({ ...formData, jobTitle: e.target.value });
                     }}
-                    className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-lg "
+                    className="border-[2px] border-gray-300 block w-full px-3 py-2 rounded-lg"
                     name="jobTitle"
                     id="jobTitle"
                   >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                       Select your job title
                     </option>
                     {jobFields.map((job) => (
@@ -99,31 +124,66 @@ const Additional_info = () => {
                 <label className="text-sm block mb-1">Address</label>
                 <div className="border-[2px] border-gray-300 w-full rounded-lg grid grid-cols-2 gap-4 md:p-6 p-3">
                   <input
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        address: {
+                          ...formData.address,
+                          street: e.target.value,
+                        },
+                      })
+                    }
                     placeholder="Street"
                     type="text"
-                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                    className="border-[2px] sm:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
                   />
                   <input
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        address: { ...formData.address, city: e.target.value },
+                      })
+                    }
                     placeholder="City"
                     type="text"
-                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                    className="border-[2px] sm:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
                   />
                   <input
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        address: { ...formData.address, state: e.target.value },
+                      })
+                    }
                     placeholder="State"
                     type="text"
-                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                    className="border-[2px] sm:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
                   />
                   <input
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        address: {
+                          ...formData.address,
+                          country: e.target.value,
+                        },
+                      })
+                    }
                     placeholder="Country"
                     type="text"
-                    className="border-[2px] md:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
+                    className="border-[2px] sm:w-[277px] border-gray-300 block px-3 py-[6px] rounded-lg "
                   />
                 </div>
               </div>
               <div className="flex md:flex-row flex-col md:items-end items-start gap-6">
                 <div className=" relative w-fit">
                   <label className="text-sm block mb-1">Bio</label>
-                  <textarea className="border-[2px] border-gray-300 rounded-lg grid  gap-4 p-3 text-sm md:w-[300px] w-[435px] h-[100px]" />
+                  <textarea
+                    onChange={(e) => {
+                      setFormData({ ...formData, bio: e.target.value });
+                    }}
+                    className="border-[2px] border-gray-300 rounded-lg grid  gap-4 p-3 text-sm md:w-[300px] w-[435px] h-[100px]"
+                  />
                 </div>
                 <div className="flex gap-4">
                   <button

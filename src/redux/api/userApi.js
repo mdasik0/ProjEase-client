@@ -30,23 +30,25 @@ const userApi = createApi({
         url: `/updateName/${_id}`,
         method:'PATCH',
         body:{data}
-      })
+      }),
+      invalidatesTags: ['users']
     }),
     uploadProfilePicture: builder.mutation({
       query: ({_id,data}) => ({
         url: `/updateProfilePicture/${_id}`,
         method: 'PATCH',
         body: {data},
-      })
+      }),
+      invalidatesTags: ['users']
     }),
     updateUser: builder.mutation({
-      query: ({_id,data}) => ({
+      query: ({ _id, data }) => ({
         url: `/updateUser/${_id}`,
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ['users']
-    }),
+      invalidatesTags: ["users"],
+    }),    
     addProjects: builder.query({
       query: (body) => ({
         url: "something",
