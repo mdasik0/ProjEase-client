@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 
 const CreateProject = () => {
   useEffect(() => {
@@ -24,6 +25,8 @@ const CreateProject = () => {
     } // Clean up the timer on component unmount
   }, []);
 
+// pura text hidden
+
   return (
     <div className="w-screen h-screen px-20 pt-16 relative">
       <div className="anim-backdrop-project-sp absolute w-screen h-screen top-0 left-0 bg-white z-50 flex items-center justify-center">
@@ -35,14 +38,9 @@ const CreateProject = () => {
           <span className="text-5">Space!</span>
         </h1>
       </div>
-      <div>
-        <h3 className="text-3xl mt-4">Create new project</h3>
-        <p className="mt-3 text-gray-500">
-          Let&apos;s get your ideas organized and your team ready to
-          collaborate. Fill in the details below to start building your project.
-        </p>
-        <hr className="my-6 border-gray-600" />
-        <form className="w-1/3">
+      <TitleandSub title='Create new project' subTitle='Let&apos;s get your ideas organized and your team ready to
+          collaborate. Fill in the details below to start building your project.'>
+<form className="w-1/3">
           <div className="mb-4 relative">
             <label
               className="text-sm text-gray-600 block mb-1"
@@ -76,7 +74,7 @@ const CreateProject = () => {
             />
           </div>
         </form>
-      </div>
+      </TitleandSub>
     </div>
   );
 };
