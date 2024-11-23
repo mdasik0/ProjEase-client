@@ -1,7 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
+import { GrCircleInformation } from "react-icons/gr";
 
 const CreateProject = () => {
+  const [selectedType, setSelectedType] = useState("");
+
+  const projectTypes = [
+    { value: "software", label: "Software Development" },
+    { value: "marketing", label: "Marketing Campaign" },
+    { value: "design", label: "Design & Creative" },
+    { value: "construction", label: "Construction" },
+    { value: "education", label: "Education/Training" },
+    { value: "finance", label: "Finance & Accounting" },
+    { value: "human_resources", label: "Human Resources" },
+    { value: "research", label: "Research & Development" },
+    { value: "event", label: "Event Planning" },
+    { value: "healthcare", label: "Healthcare" },
+    { value: "non_profit", label: "Non-Profit" },
+    { value: "personal", label: "Personal" },
+    { value: "other", label: "Other" },
+  ];
+
   useEffect(() => {
     const titleSpans = document.querySelectorAll(".project-ps-title");
     const timer = setTimeout(() => {
@@ -11,21 +30,21 @@ const CreateProject = () => {
     }, 3200);
     const timertwo = setTimeout(() => {
       const fakebg = document.querySelector(".anim-backdrop-project-sp");
-        fakebg.classList.add("bg-disappear");
+      fakebg.classList.add("bg-disappear");
     }, 4000);
     const timerthree = setTimeout(() => {
       const fakebg = document.querySelector(".anim-backdrop-project-sp");
-        fakebg.classList.add("hidden");
+      fakebg.classList.add("hidden");
     }, 5000);
 
     return () => {
-      clearTimeout(timer); 
-      clearTimeout(timertwo); 
-      clearTimeout(timerthree); 
-    } // Clean up the timer on component unmount
+      clearTimeout(timer);
+      clearTimeout(timertwo);
+      clearTimeout(timerthree);
+    }; // Clean up the timer on component unmount
   }, []);
 
-// pura text hidden
+  //
 
   return (
     <div className="w-screen h-screen px-20 pt-16 relative">
@@ -38,18 +57,18 @@ const CreateProject = () => {
           <span className="text-5">Space!</span>
         </h1>
       </div>
-      <TitleandSub title='Create new project' subTitle='Let&apos;s get your ideas organized and your team ready to
-          collaborate. Fill in the details below to start building your project.'>
-<form className="w-1/3">
-          <div className="mb-4 relative">
-            <label
-              className="text-sm text-gray-600 block mb-1"
-              htmlFor="project-name"
-            >
-              Project Name
+      <TitleandSub
+        title="Create new project"
+        subTitle="Let's get your ideas organized and your team ready to
+          collaborate. Fill in the details below to start building your project."
+      >
+        <form className="w-1/3 text-black">
+          <div className="mb-4">
+            <label className="text-sm  block mb-1" htmlFor="project-name">
+              Project name
             </label>
             <input
-              className="border-[2px] border-gray-500 block w-full px-3 py-2 rounded-lg"
+              className="border-[2px] border-black block w-full px-3 py-2 rounded-lg"
               placeholder="Enter project name here"
               required
               type="text"
@@ -57,21 +76,77 @@ const CreateProject = () => {
               id="project-name"
             />
           </div>
-          <div className="mb-4 relative">
-            <label
-              className="text-sm text-gray-600 block mb-1"
-              htmlFor="project-description"
-            >
-              Project Description
+          <div className="mb-4">
+            <label className="text-sm  block mb-1" htmlFor="project-name">
+              Project Type
             </label>
-            <textarea
-              className="border-[2px] border-gray-500 block w-full px-3 py-2 rounded-lg h-[150px]"
-              placeholder="Enter project description here"
+            <select
+              id="project-type"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="border-[2px] border-gray-500 w-full px-3 py-2 rounded-lg"
+            >
+              <option value="" disabled>
+                Select a project type
+              </option>
+              {projectTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="text-sm  block mb-1" htmlFor="project-password">
+              Project password
+            </label>
+            <input
+              className="border-[2px] border-black block w-full px-3 py-2 rounded-lg"
+              placeholder="Enter project password here"
               required
-              type="text"
-              name="project-description"
-              id="project-description"
+              type="password"
+              name="project-password"
+              id="project-password"
             />
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="mb-4 w-full">
+              <label className="text-sm  block mb-1" htmlFor="starting-date">
+                Starting date{" "}
+                <span className="text-xs text-[#1a1a1a]">(optional)</span>
+              </label>
+              <input
+                className="border-[2px] border-black block w-full px-3 py-2 rounded-lg"
+                required
+                type="date"
+                name="starting-date"
+                id="starting-date"
+              />
+            </div>
+            <div className="mb-4 w-full">
+              <label className="text-sm  block mb-1" htmlFor="ending-date">
+                Ending date{" "}
+                <span className="text-xs text-[#1a1a1a]">(optional)</span>
+              </label>
+              <input
+                className="border-[2px] border-black block w-full px-3 py-2 rounded-lg"
+                required
+                type="date"
+                name="ending-date"
+                id="ending-date"
+              />
+            </div>
+          </div>
+          <div className="flex items-center  gap-2 w-fit">
+            <input className="cursor-pointer" type="checkbox" name="private-project" id="private-project" />
+            <label className="text-sm cursor-pointer" htmlFor="private-project">
+              Private project
+            </label>
+            <div className="p-1 hover:bg-gray-300 duration-500 cursor-help text-gray-600 hover:text-gray-800 rounded-full">
+
+            <GrCircleInformation className="text-xl " />
+            </div>
           </div>
         </form>
       </TitleandSub>
