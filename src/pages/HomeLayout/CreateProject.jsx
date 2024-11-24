@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { GrCircleInformation } from "react-icons/gr";
+import { useSelector } from "react-redux";
+import { useCreateProjectMutation } from "../../redux/api/projectsApi";
+import toast from "react-hot-toast";
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -67,9 +70,34 @@ const CreateProject = () => {
     }; // Clean up the timer on component unmount
   }, []);
 
-  const handleSubmit = (e) => {
+  const {userData} = useSelector((state) => state.userSlice);
+  const [createProject] = useCreateProjectMutation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    const project = {
+      ...formData,
+      taskId:'',
+      ChatId:'',
+      members:[{
+        userId: userData?._id,
+        role: 'admin',
+      }],
+      CreatedBy: userData?._id,
+    }
+    console.log(project);
+
+    try{
+      const response = await createProject(project);
+      if(response.status === 200) {
+        toast.success(response.data.message);
+      }
+    }
+    catch(e) {
+      console.log(e)
+    }
+
+
   };
 
   return (
