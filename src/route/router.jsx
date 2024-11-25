@@ -13,6 +13,7 @@ import Enter_your_name from "../pages/AuthLayout/Enter_your_name";
 import Additional_info from "../pages/AuthLayout/Additional_info";
 import ProjectLayout from "../layout/ProjectLayout";
 import About from "../pages/HomeLayout/About";
+import Additional_project_info from "../pages/HomeLayout/Additional_project_info";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "create-project",
         element: <CreateProject />,
+      },
+      {
+        path:"additional-project-info",
+        element:<Additional_project_info />
       },
       {
         path: "join-project",

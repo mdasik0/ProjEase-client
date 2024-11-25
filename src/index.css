@@ -401,12 +401,24 @@ input[type="number"] {
 
 .bg-disappear {
   opacity: 0;
-  transition: opacity 2s ease-out; /* Background fade-out after 0.5s delay */
+  transition: opacity 2s ease-out; 
 }
 
 .disappear {
-  animation: fadeOutUp 0.5s ease forwards; /* Title fade-out duration */
+  animation: fadeOutUp 0.5s ease forwards;
 }
+
+.help_T_pri_proj {
+  opacity: 0;
+  transition: opacity 0.5s ease; 
+}
+
+.pri_proj_icon:hover .help_T_pri_proj {
+  opacity: 1;
+  pointer-events: auto; 
+}
+
+
 
 @keyframes fadeOutUp {
   0% {

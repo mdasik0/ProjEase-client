@@ -4,6 +4,8 @@ import { GrCircleInformation } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { useCreateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { MdOutlineCheckBox, MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -72,7 +74,7 @@ const CreateProject = () => {
 
   const {userData} = useSelector((state) => state.userSlice);
   const [createProject] = useCreateProjectMutation();
-
+const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const project = {
@@ -85,12 +87,12 @@ const CreateProject = () => {
       }],
       CreatedBy: userData?._id,
     }
-    console.log(project);
-
+    
     try{
       const response = await createProject(project);
-      if(response.status === 200) {
+      if(response.data.success === true) {
         toast.success(response.data.message);
+        navigate('/additional-project-info')
       }
     }
     catch(e) {
@@ -205,22 +207,30 @@ const CreateProject = () => {
             </div>
           </div>
           <div className="flex items-center gap-2 w-fit">
-            <input
-              className="cursor-pointer"
-              onChange={(e) =>
-                setFormData({ ...formData, isPrivate: e.target.checked })
-              }
-              type="checkbox"
-              name="private-project"
-              id="private-project"
-            />
-            <label className="text-sm cursor-pointer" htmlFor="private-project">
-              Private project
-            </label>
-            <div className="p-1 hover:bg-gray-300 duration-500 cursor-help text-gray-600 hover:text-gray-800 rounded-full">
-              <GrCircleInformation className="text-xl" />
-            </div>
-          </div>
+  <input
+    className="cursor-pointer"
+    onChange={(e) =>
+      setFormData({ ...formData, isPrivate: e.target.checked })
+    }
+    type="checkbox"
+    name="private-project"
+    id="private-project"
+  />
+  <label className="text-sm cursor-pointer" htmlFor="private-project">
+    Private project
+  </label>
+  <div className="pri_proj_icon p-1 relative hover:bg-gray-300 duration-500 cursor-help text-gray-600 hover:text-gray-800 rounded-full">
+    <GrCircleInformation className="text-xl" />
+    <div className="help_T_pri_proj absolute left-8 w-[320px] top-0 bg-gray-100 p-3 border border-gray-400 rounded-lg text-sm shadow-md shadow-gray-500 opacity-0 transition-opacity duration-300 pointer-events-none">
+    <span className="flex gap-1 items-start  font-[500]"><MdOutlineCheckBoxOutlineBlank className="text-lg" /><span>Members join with inviation link <span className="text-green-600">without password.</span></span></span>
+    <br />
+     <span className="flex gap-1 items-start  font-[500]"><MdOutlineCheckBox className="text-lg" /><span>
+     Members join with inviation link <span className="text-red-600">with password.</span></span>
+     </span>
+    </div>
+  </div>
+</div>
+
 
           <button
             className="text-white bg-[#1a1a1a] duration-500 hover:text-black hover:bg-gray-300 px-5 py-2 rounded mt-4"
