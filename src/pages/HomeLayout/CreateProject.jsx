@@ -124,7 +124,7 @@ const CreateProject = () => {
         subTitle="Let's get your ideas organized and your team ready to
           collaborate. Fill in the details below to start building your project."
       >
-        <form onSubmit={handleSubmit} className="sm:w-4/6 md:w-3/5 lg:w-3/6 xl:w-1/3 w-full text-black">
+        <form onSubmit={handleSubmit} className="sm:w-[480px] text-black">
           <div className="mb-4">
             <label className="text-sm  block mb-1" htmlFor="project-name">
               Project name
