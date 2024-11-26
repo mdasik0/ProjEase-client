@@ -95,17 +95,25 @@ const CreateProject = () => {
 
     try {
       const response = await createProject(project);
-      if (response.data.success === true) {
+
+      if (response.data?.success) {
         toast.success(response.data.message);
         navigate("/additional-project-info");
+      } else if (response.error?.data?.message) {
+        // Handle backend error message
+        toast.error(response.error.data.message);
+      } else {
+        // Fallback for unexpected errors
+        toast.error("An unexpected error occurred.");
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      toast.error("An error occurred while creating the project.");
     }
   };
 
-  //first make sure the page is responsive
-  //then make sure that a user can only create only 2/3 projects
+  //first make sure the page is responsive done
+  //then make sure that a user can only create only 2/3 projects done
   //then find the next stop
 
   return (
