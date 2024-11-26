@@ -5,7 +5,10 @@ import { useSelector } from "react-redux";
 import { useCreateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { MdOutlineCheckBox, MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+import {
+  MdOutlineCheckBox,
+  MdOutlineCheckBoxOutlineBlank,
+} from "react-icons/md";
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -72,38 +75,41 @@ const CreateProject = () => {
     }; // Clean up the timer on component unmount
   }, []);
 
-  const {userData} = useSelector((state) => state.userSlice);
+  const { userData } = useSelector((state) => state.userSlice);
   const [createProject] = useCreateProjectMutation();
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const project = {
       ...formData,
-      taskId:'',
-      ChatId:'',
-      members:[{
-        userId: userData?._id,
-        role: 'admin',
-      }],
+      taskId: "",
+      ChatId: "",
+      members: [
+        {
+          userId: userData?._id,
+          role: "admin",
+        },
+      ],
       CreatedBy: userData?._id,
-    }
-    
-    try{
+    };
+
+    try {
       const response = await createProject(project);
-      if(response.data.success === true) {
+      if (response.data.success === true) {
         toast.success(response.data.message);
-        navigate('/additional-project-info')
+        navigate("/additional-project-info");
       }
+    } catch (e) {
+      console.log(e);
     }
-    catch(e) {
-      console.log(e)
-    }
-
-
   };
 
+  //first make sure the page is responsive
+  //then make sure that a user can only create only 2/3 projects
+  //then find the next stop
+
   return (
-    <div className="w-screen h-screen px-20 pt-16 relative">
+    <div className="w-screen h-screen lg:px-20 md:pt-16 p-6 relative">
       <div className="anim-backdrop-project-sp absolute w-screen h-screen top-0 left-0 bg-white z-50 flex items-center justify-center">
         <h1 className={`text-5xl font-[500] poppins project-ps-title`}>
           <span className="text-1">Welcome</span>{" "}
@@ -118,7 +124,7 @@ const navigate = useNavigate();
         subTitle="Let's get your ideas organized and your team ready to
           collaborate. Fill in the details below to start building your project."
       >
-        <form onSubmit={handleSubmit} className="w-1/3 text-black">
+        <form onSubmit={handleSubmit} className="sm:w-4/6 md:w-3/5 lg:w-3/6 xl:w-1/3 w-full text-black">
           <div className="mb-4">
             <label className="text-sm  block mb-1" htmlFor="project-name">
               Project name
@@ -207,30 +213,39 @@ const navigate = useNavigate();
             </div>
           </div>
           <div className="flex items-center gap-2 w-fit">
-  <input
-    className="cursor-pointer"
-    onChange={(e) =>
-      setFormData({ ...formData, isPrivate: e.target.checked })
-    }
-    type="checkbox"
-    name="private-project"
-    id="private-project"
-  />
-  <label className="text-sm cursor-pointer" htmlFor="private-project">
-    Private project
-  </label>
-  <div className="pri_proj_icon p-1 relative hover:bg-gray-300 duration-500 cursor-help text-gray-600 hover:text-gray-800 rounded-full">
-    <GrCircleInformation className="text-xl" />
-    <div className="help_T_pri_proj absolute left-8 w-[320px] top-0 bg-gray-100 p-3 border border-gray-400 rounded-lg text-sm shadow-md shadow-gray-500 opacity-0 transition-opacity duration-300 pointer-events-none">
-    <span className="flex gap-1 items-start  font-[500]"><MdOutlineCheckBoxOutlineBlank className="text-lg" /><span>Members join with inviation link <span className="text-green-600">without password.</span></span></span>
-    <br />
-     <span className="flex gap-1 items-start  font-[500]"><MdOutlineCheckBox className="text-lg" /><span>
-     Members join with inviation link <span className="text-red-600">with password.</span></span>
-     </span>
-    </div>
-  </div>
-</div>
-
+            <input
+              className="cursor-pointer"
+              onChange={(e) =>
+                setFormData({ ...formData, isPrivate: e.target.checked })
+              }
+              type="checkbox"
+              name="private-project"
+              id="private-project"
+            />
+            <label className="text-sm cursor-pointer" htmlFor="private-project">
+              Private project
+            </label>
+            <div className="pri_proj_icon p-1 relative hover:bg-gray-300 duration-500 cursor-help text-gray-600 hover:text-gray-800 rounded-full">
+              <GrCircleInformation className="text-xl" />
+              <div className="help_T_pri_proj absolute left-8 w-[320px] top-0 bg-gray-100 p-3 border border-gray-400 rounded-lg text-sm shadow-md shadow-gray-500 opacity-0 transition-opacity duration-300 pointer-events-none">
+                <span className="flex gap-1 items-start  font-[500]">
+                  <MdOutlineCheckBoxOutlineBlank className="text-lg" />
+                  <span>
+                    Members join with inviation link{" "}
+                    <span className="text-green-600">without password.</span>
+                  </span>
+                </span>
+                <br />
+                <span className="flex gap-1 items-start  font-[500]">
+                  <MdOutlineCheckBox className="text-lg" />
+                  <span>
+                    Members join with inviation link{" "}
+                    <span className="text-red-600">with password.</span>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
 
           <button
             className="text-white bg-[#1a1a1a] duration-500 hover:text-black hover:bg-gray-300 px-5 py-2 rounded mt-4"
