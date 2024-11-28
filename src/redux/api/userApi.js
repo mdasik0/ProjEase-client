@@ -49,13 +49,13 @@ const userApi = createApi({
       }),
       invalidatesTags: ["users"],
     }),    
-    addProjects: builder.query({
-      query: (body) => ({
-        url: "something",
-        method: "PATCH",
-        body: body,
-      }),
-    }),
+    updateJoinedProjects: builder.mutation({
+      query: ({_id,data}) => ({
+        url: `/users/${_id}/joined-projects`,
+        method: 'PATCH',
+        body: data,
+      })
+    })
   }),
 });
 
@@ -66,7 +66,8 @@ export const {
   useUpdateNameMutation,
   useUploadProfilePictureMutation,
   useAddProjectsQuery,
-  useEmailLoginQuery
+  useEmailLoginQuery,
+  useUpdateJoinedProjectsMutation
 } = userApi;
 
 export default userApi;

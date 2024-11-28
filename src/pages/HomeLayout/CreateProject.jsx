@@ -9,6 +9,7 @@ import {
   MdOutlineCheckBox,
   MdOutlineCheckBoxOutlineBlank,
 } from "react-icons/md";
+import { useUpdateJoinedProjectsMutation } from "../../redux/api/userApi";
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ const CreateProject = () => {
       setFormData({ ...formData, startDate: selectedDate });
     } else {
       // Reset to today if past date is selected
-      alert("The start date cannot be in the past!");
+      toast.error("The start date cannot be in the past!");
       setFormData({ ...formData, startDate: today });
     }
   };
@@ -77,9 +78,13 @@ const CreateProject = () => {
 
   const { userData } = useSelector((state) => state.userSlice);
   const [createProject] = useCreateProjectMutation();
+  const [updateJoinedProjects] = useUpdateJoinedProjectsMutation();
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.projectName || !formData.projectPassword) {
+      return toast.error("Please fill in all required fields.");
+    }
     const project = {
       ...formData,
       taskId: "",
@@ -98,18 +103,31 @@ const CreateProject = () => {
 
       if (response.data?.success) {
         toast.success(response.data.message);
-        navigate("/additional-project-info");
+        //joined projects field added to the user
+        const joinedProjects = {
+          projectId: response.data.projectId,
+          status: "active",
+        };
+        const updateResponse = await updateJoinedProjects({
+          _id: userData?._id,
+          data: joinedProjects,
+        });
+        if (updateResponse?.data?.success) {
+          toast.success(updateResponse?.data?.message);
+          return navigate("/additional-project-info");
+        }
       } else if (response.error?.data?.message) {
         // Handle backend error message
-        toast.error(response.error.data.message);
+        return toast.error(response.error.data.message);
       } else {
         // Fallback for unexpected errors
-        toast.error("An unexpected error occurred.");
+        return toast.error("An unexpected error occurred.");
       }
     } catch (e) {
-      console.error(e);
+      console.error("Project creation error:", e);
       toast.error("An error occurred while creating the project.");
     }
+    
   };
 
   //first make sure the page is responsive done
