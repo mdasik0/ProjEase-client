@@ -136,6 +136,9 @@ const userSlice = createSlice({
     setLoading: (state, { payload }) => {
       state.isLoading = payload;
     },
+    refetchUpdate: (state, {payload}) => {
+      state.userData = payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -228,7 +231,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetUser, setUser, setLoading } = userSlice.actions;
+export const { resetUser, setUser, setLoading, refetchUpdate } = userSlice.actions;
 export default userSlice.reducer;
 
 // import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";

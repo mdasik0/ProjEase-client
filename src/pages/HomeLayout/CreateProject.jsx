@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { GrCircleInformation } from "react-icons/gr";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useCreateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,8 @@ import {
   MdOutlineCheckBox,
   MdOutlineCheckBoxOutlineBlank,
 } from "react-icons/md";
-import { useUpdateJoinedProjectsMutation } from "../../redux/api/userApi";
+import userApi, { useUpdateJoinedProjectsMutation } from "../../redux/api/userApi";
+import { refetchUpdate } from "../../redux/features/userSlice";
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -35,6 +36,8 @@ const CreateProject = () => {
     { value: "personal", label: "Personal" },
     { value: "other", label: "Other" },
   ];
+
+  const dispatch = useDispatch();
 
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
@@ -75,10 +78,11 @@ const CreateProject = () => {
       clearTimeout(timerthree);
     }; // Clean up the timer on component unmount
   }, []);
-
+  
   const { userData } = useSelector((state) => state.userSlice);
   const [createProject] = useCreateProjectMutation();
   const [updateJoinedProjects] = useUpdateJoinedProjectsMutation();
+  
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,8 +117,12 @@ const CreateProject = () => {
           data: joinedProjects,
         });
         if (updateResponse?.data?.success) {
-          toast.success(updateResponse?.data?.message);
-          return navigate("/additional-project-info");
+
+
+          const refetchResponse = await dispatch(userApi.endpoints.getUser.initiate(userData?.email)).unwrap();
+          dispatch(refetchUpdate(refetchResponse))
+          
+          // return navigate("/additional-project-info");
         }
       } else if (response.error?.data?.message) {
         // Handle backend error message

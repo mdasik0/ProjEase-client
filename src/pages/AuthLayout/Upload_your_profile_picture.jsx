@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadImageToImgbb } from "../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { useUploadProfilePictureMutation } from "../../redux/api/userApi";
+import { useNavigate } from "react-router-dom";
 const Upload_your_profile_picture = () => {
 
   //TODO: redirect the user to an other page after profile picture has been uploaded 
@@ -14,7 +15,7 @@ const Upload_your_profile_picture = () => {
     previewURL: "",
     uploadedURL: ""
   });
-
+const navigate = useNavigate()
   const [hover, setHover] = useState(false)
   const dispatch = useDispatch()
   const { userData } = useSelector((state) => state.userSlice);
@@ -47,6 +48,8 @@ const Upload_your_profile_picture = () => {
 
             if (responseFromBackend.data?.success) {
                 toast.success(responseFromBackend.data.message);
+                return navigate('/additional-info')
+                
             } else {
                 toast.error(responseFromBackend.data.message || "Error uploading profile picture");
             }

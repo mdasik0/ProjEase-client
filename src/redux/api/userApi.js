@@ -11,7 +11,7 @@ const userApi = createApi({
         method: "POST",
         body: body,
       }),
-      providesTags: ['users']
+      invalidatesTags: ['users']
     }),
     getUser: builder.query({
       query: (email) => ({
@@ -23,7 +23,7 @@ const userApi = createApi({
       query: (email) => ({
         url: `/emailLogin/${email}`,
       }),
-      providesTags: ['users']
+      invalidatesTags: ['users']
     }),
     updateName: builder.mutation({
       query: ({_id,data}) => ({
@@ -54,7 +54,8 @@ const userApi = createApi({
         url: `/users/${_id}/joined-projects`,
         method: 'PATCH',
         body: data,
-      })
+      }),
+      invalidatesTags: ["users"],
     })
   }),
 });
