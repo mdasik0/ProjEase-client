@@ -98,6 +98,7 @@ const CreateProject = () => {
     }
   };
 
+  //input real-time validation
   useEffect(() => {
     // Check project name first
     if (formData.projectName.length < 6) {
@@ -115,13 +116,11 @@ const CreateProject = () => {
         passErr: "Password must be at least 5 characters",
       });
     }
-    // Clear all errors if both are valid
+    // Clear all errors if inputs are valid
     else {
       setValErr({ nameErr: "", passErr: "", typeErr: "" });
     }
   }, [formData.projectName, formData.projectPassword, formData.projectType]);
-
-  console.log(valErr);
 
   // final submit function
   const handleSubmit = async (e) => {

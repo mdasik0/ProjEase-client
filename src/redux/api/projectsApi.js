@@ -11,6 +11,13 @@ const projectsApi = createApi({
                 body:projectObj,
             })
         }),
+        updateProject: builder.mutation({
+            query: ({_id, newObj}) => ({
+                url: `/updateProject/${_id}`,
+                method: 'PATCH',
+                body: newObj
+            })
+        }),
         getProject : builder.query({
             query: (_id) => ({
                 url: `/getProject/${_id}`,
@@ -19,5 +26,5 @@ const projectsApi = createApi({
     })
 })
 
-export const {useCreateProjectMutation, useGetProjectQuery} = projectsApi;
+export const {useCreateProjectMutation, useGetProjectQuery, useUpdateProjectMutation} = projectsApi;
 export default projectsApi;

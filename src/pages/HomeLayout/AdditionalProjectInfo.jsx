@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { useSelector } from "react-redux";
-import { useCreateProjectMutation } from "../../redux/api/projectsApi";
+import { useUpdateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -12,28 +12,24 @@ const AdditionalProjectInfo = () => {
     coWebUrl: "",
   });
 
-  // jokhon user project create korbe se by default sei project e join hoia jabe and active hoia jabe
-  // and onno kono project active thakle oita inactive and new project e se active hoia jabe
-  // userData theke amra active thaka project er id niye nibo
-  // ebong sei id te amra additional project info er data update korbo
-
   const { userData } = useSelector((state) => state.userSlice);
-  const [createProject] = useCreateProjectMutation();
+  const [updateProject] = useUpdateProjectMutation();
   const navigate = useNavigate();
-
+  const currentProj = userData.joinedProjects.find(
+    (p) => p.status === "active"
+  ) ;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // project id 
-    // formData 
-    // updateProject rtq query obj 
-
     try {
-      const response = await createProject(formData);
+      const response = await updateProject({
+        _id: currentProj.projectId,
+        newObj: formData,
+      });
 
       if (response.data?.success) {
         toast.success(response.data.message);
-        navigate("/additional-project-info");
+        navigate("/");
       } else if (response.error?.data?.message) {
         toast.error(response.error.data.message);
       } else {
@@ -61,10 +57,7 @@ const AdditionalProjectInfo = () => {
             role="form"
           >
             <div className="mb-4">
-              <label
-                className="text-sm block mb-1"
-                htmlFor="Company-team-name"
-              >
+              <label className="text-sm block mb-1" htmlFor="Company-team-name">
                 Company/Team Name
               </label>
               <input
@@ -72,7 +65,10 @@ const AdditionalProjectInfo = () => {
                 placeholder="Enter Company/Team name here"
                 required
                 onChange={(e) =>
-                  setFormData({ ...formData, CompanyOrTeamName: e.target.value })
+                  setFormData({
+                    ...formData,
+                    CompanyOrTeamName: e.target.value,
+                  })
                 }
                 type="text"
                 name="Company-team-name"
@@ -80,10 +76,7 @@ const AdditionalProjectInfo = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                className="text-sm block mb-1"
-                htmlFor="comp-web-url"
-              >
+              <label className="text-sm block mb-1" htmlFor="comp-web-url">
                 Company website url
               </label>
               <input
@@ -109,7 +102,10 @@ const AdditionalProjectInfo = () => {
                 className="border-[2px] border-black block w-full h-[150px] px-3 py-2 rounded-lg"
                 placeholder="Enter Company website url here"
                 onChange={(e) =>
-                  setFormData({ ...formData, projectDescription: e.target.value })
+                  setFormData({
+                    ...formData,
+                    projectDescription: e.target.value,
+                  })
                 }
                 name="project-description"
                 id="project-description"
