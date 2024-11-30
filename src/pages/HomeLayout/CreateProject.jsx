@@ -6,21 +6,17 @@ import { useCreateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
+  MdError,
   MdOutlineCheckBox,
   MdOutlineCheckBoxOutlineBlank,
 } from "react-icons/md";
-import userApi, { useUpdateJoinedProjectsMutation } from "../../redux/api/userApi";
+import userApi, {
+  useUpdateJoinedProjectsMutation,
+} from "../../redux/api/userApi";
 import { refetchUpdate } from "../../redux/features/userSlice";
 
 const CreateProject = () => {
-  const [formData, setFormData] = useState({
-    projectName: "",
-    projectPassword: "",
-    projectType: "",
-    startDate: new Date().toISOString().split("T")[0], // Default to today's date
-    endDate: "",
-    isPrivate: false,
-  });
+  //Store projectTypes in a js file JSONFILE
   const projectTypes = [
     { value: "software", label: "Software Development" },
     { value: "marketing", label: "Marketing Campaign" },
@@ -37,25 +33,30 @@ const CreateProject = () => {
     { value: "other", label: "Other" },
   ];
 
+  const [formData, setFormData] = useState({
+    projectName: "",
+    projectPassword: "",
+    projectType: "",
+    startDate: new Date().toISOString().split("T")[0], // Default to today's date
+    endDate: "",
+    isPrivate: false,
+  });
+  const [valErr, setValErr] = useState({
+    passErr: "",
+    nameErr: "",
+    typeErr: "",
+  });
+
+  // userslice state data
+  const { userData } = useSelector((state) => state.userSlice);
+
+  // rtk query endpoints
+  const [createProject] = useCreateProjectMutation();
+  const [updateJoinedProjects] = useUpdateJoinedProjectsMutation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleDateChange = (e) => {
-    const selectedDate = e.target.value;
-    const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD format
-
-    // If no date is selected, default to today
-    if (!selectedDate) {
-      setFormData({ ...formData, startDate: today });
-    } else if (selectedDate >= today) {
-      // Only accept dates that are today or later
-      setFormData({ ...formData, startDate: selectedDate });
-    } else {
-      // Reset to today if past date is selected
-      toast.error("The start date cannot be in the past!");
-      setFormData({ ...formData, startDate: today });
-    }
-  };
-
+  // animation
   useEffect(() => {
     const titleSpans = document.querySelectorAll(".project-ps-title");
     const timer = setTimeout(() => {
@@ -78,16 +79,65 @@ const CreateProject = () => {
       clearTimeout(timerthree);
     }; // Clean up the timer on component unmount
   }, []);
-  
-  const { userData } = useSelector((state) => state.userSlice);
-  const [createProject] = useCreateProjectMutation();
-  const [updateJoinedProjects] = useUpdateJoinedProjectsMutation();
-  
-  const navigate = useNavigate();
+
+  // date function
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD format
+
+    // If no date is selected, default to today
+    if (!selectedDate) {
+      setFormData({ ...formData, startDate: today });
+    } else if (selectedDate >= today) {
+      // Only accept dates that are today or later
+      setFormData({ ...formData, startDate: selectedDate });
+    } else {
+      // Reset to today if past date is selected
+      toast.error("The start date cannot be in the past!");
+      setFormData({ ...formData, startDate: today });
+    }
+  };
+
+  //problem
+  //showing the type err
+  //we can't show it at the start
+  //the submit button must be disabled so can't check on submit
+
+  // all the val must be in one function or something like that
+  // using use effect
+
+  useEffect(() => {
+    // Check project name first
+    if (formData.projectName.length < 6) {
+      setValErr({ nameErr: "Name is too short", passErr: "" });
+    }
+    // Check project password only if name is valid
+    else if (!formData.projectType) {
+      setValErr({
+        nameErr: "",
+        typeErr: "You must select one of the project types.",
+      });
+    } else if (formData.projectPassword.length < 5) {
+      setValErr({
+        typeErr: "",
+        passErr: "Password must be at least 5 characters",
+      });
+    }
+    // Clear all errors if both are valid
+    else {
+      setValErr({ nameErr: "", passErr: "", typeErr: "" });
+    }
+  }, [formData.projectName, formData.projectPassword, formData.projectType]);
+
+  console.log(valErr);
+
+  // final submit function
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.projectName || !formData.projectPassword) {
-      return toast.error("Please fill in all required fields.");
+    if (!formData.projectType) {
+      setValErr({ ...valErr, typeErr: "Select a project type" });
+    } else {
+      setValErr({ ...valErr, typeErr: "" });
     }
     const project = {
       ...formData,
@@ -101,10 +151,8 @@ const CreateProject = () => {
       ],
       CreatedBy: userData?._id,
     };
-
     try {
       const response = await createProject(project);
-
       if (response.data?.success) {
         toast.success(response.data.message);
         //joined projects field added to the user
@@ -117,30 +165,22 @@ const CreateProject = () => {
           data: joinedProjects,
         });
         if (updateResponse?.data?.success) {
-
-
-          const refetchResponse = await dispatch(userApi.endpoints.getUser.initiate(userData?.email)).unwrap();
-          dispatch(refetchUpdate(refetchResponse))
-          
+          const refetchResponse = await dispatch(
+            userApi.endpoints.getUser.initiate(userData?.email)
+          ).unwrap();
+          dispatch(refetchUpdate(refetchResponse));
           // return navigate("/additional-project-info");
         }
       } else if (response.error?.data?.message) {
-        // Handle backend error message
         return toast.error(response.error.data.message);
       } else {
-        // Fallback for unexpected errors
         return toast.error("An unexpected error occurred.");
       }
     } catch (e) {
       console.error("Project creation error:", e);
       toast.error("An error occurred while creating the project.");
     }
-    
   };
-
-  //first make sure the page is responsive done
-  //then make sure that a user can only create only 2/3 projects done
-  //then find the next stop
 
   return (
     <div className="w-screen h-screen lg:px-20 md:pt-16 p-6 relative">
@@ -159,12 +199,14 @@ const CreateProject = () => {
           collaborate. Fill in the details below to start building your project."
       >
         <form onSubmit={handleSubmit} className="sm:w-[480px] text-black">
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="text-sm  block mb-1" htmlFor="project-name">
               Project name
             </label>
             <input
-              className="border-[2px] border-black block w-full px-3 py-2 rounded-lg"
+              className={`border-[2px] ${
+                valErr.nameErr ? "border-red-500 focus:outline-red-500" : "border-black"
+              } block w-full px-3 py-2 rounded-lg `}
               placeholder="Enter project name here"
               required
               onChange={(e) =>
@@ -174,8 +216,11 @@ const CreateProject = () => {
               name="project-name"
               id="project-name"
             />
+           {
+            valErr.nameErr &&  <span className="absolute text-sm right-0 text-red-500 flex items-center gap-1"><MdError />{valErr.nameErr}</span>
+           }
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="text-sm  block mb-1" htmlFor="project-name">
               Project Type
             </label>
@@ -185,7 +230,9 @@ const CreateProject = () => {
               onChange={(e) =>
                 setFormData({ ...formData, projectType: e.target.value })
               }
-              className="border-[2px] border-gray-500 w-full px-3 py-2 rounded-lg"
+              className={`border-[2px] ${
+                valErr.typeErr ? "border-red-500 focus:outline-red-500" : "border-black"
+              } block w-full px-3 py-2 rounded-lg`}
             >
               <option value="" disabled>
                 Select a project type
@@ -195,23 +242,32 @@ const CreateProject = () => {
                   {type.label}
                 </option>
               ))}
+            
             </select>
+            {
+            valErr.typeErr &&  <span className="absolute text-sm right-0 text-red-500 flex items-center gap-1"><MdError />{valErr.typeErr}</span>
+           }
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="text-sm  block mb-1" htmlFor="project-password">
               Project password
             </label>
             <input
-              className="border-[2px] border-black block w-full px-3 py-2 rounded-lg"
+              className={`border-[2px] ${
+                valErr.passErr ? "border-red-500 focus:outline-red-500" : "border-black"
+              } block w-full px-3 py-2 rounded-lg`}
               placeholder="Enter project password here"
               required
-              onChange={(e) =>
-                setFormData({ ...formData, projectPassword: e.target.value })
-              }
+              onChange={(e) => {
+                setFormData({ ...formData, projectPassword: e.target.value });
+              }}
               type="password"
               name="project-password"
               id="project-password"
             />
+             {
+            valErr.passErr &&  <span className="absolute text-sm right-0 text-red-500 flex items-center gap-1"><MdError />{valErr.passErr}</span>
+           }
           </div>
 
           <div className="flex items-center gap-6">
@@ -282,7 +338,8 @@ const CreateProject = () => {
           </div>
 
           <button
-            className="text-white bg-[#1a1a1a] duration-500 hover:text-black hover:bg-gray-300 px-5 py-2 rounded mt-4"
+          disabled={valErr.nameErr || valErr.typeErr || valErr. passErr}
+            className="text-white disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:text-white bg-[#1a1a1a] duration-500 hover:text-black hover:bg-gray-300 px-5 py-2 rounded mt-4"
             type="submit"
           >
             Submit
