@@ -2,7 +2,7 @@ import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { useState } from "react";
 import { LuImagePlus } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImageToImgbb } from "../../redux/features/userSlice";
+import { setLoading, uploadImageToImgbb } from "../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { useUploadProfilePictureMutation } from "../../redux/api/userApi";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ const Upload_your_profile_picture = () => {
 const navigate = useNavigate()
   const [hover, setHover] = useState(false)
   const dispatch = useDispatch()
-  const { userData } = useSelector((state) => state.userSlice);
+  const { userData, isLoading } = useSelector((state) => state.userSlice);
   const [uploadProfilePicture] = useUploadProfilePictureMutation();
 
   const handleImageChange = (e) => {
@@ -35,7 +35,7 @@ const navigate = useNavigate()
         toast.error("Please select an image first!");
         return;
     }
-
+dispatch(setLoading(true))
     try {
         // Upload image to Imgbb
         const response = await dispatch(uploadImageToImgbb(imageData.selectedFile));
@@ -48,7 +48,7 @@ const navigate = useNavigate()
 
             if (responseFromBackend.data?.success) {
                 toast.success(responseFromBackend.data.message);
-                return navigate('/additional-info')
+                return navigate('/auth/additional-info')
                 
             } else {
                 toast.error(responseFromBackend.data.message || "Error uploading profile picture");
@@ -60,6 +60,7 @@ const navigate = useNavigate()
         toast.error("An unexpected error occurred.");
         console.error(error);
     }
+    dispatch(setLoading(false))
 };
 
 
@@ -107,7 +108,11 @@ const navigate = useNavigate()
             </div>
             </div>
             <button onClick={handleSubmit} className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer mt-8">
-                Next
+            {isLoading ? (
+          <span className="loading loading-spinner loading-sm"></span>
+        ) : 
+        <span>next</span>
+        }
               </button>
           </div>
           {/* Step Indicator */}

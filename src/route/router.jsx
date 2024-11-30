@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         path: "enter-your-name",
         element: <Enter_your_name />,
       },
-      {
+      { 
         path: "additional-info",
         element: <Additional_info />,
       },

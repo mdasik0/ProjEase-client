@@ -8,15 +8,14 @@ import {
   MdOutlineDoNotDisturb,
 } from "react-icons/md";
 import Lottie from "lottie-web";
-import { useCreateUserMutation } from "../../../redux/api/userApi";
-import { signUpUser } from "../../../redux/features/userSlice";
+import userApi, { useCreateUserMutation } from "../../../redux/api/userApi";
+import { refetchUpdate, signUpUser } from "../../../redux/features/userSlice";
 
 const Register_Form = () => {
-
-  const { isLoading,isError, error, email, login_method } = useSelector(
+  const { isLoading, isError, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
-  
+
   const iconMenuRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -125,38 +124,45 @@ const Register_Form = () => {
   const [createUser] = useCreateUserMutation();
 
   const createUserInBackend = async () => {
-    const obj = {
-      email,
-      login_method: "email",
-      created: new Date(),
-    };
-
-    const response = await createUser(obj);
-
-    if (response?.data?.success === false) {
-      return toast.error(response.data.message);
-    } else if (response?.data?.success === true) {
-      toast.success(response.data.message);
+    try {
+      const obj = {
+        email,
+        login_method: "email",
+        created: new Date(),
+      };
+  
+      const response = await createUser(obj);
+  
+      if (!response?.data?.success) {
+        return toast.error(response.data.message);
+      }
+  
+      const fetchTheUser = await dispatch(userApi.endpoints.getUser.initiate(email)).unwrap();
+      dispatch(refetchUpdate(fetchTheUser));
+  
+      // Navigate based on user data
       if (!response.data.userNameExists) {
-        return navigate("/auth/enter-your-name");
-      }
-      if (!response.data.userImageExists) {
-        return navigate("/auth/upload-profile-picture");
+        navigate("/auth/enter-your-name");
+      } else if (!response.data.userImageExists) {
+        navigate("/auth/upload-profile-picture");
       } else {
-        return navigate("/");
+        navigate("/");
       }
+  
+      toast.success(response.data.message);
+    } catch (error) {
+      // Handle errors during API calls or dispatch
+      toast.error("There was an error. Please refresh the page");
+      console.error(error);
+  
     }
   };
-
-  
-
-
   
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = formData.email;
-    const password = formData.password; 
+    const password = formData.password;
     dispatch(signUpUser({ email, password }));
     setRTError({
       emailError: false,
@@ -164,14 +170,13 @@ const Register_Form = () => {
       passwordError: false,
       passwordErrMessage: "",
       passwordStrength: "",
-    })
-
+    });
   };
 
   useEffect(() => {
     if (isError) {
       toast.error(error);
-    } 
+    }
     if (email && login_method === "email") {
       createUserInBackend();
     }

@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { CiCalendarDate } from "react-icons/ci";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { setLoading } from "../../redux/features/userSlice";
 
 const Additional_info = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ const Additional_info = () => {
     bio: "",
   });
 
-  const { userData } = useSelector((state) => state.userSlice);
+  const { userData, isLoading } = useSelector((state) => state.userSlice);
   const navigate = useNavigate();
   const [updateUser] = useUpdateUserMutation();
 
@@ -41,9 +42,10 @@ const Additional_info = () => {
   const openCalendar = () => {
     dateInputRef.current.showPicker();
   };
-
+const dispatch = useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(setLoading(true))
     try {
       const response = await updateUser({ _id: userData?._id, data: formData }).unwrap();
       if (response?.success) {
@@ -55,6 +57,7 @@ const Additional_info = () => {
     } catch (error) {
       toast.error("An error occurred while updating.");
     }
+    dispatch(setLoading(false))
   };
   
 
@@ -190,7 +193,11 @@ const Additional_info = () => {
                     className="bg-[#1a1a1a] px-6 py-2 text-white rounded-lg border-[#1a1a1a] border hover:bg-white hover:text-black duration-500 cursor-pointer"
                     type="submit"
                   >
-                    Done
+                    {isLoading ? (
+          <span className="loading loading-spinner loading-sm"></span>
+        ) : 
+        <span>Done</span>
+        }
                   </button>
                   <button className="bg-gray-400 px-6 py-2 text-white rounded-lg border border-gray-400 hover:bg-gray-500 hover:border-gray-500 duration-500 cursor-pointer">
                     Skip
