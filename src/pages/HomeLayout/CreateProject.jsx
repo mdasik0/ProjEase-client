@@ -98,14 +98,6 @@ const CreateProject = () => {
     }
   };
 
-  //problem
-  //showing the type err
-  //we can't show it at the start
-  //the submit button must be disabled so can't check on submit
-
-  // all the val must be in one function or something like that
-  // using use effect
-
   useEffect(() => {
     // Check project name first
     if (formData.projectName.length < 6) {
@@ -169,7 +161,7 @@ const CreateProject = () => {
             userApi.endpoints.getUser.initiate(userData?.email)
           ).unwrap();
           dispatch(refetchUpdate(refetchResponse));
-          // return navigate("/additional-project-info");
+          return navigate("/additional-project-info");
         }
       } else if (response.error?.data?.message) {
         return toast.error(response.error.data.message);
