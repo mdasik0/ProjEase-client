@@ -35,7 +35,8 @@ const navigate = useNavigate()
         toast.error("Please select an image first!");
         return;
     }
-dispatch(setLoading(true))
+
+    dispatch(setLoading(true)); // Start loading
     try {
         // Upload image to Imgbb
         const response = await dispatch(uploadImageToImgbb(imageData.selectedFile));
@@ -48,8 +49,7 @@ dispatch(setLoading(true))
 
             if (responseFromBackend.data?.success) {
                 toast.success(responseFromBackend.data.message);
-                return navigate('/auth/additional-info')
-                
+                return navigate('/auth/additional-info');
             } else {
                 toast.error(responseFromBackend.data.message || "Error uploading profile picture");
             }
@@ -59,9 +59,11 @@ dispatch(setLoading(true))
     } catch (error) {
         toast.error("An unexpected error occurred.");
         console.error(error);
+    } finally {
+        dispatch(setLoading(false)); // End loading
     }
-    dispatch(setLoading(false))
 };
+
 
 
 

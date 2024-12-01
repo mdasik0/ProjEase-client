@@ -2,10 +2,10 @@ import { useState, useRef } from "react";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { CiCalendarDate } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateUserMutation } from "../../redux/api/userApi";
+import userApi, { useUpdateUserMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { setLoading } from "../../redux/features/userSlice";
+import { refetchUpdate, setLoading } from "../../redux/features/userSlice";
 
 const Additional_info = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,9 @@ const Additional_info = () => {
     bio: "",
   });
 
-  const { userData, isLoading } = useSelector((state) => state.userSlice);
+  const { userData, isLoading, email } = useSelector(
+    (state) => state.userSlice
+  );
   const navigate = useNavigate();
   const [updateUser] = useUpdateUserMutation();
 
@@ -42,22 +44,55 @@ const Additional_info = () => {
   const openCalendar = () => {
     dateInputRef.current.showPicker();
   };
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(setLoading(true))
+    dispatch(setLoading(true)); // Start loading
+  
     try {
-      const response = await updateUser({ _id: userData?._id, data: formData }).unwrap();
+      const response = await updateUser({
+        _id: userData?._id,
+        data: formData,
+      }).unwrap();
+      console.log(response.success);
       if (response?.success) {
         toast.success("Additional information updated");
-        navigate("/");
+        console.log('info update complete');
+        // Refetch user once
+        const refetchedUser = await dispatch(
+          userApi.endpoints.getUser.initiate(email)
+        );
+
+        console.log(refetchedUser);
+        dispatch(refetchUpdate(refetchedUser.data));
+  
+        navigate("/"); // Navigate after refetch
       } else {
         toast.error(response?.message || "Failed to update information.");
       }
     } catch (error) {
       toast.error("An error occurred while updating.");
+      console.error(error);
+    } finally {
+      dispatch(setLoading(false)); // End loading
     }
-    dispatch(setLoading(false))
+  };
+  
+  const skipAdditionalInfo = async () => {
+    dispatch(setLoading(true)); // Start loading
+    try {
+      const refetchedUser = await dispatch(
+        userApi.endpoints.getUser.initiate(email)
+      );
+      dispatch(refetchUpdate(refetchedUser.data));
+      navigate("/");
+    } catch (error) {
+      toast.error("Failed to skip additional info.");
+      console.error(error);
+    } finally {
+      dispatch(setLoading(false)); // End loading
+    }
   };
   
 
@@ -194,12 +229,15 @@ const dispatch = useDispatch()
                     type="submit"
                   >
                     {isLoading ? (
-          <span className="loading loading-spinner loading-sm"></span>
-        ) : 
-        <span>Done</span>
-        }
+                      <span className="loading loading-spinner loading-sm"></span>
+                    ) : (
+                      <span>Done</span>
+                    )}
                   </button>
-                  <button className="bg-gray-400 px-6 py-2 text-white rounded-lg border border-gray-400 hover:bg-gray-500 hover:border-gray-500 duration-500 cursor-pointer">
+                  <button
+                    onClick={skipAdditionalInfo}
+                    className="bg-gray-400 px-6 py-2 text-white rounded-lg border border-gray-400 hover:bg-gray-500 hover:border-gray-500 duration-500 cursor-pointer"
+                  >
                     Skip
                   </button>
                 </div>
