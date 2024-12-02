@@ -1,15 +1,11 @@
 import TasksDate from "../../components/HomeLayout/Tasks/TasksDate";
-import Sidebar from "../../components/Shared/Sidebar";
 import { LuBellRing } from "react-icons/lu";
-import { LuSettings2 } from "react-icons/lu";
-import { CiSearch } from "react-icons/ci";
 import { useEffect, useRef } from "react";
 import AddTask from "../../components/HomeLayout/Tasks/AddTask";
 import { useGetTasksQuery } from "../../redux/api/tasksApi";
 import ToDoTasks from "../../components/HomeLayout/Tasks/TaskSections/ToDoTasks";
 import InProgressTasks from "../../components/HomeLayout/Tasks/TaskSections/InProgressTasks";
 import CompletedTasks from "../../components/HomeLayout/Tasks/TaskSections/CompletedTasks";
-import MyTasks from "../../components/HomeLayout/Tasks/TaskSections/MyTasks";
 const Tasks = () => {
   const notifications = ["abdul", "hasem", "rafiq"];
 

@@ -4,23 +4,26 @@ import { MdTaskAlt } from "react-icons/md";
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { NavLink, useLocation } from "react-router-dom";
+import logo from '../../../public/logo/Full-logo/logo-white-ov2.png'
 
-const Sidebar = () => {
+const Project_sidebar = () => {
   const location = useLocation();
 
   // const nav = {
   //   pathname: "/test/nav/video-call"
   // }
 
-  const currentRoute = location.pathname.split("/")[1];
+  const currentRoute = location.pathname.split("/")[2];
 
   // console.log(currentRoute);
   return (
     <div className={`shadow-lg shadow-gray-300 h-screen w-[250px] duration-300 `}>
-      <div className=" flex flex-col items-center justify-center my-6">
+      <div className=" flex items-center justify-center my-6">
         {/* 2 menus */}
         {/* main menu example: home, video call, tasks, chat etc.. */}
         {/* page specific menu. for tasks example: archive, my tasks, priority tasks etc.. */}
+
+        <img className="w-[120px]" src={logo} alt="projease logo" />
       </div>
       <div className="main-manu pl-10">
         <h4 className="text-xs text-gray-500  flex items-center relative">
@@ -133,4 +136,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Project_sidebar;
