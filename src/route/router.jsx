@@ -14,6 +14,7 @@ import Additional_info from "../pages/AuthLayout/Additional_info";
 import ProjectLayout from "../layout/ProjectLayout";
 import About from "../pages/HomeLayout/About";
 import AdditionalProjectInfo from "../pages/HomeLayout/AdditionalProjectInfo";
+import TestComp from "../components/ProjectLayout/TestComp";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
     path:"/projects",
     element: <ProjectLayout />,
     children: [
+      {
+        path: "/projects",
+        element: <TestComp />
+      },
       {
         path: "tasks",
         element: <Tasks />,

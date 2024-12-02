@@ -1,32 +1,27 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import ProjectAction from "../components/ProjectLayout/ProjectAction";
+import Sidebar from "../components/Shared/Sidebar";
+import { Outlet } from "react-router-dom";
 
 const ProjectLayout = () => {
-    const {userData} = useSelector(state => state.userSlice)
-    console.log(userData?.projects)
+  const { userData } = useSelector((state) => state.userSlice);
 
-    // if projects is available then show the project dashboard
-    // if the project is not available then show create or join a project hyperlink
+  const joinedProjects = userData?.joinedProjects
 
-    if(userData?.projects) {
+  // if projects is available then show the project dashboard
+  // if the project is not available then show create or join a project hyperlink
 
-        return (
-            <div>
-this is your project dashboard
-        </div>
+  const ifElseWroks = true;
+
+  if (joinedProjects) {
+    return <div className="flex"><Sidebar /><Outlet /></div>;
+  } else {
+    return (
+      <>
+        <ProjectAction />
+      </>
     );
-}  else {
-    return (<div className='w-screen h-screen flex items-center justify-center gap-10'>
-        <Link to={'/create-project'} className="border border-gray-300 bg-gray-100 hover:bg-blue-200 hover:border-blue-300 duration-700 w-1/5 h-2/3 rounded-3xl grid place-items-center">
-            create a project
-        </Link>
-        <Link to={'/join-project'} className="border border-gray-300 bg-gray-100 hover:bg-blue-200 hover:border-blue-300 duration-700 w-1/5 h-2/3 rounded-3xl grid place-items-center">
-            join a project
-        </Link>
-        
-    </div>)
-}
-
+  }
 };
 
 export default ProjectLayout;

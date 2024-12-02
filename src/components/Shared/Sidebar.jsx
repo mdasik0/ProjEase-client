@@ -16,7 +16,7 @@ const Sidebar = () => {
 
   // console.log(currentRoute);
   return (
-    <div className={`shadow-lg shadow-gray-300 h-screen w-1/6 duration-300 `}>
+    <div className={`shadow-lg shadow-gray-300 h-screen w-[250px] duration-300 `}>
       <div className=" flex flex-col items-center justify-center my-6">
         {/* 2 menus */}
         {/* main menu example: home, video call, tasks, chat etc.. */}
@@ -30,7 +30,16 @@ const Sidebar = () => {
           <li className="sidebar_main_nav">
             <NavLink
               className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
-              to={"/tasks"}
+              to={"/projects"}
+            >
+              <MdTaskAlt />
+              Dashboard
+            </NavLink>
+          </li>
+          <li className="sidebar_main_nav">
+            <NavLink
+              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+              to={"/projects/tasks"}
             >
               <MdTaskAlt />
               Tasks
@@ -39,7 +48,7 @@ const Sidebar = () => {
           <li className="sidebar_main_nav">
             <NavLink
               className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
-              to={"/chats"}
+              to={"/projects/chats"}
             >
               <IoChatbubblesOutline />
               Chat
@@ -48,7 +57,7 @@ const Sidebar = () => {
           <li className="sidebar_main_nav">
             <NavLink
               className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
-              to={"/video-call"}
+              to={"/projects/video-call"}
             >
               <AiOutlineVideoCamera /> Video Call
             </NavLink>
