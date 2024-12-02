@@ -7,8 +7,8 @@ import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 const InProgressTasks = ({ inProgressTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
-      <h3 className="flex items-center justify-between py-2 px-3 gap-3 bg-white rounded-lg mr-6">
-        <span className="text-lg font-semibold block">In progress</span>
+      <h3 className="flex items-center justify-between py-3 px-3 gap-3 bg-white border border-gray-200 rounded-lg mr-6">
+        <span className="text-lg font-[500] block">In progress</span>
         <span className="bg-gray-300 px-2 py-0.5 rounded">{inProgressTasks.length}</span>
       </h3>
 

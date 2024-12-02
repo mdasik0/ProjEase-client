@@ -6,8 +6,8 @@ import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 const ToDoTasks = ({ todoTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
-      <h3 className="flex items-center justify-between py-2 px-3 gap-3 bg-white rounded-lg mr-6">
-        <span className="text-lg font-semibold block">To Do</span>
+      <h3 className="flex items-center justify-between py-3 px-3 gap-3 bg-white border border-gray-200 rounded-lg mr-6">
+        <span className="text-lg font-[500] block">To do</span>
         <span className="bg-gray-300 px-2 py-0.5 rounded">{todoTasks.length}</span>
       </h3>
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
