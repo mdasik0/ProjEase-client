@@ -85,10 +85,10 @@ const TaskCard = ({
     <div
       onClick={() => setIsOpen(true)}
       className={`task_cards ${
-        (priority === "low" && "bg-green-200") ||
-        (priority === "medium" && "bg-yellow-200") ||
-        (priority === "high" && "bg-red-200")
-      } mt-3 pt-3 px-2 flex flex-col justify-between min-h-[200px] rounded-xl cursor-pointer`}
+        (priority === "low" && "bg-green-200 border-green-300") ||
+        (priority === "medium" && "bg-yellow-200 border-yellow-400") ||
+        (priority === "high" && "bg-red-200 border-red-300")
+      } mt-3 pt-3 px-2 border flex flex-col justify-between min-h-[200px] rounded-xl cursor-pointer`}
     >
       <div className="flex items-center justify-between">
         <p className="text-sm flex  gap-1">
