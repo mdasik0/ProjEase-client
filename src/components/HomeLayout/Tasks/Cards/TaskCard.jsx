@@ -88,7 +88,7 @@ const TaskCard = ({
         (priority === "low" && "bg-green-200") ||
         (priority === "medium" && "bg-yellow-200") ||
         (priority === "high" && "bg-red-200")
-      } mt-3 pt-3 px-2 flex flex-col justify-between min-h-[174px] rounded-xl cursor-pointer`}
+      } mt-3 pt-3 px-2 flex flex-col justify-between min-h-[200px] rounded-xl cursor-pointer`}
     >
       <div className="flex items-center justify-between">
         <p className="text-sm flex  gap-1">
@@ -101,9 +101,11 @@ const TaskCard = ({
           </span>
         )}
       </div>
-      <h2 className="text-2xl mt-5 block pl-2 font-semibold">
-        {title?.length > 45 ? title?.substring(0, 45) + " ..." : title}
+      <div className="mt-5 flex-grow">
+      <h2 className="text-2xl block pl-2 font-[500]">
+      {title?.length > 45 ? title?.substring(0, 50) + " ..." : title}
       </h2>
+      </div>
       <div className="ml-2 pb-3 pt-3 flex justify-between items-end">
         <span className="text-sm ">{time}</span>
         <span

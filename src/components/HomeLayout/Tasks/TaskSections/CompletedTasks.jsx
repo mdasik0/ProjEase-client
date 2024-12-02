@@ -1,4 +1,3 @@
-import { FaChevronDown } from "react-icons/fa";
 import TaskCard from "../Cards/TaskCard";
 
 import PropTypes from "prop-types";
@@ -10,7 +9,7 @@ const CompletedTasks = ({ completedTasks }) => {
     <div className="rounded-xl w-full h-full">
       <h3 className="flex items-center justify-between py-2 px-3 gap-3 bg-white rounded-lg mr-6">
         <span className="text-lg font-semibold block">Completed</span>
-        <FaChevronDown />
+        <span className="bg-gray-300 px-2 py-0.5 rounded">{completedTasks.length}</span>
       </h3>
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
         {!completedTasks || !Array.isArray(completedTasks) ? (

@@ -65,6 +65,15 @@ const Sidebar = () => {
           <li className="sidebar_main_nav">
             <NavLink
               className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+              to={"/projects/invite-members"}
+            >
+              <MdTaskAlt />
+              Invite Members
+            </NavLink>
+          </li>
+          <li className="sidebar_main_nav">
+            <NavLink
+              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
               to={"/"}
             >
               <IoHomeOutline />
