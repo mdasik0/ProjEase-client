@@ -26,20 +26,6 @@ html {
   font-style: normal;
 }
 
-/* nav Link active status color change here */
-nav .active {
-  @apply text-red-500;
-}
-.active button {
-  @apply bg-zinc-900;
-}
-.sidebar_main_nav .active {
-  @apply bg-gray-200;
-}
-.testInput {
-  width: 100%;
-}
-
 /*custom scrollbar here */
 
 .scrollbar::-webkit-scrollbar {
