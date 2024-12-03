@@ -1,9 +1,7 @@
-import Sidebar from "../../components/Shared/Project_sidebar";
 
 const Chats = () => {
   return (
-    <div className="flex w-full">
-      <Sidebar />
+    <div className="flex-grow">
       <div className="w-full">here is your all the chats</div>
     </div>
   );

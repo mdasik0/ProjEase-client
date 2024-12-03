@@ -15,6 +15,9 @@ import ProjectLayout from "../layout/ProjectLayout";
 import About from "../pages/HomeLayout/About";
 import AdditionalProjectInfo from "../pages/HomeLayout/AdditionalProjectInfo";
 import TestComp from "../components/ProjectLayout/TestComp";
+import InviteMembers from "../pages/ProjectLayout/InviteMembers";
+
+
 
 const router = createBrowserRouter([
   {
@@ -88,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: "video-call",
         element: <VideoCall />,
+      },
+      {
+        path: 'invite-members',
+        element: <InviteMembers />,
       },
     ]
   }
