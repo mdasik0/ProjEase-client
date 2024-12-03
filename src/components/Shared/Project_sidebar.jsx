@@ -5,6 +5,8 @@ import { AiOutlineVideoCamera } from "react-icons/ai";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from '../../../public/logo/Full-logo/logo-white-ov2.png'
+import { LuLayoutDashboard } from "react-icons/lu";
+import { FiUserPlus } from "react-icons/fi";
 
 const Project_sidebar = () => {
   const location = useLocation();
@@ -36,7 +38,7 @@ const Project_sidebar = () => {
               end
               to={"/projects"}
             >
-              <MdTaskAlt />
+              <LuLayoutDashboard />
               Dashboard
             </NavLink>
           </li>
@@ -71,7 +73,7 @@ const Project_sidebar = () => {
               className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
               to={"/projects/invite-members"}
             >
-              <MdTaskAlt />
+              <FiUserPlus />
               Invite Members
             </NavLink>
           </li>
