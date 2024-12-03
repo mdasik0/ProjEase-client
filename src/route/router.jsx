@@ -14,8 +14,8 @@ import Additional_info from "../pages/AuthLayout/Additional_info";
 import ProjectLayout from "../layout/ProjectLayout";
 import About from "../pages/HomeLayout/About";
 import AdditionalProjectInfo from "../pages/HomeLayout/AdditionalProjectInfo";
-import TestComp from "../components/ProjectLayout/TestComp";
 import InviteMembers from "../pages/ProjectLayout/InviteMembers";
+import ProjectsDashboard from "../pages/ProjectLayout/ProjectsDashboard";
 
 
 
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/projects",
-        element: <TestComp />
+        element: <ProjectsDashboard />
       },
       {
         path: "tasks",
