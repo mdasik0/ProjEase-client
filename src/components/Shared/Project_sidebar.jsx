@@ -31,8 +31,9 @@ const Project_sidebar = () => {
         </h4>
         <ul className="sidebar-navigation mt-3 mr-3 flex flex-col gap-2 text-[15px]">
           <li className="sidebar_main_nav">
-            <NavLink
-              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+            <NavLink 
+              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
+              end
               to={"/projects"}
             >
               <MdTaskAlt />
@@ -41,7 +42,7 @@ const Project_sidebar = () => {
           </li>
           <li className="sidebar_main_nav">
             <NavLink
-              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
               to={"/projects/tasks"}
             >
               <MdTaskAlt />
@@ -50,7 +51,7 @@ const Project_sidebar = () => {
           </li>
           <li className="sidebar_main_nav">
             <NavLink
-              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
               to={"/projects/chats"}
             >
               <IoChatbubblesOutline />
@@ -59,7 +60,7 @@ const Project_sidebar = () => {
           </li>
           <li className="sidebar_main_nav">
             <NavLink
-              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
               to={"/projects/video-call"}
             >
               <AiOutlineVideoCamera /> Video Call
@@ -67,7 +68,7 @@ const Project_sidebar = () => {
           </li>
           <li className="sidebar_main_nav">
             <NavLink
-              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
               to={"/projects/invite-members"}
             >
               <MdTaskAlt />
@@ -76,7 +77,7 @@ const Project_sidebar = () => {
           </li>
           <li className="sidebar_main_nav">
             <NavLink
-              className="flex items-center gap-2 px-3  py-1.5 rounded-lg"
+              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
               to={"/"}
             >
               <IoHomeOutline />
