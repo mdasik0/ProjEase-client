@@ -11,9 +11,6 @@ const ProjectLayout = () => {
 
   const joinedProjects = userData?.joinedProjects;
 
-  // if projects is available then show the project dashboard
-  // if the project is not available then show create or join a project hyperlink
-
   const dispatch = useDispatch();
   console.log();
   const activeProjectId = joinedProjects?.find(
@@ -27,6 +24,7 @@ const ProjectLayout = () => {
       dispatch(storeActiveProject(data));
     }
   }, [data]);
+
   if (isLoading) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
@@ -34,6 +32,12 @@ const ProjectLayout = () => {
       </div>
     );
   }
+
+  // collect the taskId from projectLayout (can be collected anywhere)
+
+  // find the projectTask Obj by fetching with taskId then collect allTasks fields (layout/tasks component)
+  
+  // using all tasks fields to fetch all tasks and store it in tasksSlice (in tasks page)
   if (joinedProjects) {
     return (
       <div className="flex">
