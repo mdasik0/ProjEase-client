@@ -4,18 +4,18 @@ import PropTypes from "prop-types";
 import NoTasksCard from "../Cards/NoTasksCard";
 import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 
-const CompletedTasks = ({ completedTasks }) => {
+const CompletedTasks = ({ completedTasks,noTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
       <h3 className="flex items-center justify-between py-3 px-3 gap-3 bg-white border border-gray-200 rounded-lg mr-6">
         <span className="text-lg font-[500] block">Completed</span>
-        <span className="bg-gray-300 px-2 py-0.5 rounded">{completedTasks.length}</span>
+        <span className="bg-gray-300 px-2 py-0.5 rounded">{!completedTasks?.length ? '0' : completedTasks?.length}</span>
       </h3>
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-        {!completedTasks || !Array.isArray(completedTasks) ? (
-          <FailedToLoadDataCard />
+      {noTasks || completedTasks?.length === 0 ? (
+          <NoTasksCard />
         ) : (
-          completedTasks.length == 0 && <NoTasksCard />
+          !completedTasks || (!Array.isArray(completedTasks) && <FailedToLoadDataCard />)
         )}
 
         {completedTasks?.length != 0 &&
@@ -56,6 +56,7 @@ CompletedTasks.propTypes = {
       steps: PropTypes.arrayOf(PropTypes.object),
     })
   ).isRequired,
+  noTasks: PropTypes.bool,
 };
 
 export default CompletedTasks;

@@ -4,21 +4,20 @@ import PropTypes from "prop-types";
 import NoTasksCard from "../Cards/NoTasksCard";
 import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 
-const InProgressTasks = ({ inProgressTasks }) => {
+const InProgressTasks = ({ inProgressTasks,noTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
       <h3 className="flex items-center justify-between py-3 px-3 gap-3 bg-white border border-gray-200 rounded-lg mr-6">
         <span className="text-lg font-[500] block">In progress</span>
-        <span className="bg-gray-300 px-2 py-0.5 rounded">{inProgressTasks.length}</span>
+        <span className="bg-gray-300 px-2 py-0.5 rounded">{!inProgressTasks?.length ? '0' : inProgressTasks?.length}</span>
       </h3>
 
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-        {!inProgressTasks || !Array.isArray(inProgressTasks) ? (
-          <FailedToLoadDataCard />
+      {noTasks || inProgressTasks?.length === 0 ? (
+          <NoTasksCard />
         ) : (
-          inProgressTasks.length == 0 && <NoTasksCard />
+          !inProgressTasks || (!Array.isArray(inProgressTasks) && <FailedToLoadDataCard />)
         )}
-
         {inProgressTasks?.length != 0 &&
           inProgressTasks?.map((task) => (
             <TaskCard
@@ -57,6 +56,7 @@ InProgressTasks.propTypes = {
       steps: PropTypes.arrayOf(PropTypes.object),
     })
   ).isRequired,
+  noTasks: PropTypes.bool,
 };
 
 export default InProgressTasks;

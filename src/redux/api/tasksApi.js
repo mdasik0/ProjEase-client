@@ -5,8 +5,11 @@ const tasksApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
   tagTypes: ["tasks"],
   endpoints: (builder) => ({
-    getTasks: builder.query({
-      query: () => "/tasks",
+    getAllTasks: builder.query({
+      query: (allTasks) => ({
+        url: `/allTasks?ids=${allTasks.join(",")}`,
+        method: "GET",
+      }),
       providesTags: ["tasks"],
     }),
     createTask: builder.mutation({
@@ -61,7 +64,7 @@ const tasksApi = createApi({
 
 export const {
   useCreateTaskMutation,
-  useGetTasksQuery,
+  useGetAllTasksQuery,
   useUpdateStatusMutation,
   useDeleteTaskMutation,
   useAddStepsMutation,

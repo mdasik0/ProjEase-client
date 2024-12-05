@@ -45,9 +45,9 @@ const ProjectLayout = () => {
 
 
 
-  // collect the taskId from projectLayout (can be collected anywhere)
+  // collect the taskId from projectLayout (can be collected anywhere) done
 
-  // find the projectTask Obj by fetching with taskId then collect allTasks fields (layout/tasks component)
+  // find the projectTask Obj by fetching with taskId then collect allTasks fields (layout/tasks component) done 
   
   // using all tasks fields to fetch all tasks and store it in tasksSlice (in tasks page)
   if (joinedProjects) {

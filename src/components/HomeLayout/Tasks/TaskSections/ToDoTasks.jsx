@@ -3,18 +3,20 @@ import TaskCard from "../Cards/TaskCard";
 import NoTasksCard from "../Cards/NoTasksCard";
 import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 
-const ToDoTasks = ({ todoTasks }) => {
+const ToDoTasks = ({ todoTasks, noTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
       <h3 className="flex items-center justify-between py-3 px-3 gap-3 bg-white border border-gray-200 rounded-lg mr-6">
         <span className="text-lg font-[500] block">To do</span>
-        <span className="bg-gray-300 px-2 py-0.5 rounded">{todoTasks.length}</span>
+        <span className="bg-gray-300 px-2 py-0.5 rounded">
+          {todoTasks?.length ? todoTasks?.length : "0"}
+        </span>
       </h3>
       <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
-        {!todoTasks || !Array.isArray(todoTasks) ? (
-          <FailedToLoadDataCard />
+        {noTasks || todoTasks?.length === 0 ? (
+          <NoTasksCard />
         ) : (
-          todoTasks.length == 0 && <NoTasksCard />
+          !todoTasks || (!Array.isArray(todoTasks) && <FailedToLoadDataCard />)
         )}
 
         {todoTasks?.length != 0 &&
@@ -56,6 +58,7 @@ ToDoTasks.propTypes = {
       steps: PropTypes.arrayOf(PropTypes.object),
     })
   ).isRequired,
+  noTasks: PropTypes.bool,
 };
 
 export default ToDoTasks;

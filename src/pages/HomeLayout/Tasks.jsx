@@ -2,20 +2,30 @@ import TasksDate from "../../components/HomeLayout/Tasks/TasksDate";
 import { LuBellRing } from "react-icons/lu";
 import { useEffect, useRef } from "react";
 import AddTask from "../../components/HomeLayout/Tasks/AddTask";
-import { useGetTasksQuery } from "../../redux/api/tasksApi";
+import { useGetAllTasksQuery } from "../../redux/api/tasksApi";
 import ToDoTasks from "../../components/HomeLayout/Tasks/TaskSections/ToDoTasks";
 import InProgressTasks from "../../components/HomeLayout/Tasks/TaskSections/InProgressTasks";
 import CompletedTasks from "../../components/HomeLayout/Tasks/TaskSections/CompletedTasks";
+import { useSelector } from "react-redux";
 const Tasks = () => {
   const notifications = ["abdul", "hasem", "rafiq"];
 
-  const { data, isLoading } = useGetTasksQuery();
+  const { tasksInitial } = useSelector(state => state.tasksSlice);
+  const { data: allTasks, isLoading } = useGetAllTasksQuery(tasksInitial?.allTasks, {
+    skip: tasksInitial?.allTasks?.length === 0,
+  });
+  
 
-  const todoTasks = data?.filter(t => t.status === "pending");
-  const inProgressTasks = data?.filter(t => t.status === "in-progress");
-  const completedTasks = data?.filter(t => t.status === "completed");
+  const todoTasks = allTasks?.filter(t => t.status === "pending");
+  const inProgressTasks = allTasks?.filter(t => t.status === "in-progress");
+  const completedTasks = allTasks?.filter(t => t.status === "completed");
 
 
+  // first lets make sure if all tasks has any data at all or not
+  // if it has data a state will be here where we will update the 
+
+
+  console.log(tasksInitial.allTasks, allTasks);
 
   const inputRef = useRef(null);
 
@@ -75,9 +85,9 @@ const Tasks = () => {
           </div>
         ) : (
           <section className="mx-5 my-6 h-[512px] flex justify-between items-start bg-gray-100 py-3 px-3 rounded-xl gap-4">
-            <ToDoTasks todoTasks={todoTasks} />
-            <InProgressTasks inProgressTasks={inProgressTasks} />
-            <CompletedTasks completedTasks={completedTasks} />
+            <ToDoTasks todoTasks={todoTasks} noTasks={!tasksInitial?.allTasks ? true : false} />
+            <InProgressTasks inProgressTasks={inProgressTasks} noTasks={!tasksInitial?.allTasks ? true : false} />
+            <CompletedTasks completedTasks={completedTasks} noTasks={!tasksInitial?.allTasks ? true : false} />
           </section>
         )}
       </div>
