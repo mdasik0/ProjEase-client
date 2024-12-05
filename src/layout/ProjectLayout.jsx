@@ -2,9 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import ProjectAction from "../components/ProjectLayout/ProjectAction";
 import Project_sidebar from "../components/Shared/Project_sidebar";
 import { Outlet } from "react-router-dom";
-import { useGetProjectQuery } from "../redux/api/projectsApi";
+import { useGetProjectQuery, useGetTasksInitQuery } from "../redux/api/projectsApi";
 import { useEffect } from "react";
 import { storeActiveProject } from "../redux/features/projectSlice";
+import { updateTaskInit } from "../redux/features/tasksSlice";
 
 const ProjectLayout = () => {
   const { userData, isLoading } = useSelector((state) => state.userSlice);
@@ -17,13 +18,22 @@ const ProjectLayout = () => {
     (p) => p.status === "active"
   ).projectId;
 
-  const { data } = useGetProjectQuery(activeProjectId);
+  const { data : projectData } = useGetProjectQuery(activeProjectId);
+  const _id = projectData?.taskId;
+  const { data : getTaskInit } = useGetTasksInitQuery(_id);
+  
 
   useEffect(() => {
-    if (data) {
-      dispatch(storeActiveProject(data));
+    if (projectData) {
+      dispatch(storeActiveProject(projectData));
+    } else {
+      console.log('no project found');
+    } 
+    if( getTaskInit) {
+      dispatch(updateTaskInit(getTaskInit))
     }
-  }, [data]);
+    
+  }, [projectData, getTaskInit]);
 
   if (isLoading) {
     return (
@@ -32,6 +42,8 @@ const ProjectLayout = () => {
       </div>
     );
   }
+
+
 
   // collect the taskId from projectLayout (can be collected anywhere)
 
