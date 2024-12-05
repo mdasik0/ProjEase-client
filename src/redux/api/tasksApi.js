@@ -7,16 +7,16 @@ const tasksApi = createApi({
   endpoints: (builder) => ({
     getAllTasks: builder.query({
       query: (allTasks) => ({
-        url: `/allTasks?ids=${allTasks.join(",")}`,
+        url: `/allTasks?ids=${allTasks?.join(",")}`,
         method: "GET",
       }),
       providesTags: ["tasks"],
     }),
     createTask: builder.mutation({
-      query: (body) => ({
-        url: `/createTasks`,
+      query: ({_id, taskobj}) => ({
+        url: `/createTasks/${_id}`,
         method: "POST",
-        body: body,
+        body: taskobj,
       }),
       invalidatesTags: ["tasks"],
     }),

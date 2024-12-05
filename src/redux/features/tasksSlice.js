@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     themes : "",
     tasksInitial: {},
-    allTasks: {},
+    allTasks: [],
 }
 
 const tasksSlice = createSlice({

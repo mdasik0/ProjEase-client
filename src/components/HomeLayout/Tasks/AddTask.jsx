@@ -6,11 +6,14 @@ import { MdAddTask, MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
 import {time, fullDate} from "../../../utils/getDate"
 import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
+import { useSelector } from "react-redux";
 
 const AddTask = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const [createTask, { data, isLoading, isError, error }] = useCreateTaskMutation();
+
+  const {tasksInitial} = useSelector(state => state.tasksSlice)
 
   const user = "Md Asik";
 
@@ -53,12 +56,11 @@ const AddTask = () => {
     };
 
     console.log(taskobj);
-    createTask(taskobj);
+    createTask({_id:tasksInitial?._id, taskobj});
   };
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
-  console.log(today);
 
   return (
     <div>

@@ -55,7 +55,7 @@ CompletedTasks.propTypes = {
       addedBy: PropTypes.string,
       steps: PropTypes.arrayOf(PropTypes.object),
     })
-  ).isRequired,
+  ),
   noTasks: PropTypes.bool,
 };
 
