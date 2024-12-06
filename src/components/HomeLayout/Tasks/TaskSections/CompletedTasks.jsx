@@ -7,7 +7,7 @@ import FailedToLoadDataCard from "../Cards/FailedToLoadDataCard";
 const CompletedTasks = ({ completedTasks,noTasks }) => {
   return (
     <div className="rounded-xl w-full h-full">
-      <h3 className="flex items-center justify-between py-3 px-3 gap-3 bg-white border border-gray-200 rounded-lg mr-6">
+      <h3 className="flex items-center justify-between py-3 px-3 gap-3 bg-white border border-gray-200 rounded-lg mr-6 mb-3">
         <span className="text-lg font-[500] block">Completed</span>
         <span className="bg-gray-300 px-2 py-0.5 rounded">{!completedTasks?.length ? '0' : completedTasks?.length}</span>
       </h3>

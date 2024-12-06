@@ -99,11 +99,20 @@ const Project_sidebar = () => {
           <ul className="sidebar-navigation mt-3 mr-3 flex flex-col gap-2 text-[15px]">
             <li className="sidebar_main_nav">
               <NavLink
-                className="flex  items-center gap-2 px-3  py-1.5 rounded-lg"
-                to={"/tasks"}
+                className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
+                to={"/projects/tasks"}
               >
                 <MdTaskAlt />
                 Tasks
+              </NavLink>
+            </li>
+            <li className="sidebar_main_nav">
+              <NavLink
+                className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
+                to={"/projects/my-tasks"}
+              >
+                <MdTaskAlt />
+                My tasks
               </NavLink>
             </li>
           </ul>

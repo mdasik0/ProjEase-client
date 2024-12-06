@@ -88,7 +88,7 @@ const TaskCard = ({
         (priority === "low" && "bg-green-200 border-green-300") ||
         (priority === "medium" && "bg-yellow-200 border-yellow-400") ||
         (priority === "high" && "bg-red-200 border-red-300")
-      } mt-3 pt-3 px-2 border flex flex-col justify-between min-h-[200px] rounded-xl cursor-pointer`}
+      }  pt-3 px-2 border flex flex-col justify-between h-[200px] rounded-xl cursor-pointer`}
     >
       <div className="flex items-center justify-between">
         <p className="text-sm flex  gap-1">

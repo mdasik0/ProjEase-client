@@ -16,6 +16,7 @@ import About from "../pages/HomeLayout/About";
 import AdditionalProjectInfo from "../pages/HomeLayout/AdditionalProjectInfo";
 import InviteMembers from "../pages/ProjectLayout/InviteMembers";
 import ProjectsDashboard from "../pages/ProjectLayout/ProjectsDashboard";
+import MyTasks from "../pages/ProjectLayout/MyTasks";
 
 
 
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
       {
         path: "tasks",
         element: <Tasks />,
+      },
+      {
+        path: "my-tasks",
+        element: <MyTasks />,
       },
       {
         path: "chats",
