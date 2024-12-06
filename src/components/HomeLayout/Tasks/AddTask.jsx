@@ -71,8 +71,8 @@ const AddTask = () => {
         Create Task <TiPlus />
       </button>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <form className="p-8" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="text-2xl font-semibold mb-6">Create Task Form</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col mb-5 relative">
             <label
               htmlFor="title"
