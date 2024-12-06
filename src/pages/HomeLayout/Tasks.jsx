@@ -15,11 +15,11 @@ const Tasks = () => {
     skip: tasksInitial?.allTasks?.length === 0,
   });
   
-
   const todoTasks = allTasks?.filter(t => t.status === "pending");
   const inProgressTasks = allTasks?.filter(t => t.status === "in-progress");
   const completedTasks = allTasks?.filter(t => t.status === "completed");
 
+  const isInitialLoading = isLoading || (!allTasks && !tasksInitial?.allTasks?.length);
 
   // first lets make sure if all tasks has any data at all or not
   // if it has data a state will be here where we will update the 
@@ -79,7 +79,7 @@ const Tasks = () => {
             <AddTask />
           </div>
         </section>
-        {isLoading ? (
+        {isInitialLoading ? (
           <div className="h-3/4 w-full flex items-center justify-center">
             <span className="loading loading-bars loading-lg text-gray-500"></span>
           </div>
