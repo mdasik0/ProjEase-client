@@ -16,7 +16,7 @@ const MyTasks = () => {
   const myTasks = allTasks?.filter((t) => t.assignedTo === userData?._id);
 
   return (
-    <div className="w-screen h-screen p-12 flex flex-col">
+    <div className="w-screen h-screen p-12 flex-grow flex flex-col">
       <div className="border border-gray-300 bg-gray-100 w-full p-6 rounded-xl">
         <h1 className="text-3xl font-[500] text-black mb-3">My Tasks </h1>
         <p>Welcome to my tasks. Any tasks assigned to you will show up here.</p>

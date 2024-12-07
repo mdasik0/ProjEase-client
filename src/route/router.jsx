@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import Signin from "../pages/AuthLayout/Signin";
 import Home from "../pages/HomeLayout/Home";
 import Signup from "../pages/AuthLayout/Signup";
@@ -78,17 +78,24 @@ const router = createBrowserRouter([
     element: <ProjectLayout />,
     children: [
       {
-        path: "/projects",
+        path: "",
         element: <ProjectsDashboard />
       },
       {
         path: "tasks",
-        element: <Tasks />,
+        element: <Outlet />,
+        children: [
+          {
+            path: '',
+            element: <Tasks />
+          },
+          {
+            path: "my-tasks",
+            element: <MyTasks />,
+          },
+        ]
       },
-      {
-        path: "my-tasks",
-        element: <MyTasks />,
-      },
+     
       {
         path: "chats",
         element: <Chats />,
@@ -102,7 +109,9 @@ const router = createBrowserRouter([
         element: <InviteMembers />,
       },
     ]
-  }
+  },
+  
+  
 ]);
 
 export default router;

@@ -15,7 +15,7 @@ const AdditionalProjectInfo = () => {
   const { userData } = useSelector((state) => state.userSlice);
   const [updateProject] = useUpdateProjectMutation();
   const navigate = useNavigate();
-  const currentProj = userData.joinedProjects.find(
+  const currentProj = userData?.joinedProjects?.find(
     (p) => p.status === "active"
   ) ;
   const handleSubmit = async (e) => {
@@ -29,7 +29,7 @@ const AdditionalProjectInfo = () => {
 
       if (response.data?.success) {
         toast.success(response.data.message);
-        navigate("/");
+        navigate("/projects");
       } else if (response.error?.data?.message) {
         toast.error(response.error.data.message);
       } else {

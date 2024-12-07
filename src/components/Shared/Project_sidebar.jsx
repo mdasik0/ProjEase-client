@@ -95,11 +95,12 @@ const Project_sidebar = () => {
         <h4 className="text-xs text-gray-500  relative  flex items-center gap-24">
           {currentRoute} Menu <IoIosArrowDown className="absolute right-4" />
         </h4>
-        {currentRoute === "tasks" && (
+        {(currentRoute === 'tasks' ) && (
           <ul className="sidebar-navigation mt-3 mr-3 flex flex-col gap-2 text-[15px]">
             <li className="sidebar_main_nav">
               <NavLink
                 className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
+                end
                 to={"/projects/tasks"}
               >
                 <MdTaskAlt />
@@ -109,7 +110,7 @@ const Project_sidebar = () => {
             <li className="sidebar_main_nav">
               <NavLink
                 className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
-                to={"/projects/my-tasks"}
+                to={"/projects/tasks/my-tasks"}
               >
                 <MdTaskAlt />
                 My tasks

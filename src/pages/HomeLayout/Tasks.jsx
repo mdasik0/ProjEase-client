@@ -19,13 +19,11 @@ const Tasks = () => {
   const inProgressTasks = allTasks?.filter(t => t.status === "in-progress");
   const completedTasks = allTasks?.filter(t => t.status === "completed");
 
-  const isInitialLoading = isLoading || (!allTasks && !tasksInitial?.allTasks?.length);
 
   // first lets make sure if all tasks has any data at all or not
   // if it has data a state will be here where we will update the 
 
 
-  console.log(tasksInitial.allTasks, allTasks);
 
   const inputRef = useRef(null);
 
@@ -79,7 +77,7 @@ const Tasks = () => {
             <AddTask />
           </div>
         </section>
-        {isInitialLoading ? (
+        {isLoading ? (
           <div className="h-3/4 w-full flex items-center justify-center">
             <span className="loading loading-bars loading-lg text-gray-500"></span>
           </div>
