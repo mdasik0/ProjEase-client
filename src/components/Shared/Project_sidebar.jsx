@@ -116,6 +116,15 @@ const Project_sidebar = () => {
                 My tasks
               </NavLink>
             </li>
+            <li className="sidebar_main_nav">
+              <NavLink
+                className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
+                to={"/projects/tasks/overdue-tasks"}
+              >
+                <MdTaskAlt />
+                Overdue tasks
+              </NavLink>
+            </li>
           </ul>
         )}
         {currentRoute === "video-call" && (

@@ -39,8 +39,7 @@ const TaskCard = ({
     </svg>
   );
 
-  const LoadingSvg = <img src="/loading.svg" alt="loading animation" />;
-
+ 
   const handleClickOutside = (event) => {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
       setIsOpen(false);
@@ -112,7 +111,9 @@ const TaskCard = ({
           onClick={(e) => handleStatusUpdate(e, _id, status)}
           className="border duration-300 hover:bg-[rgba(0,0,0,0.17)] border-gray-600  p-2 rounded-full mr-2 cursor-pointer"
         >
-          {isLoading ? LoadingSvg : ArrowSvg}
+          {isLoading ? <>
+            <span className="loading loading-spinner loading-sm"></span>
+          </> : ArrowSvg}
         </span>
       </div>
       {/* sidebar */}

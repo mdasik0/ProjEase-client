@@ -17,6 +17,7 @@ import AdditionalProjectInfo from "../pages/HomeLayout/AdditionalProjectInfo";
 import InviteMembers from "../pages/ProjectLayout/InviteMembers";
 import ProjectsDashboard from "../pages/ProjectLayout/ProjectsDashboard";
 import MyTasks from "../pages/ProjectLayout/MyTasks";
+import OverdueTasks from "../pages/ProjectLayout/OverdueTasks";
 
 
 
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
             path: "my-tasks",
             element: <MyTasks />,
           },
+          {
+            path: "overdue-tasks",
+            element: <OverdueTasks />
+          }
         ]
       },
      
