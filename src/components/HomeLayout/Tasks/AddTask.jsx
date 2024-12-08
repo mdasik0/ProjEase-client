@@ -4,16 +4,19 @@ import Modal from "../../Shared/Modal";
 import { useEffect, useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
-import {time, fullDate} from "../../../utils/getDate"
+import { time, fullDate } from "../../../utils/getDate";
 import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetMultiUserQuery } from "../../../redux/api/userApi";
+import { storeMembersInfo } from "../../../redux/features/projectSlice";
 
 const AddTask = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
-  const [createTask, { data, isLoading, isError, error }] = useCreateTaskMutation();
+  const [createTask, { data, isLoading, isError, error }] =
+    useCreateTaskMutation();
 
-  const {tasksInitial} = useSelector(state => state.tasksSlice)
+  const { tasksInitial } = useSelector((state) => state.tasksSlice);
 
   const user = "Md Asik";
 
@@ -35,7 +38,10 @@ const AddTask = () => {
       if (selector2 && selector2.options.length > 0) {
         selector2.value = selector2.options[0].value;
       }
-      document.getElementById("deadline").value = new Date().toISOString().split("T")[0]; // Reset to today's date
+      document.getElementById("deadline").value = new Date()
+        .toISOString()
+        .split("T")[0]; // Reset to today's date
+        setIsOpen(false)
     }
     if (isError) {
       console.error("Error:", error.message);
@@ -44,7 +50,7 @@ const AddTask = () => {
   }, [data, isError, error]);
 
   const onSubmit = async (taskData) => {
-    const formatedDeadline = (taskData.deadline).split("-").reverse().join("-");
+    const formatedDeadline = taskData.deadline.split("-").reverse().join("-");
     const taskobj = {
       ...taskData,
       status: "pending",
@@ -52,15 +58,28 @@ const AddTask = () => {
       steps: [],
       time: time,
       date: fullDate,
-      deadline: formatedDeadline
+      deadline: formatedDeadline,
     };
 
     console.log(taskobj);
-    createTask({_id:tasksInitial?._id, taskobj});
+    createTask({ _id: tasksInitial?._id, taskobj });
   };
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
+
+  const { projectData } = useSelector((state) => state.projectSlice);
+
+  const membersIDs = projectData?.members?.map((m) => m.userId);
+
+  const { data: allMembers } = useGetMultiUserQuery(membersIDs);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (allMembers) {
+      dispatch(storeMembersInfo(allMembers));
+    }
+  }, [allMembers]);
 
   return (
     <div>
@@ -68,11 +87,11 @@ const AddTask = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 duration-300 text-white font-semibold px-5 py-2.5 rounded-lg"
       >
-        Create Task <TiPlus />
+        Add Task <TiPlus />
       </button>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <form className="p-8" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-2xl font-semibold mb-6">Create Task Form</h1>
+          <h1 className="text-2xl font-semibold mb-6">Add Task Form</h1>
           <div className="flex flex-col mb-5 relative">
             <label
               htmlFor="title"
@@ -133,19 +152,10 @@ const AddTask = () => {
               id="assignedTo"
               {...register("assignedTo")}
             >
-              <option value="Mir Hussain">Mir Hussain</option>
-              <option value="Mezba Abedin">Mezba Abedin</option>
-              <option value="Nahid Hasan">Nahid Hasan</option>
-              <option value="Mizanur Rahman">Mizanur Rahman</option>
-              <option value="Tanmoy Parvez">Tanmoy Parvez</option>
-              <option value="Fahim Ahmed Firoz">Fahim Ahmed Firoz</option>
-              <option value="Rahatul Islam">Rahatul Islam</option>
-              <option value="Samin Israr Ravi">Samin Israr Ravi</option>
-              <option value="Mehedi Anik">Mehedi Anik</option>
-              <option value="Ehtisam Haq">Ehtisam Haq</option>
-              <option value="Anisur Rahman">Anisur Rahman</option>
-              <option value="Muktadir Hasan">Muktadir Hasan</option>
-              <option value="Masud Alam">Masud Alam</option>
+              
+              {
+                allMembers?.map(m => <option key={m._id} value={m?._id} > {m?.name?.firstname + " " + m?.name?.lastname} </option>)
+              }
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center px-2 text-gray-700">
               <svg

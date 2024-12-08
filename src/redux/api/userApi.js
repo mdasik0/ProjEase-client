@@ -19,6 +19,12 @@ const userApi = createApi({
       }),
       providesTags: ['users']
     }),
+    getMultiUser: builder.query({
+      query: (userIdsArr) => ({
+        url: `/getMultUsers?userIds=${userIdsArr?.join(",")}`
+      })
+    })
+    ,
     emailLogin: builder.query({
       query: (email) => ({
         url: `/emailLogin/${email}`,
@@ -63,6 +69,7 @@ const userApi = createApi({
 export const {
   useCreateUserMutation,
   useGetUserQuery,
+  useGetMultiUserQuery,
   useUpdateUserMutation,
   useUpdateNameMutation,
   useUploadProfilePictureMutation,

@@ -12,7 +12,7 @@ const InProgressTasks = ({ inProgressTasks,noTasks }) => {
         <span className="bg-gray-300 px-2 py-0.5 rounded">{!inProgressTasks?.length ? '0' : inProgressTasks?.length}</span>
       </h3>
 
-      <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
+      <div className="h-[440px] flex flex-col gap-4 pr-4 scrollbar overflow-scroll ">
       {noTasks || inProgressTasks?.length === 0 ? (
           <NoTasksCard />
         ) : (

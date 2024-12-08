@@ -12,7 +12,7 @@ const ToDoTasks = ({ todoTasks, noTasks }) => {
           {todoTasks?.length ? todoTasks?.length : "0"}
         </span>
       </h3>
-      <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
+      <div className="h-[440px] flex flex-col gap-4 pr-4 scrollbar overflow-scroll ">
         {noTasks || todoTasks?.length === 0 ? (
           <NoTasksCard />
         ) : (

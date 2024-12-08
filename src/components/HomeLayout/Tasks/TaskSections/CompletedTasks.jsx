@@ -11,7 +11,7 @@ const CompletedTasks = ({ completedTasks,noTasks }) => {
         <span className="text-lg font-[500] block">Completed</span>
         <span className="bg-gray-300 px-2 py-0.5 rounded">{!completedTasks?.length ? '0' : completedTasks?.length}</span>
       </h3>
-      <div className="h-[440px] pr-4 scrollbar overflow-scroll ">
+      <div className="h-[440px] flex flex-col gap-4 pr-4 scrollbar overflow-scroll ">
       {noTasks || completedTasks?.length === 0 ? (
           <NoTasksCard />
         ) : (

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 projectData: {},
+members: []
 }
 
 const projectSlice = createSlice({
@@ -10,6 +11,9 @@ const projectSlice = createSlice({
     reducers: {
     storeActiveProject: (state, {payload}) => {
         state.projectData = payload;
+    }, 
+    storeMembersInfo: (state, {payload}) => {
+        state.members = payload;
     }
     }
 })
@@ -18,5 +22,5 @@ const projectSlice = createSlice({
 // then fetch the project
 // then store the project in the projectSlice
 
-export const {storeActiveProject} = projectSlice.actions;
+export const {storeActiveProject, storeMembersInfo} = projectSlice.actions;
 export default projectSlice.reducer;
