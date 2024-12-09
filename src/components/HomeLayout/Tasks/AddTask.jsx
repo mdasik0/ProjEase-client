@@ -9,9 +9,8 @@ import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetMultiUserQuery } from "../../../redux/api/userApi";
 import { storeMembersInfo } from "../../../redux/features/projectSlice";
-import PropTypes from "prop-types";
 
-const AddTask = ({ allTaskRefetch }) => {
+const AddTask = () => {
   // modal
   const [isOpen, setIsOpen] = useState(false);
   //form
@@ -98,7 +97,6 @@ const AddTask = ({ allTaskRefetch }) => {
       }).unwrap();
       if (taskCreationResponse.success === true) {
         toast.success(taskCreationResponse.message);
-        allTaskRefetch();
         resetForm();
 
       } else {
@@ -254,7 +252,4 @@ const AddTask = ({ allTaskRefetch }) => {
   );
 };
 
-AddTask.propTypes = {
-  allTaskRefetch: PropTypes.func.isRequired,
-};
 export default AddTask;
