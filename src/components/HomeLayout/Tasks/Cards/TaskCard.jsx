@@ -93,8 +93,8 @@ const TaskCard = ({
       {/* steps and date */}
       <div className="flex items-center justify-between">
         <p className="text-sm flex  gap-1">
-          <IoMdStar className="text-yellow-500 text-lg" />
-          {fullDate === date ? "Today" : date}
+          
+          {fullDate === date ? <span className="flex gap-1"><IoMdStar className="text-yellow-500 text-lg" />Today</span> : date}
         </p>
         {steps?.length != 0 && (
           <span className="text-sm mr-2">
