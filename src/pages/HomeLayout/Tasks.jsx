@@ -11,9 +11,11 @@ const Tasks = () => {
   const notifications = ["abdul", "hasem", "rafiq"];
 
   const { tasksInitial } = useSelector(state => state.tasksSlice);
-  const { data: allTasks, isLoading } = useGetAllTasksQuery(tasksInitial?.allTasks, {
-    skip: tasksInitial?.allTasks?.length === 0,
-  });
+  const { data: allTasks, isLoading, refetch } = useGetAllTasksQuery(
+    tasksInitial?.allTasks || [], 
+    { refetchOnMountOrArgChange: true }
+  );
+  
   
   const todoTasks = allTasks?.filter(t => t.status === "pending");
   const inProgressTasks = allTasks?.filter(t => t.status === "in-progress");
@@ -70,11 +72,9 @@ const Tasks = () => {
         <section className=" py-3 px-4 my-3.5 border rounded-lg flex items-center justify-between mx-5  ">
           <TasksDate />
 
-          
-
           <div className="border-l pl-6 flex items-center gap-3 w-fit ">
             
-            <AddTask />
+            <AddTask allTaskRefetch={refetch} />
           </div>
         </section>
         {isLoading ? (

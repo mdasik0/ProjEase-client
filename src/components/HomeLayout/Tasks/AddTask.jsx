@@ -9,65 +9,27 @@ import { useCreateTaskMutation } from "../../../redux/api/tasksApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetMultiUserQuery } from "../../../redux/api/userApi";
 import { storeMembersInfo } from "../../../redux/features/projectSlice";
+import PropTypes from "prop-types";
 
-const AddTask = () => {
+const AddTask = ({ allTaskRefetch }) => {
+  // modal
   const [isOpen, setIsOpen] = useState(false);
+  //form
   const { register, handleSubmit, reset } = useForm();
-  const [createTask, { data, isLoading, isError, error }] =
+  //task creator //TODO:: DATA REMOVED
+  const [createTask, { isLoading, isError, error }] =
     useCreateTaskMutation();
-
+  // using taskinitial id to store it in all tasks
   const { tasksInitial } = useSelector((state) => state.tasksSlice);
 
-  const user = "Md Asik";
-
-  const onCancel = () => {
-    reset();
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    if (data) {
-      toast.success("Task created successfully");
-      document.getElementById("title").value = "";
-      document.getElementById("description").value = "";
-      const selector = document.getElementById("assignedTo");
-      if (selector && selector.options.length > 0) {
-        selector.value = selector.options[0].value;
-      }
-      const selector2 = document.getElementById("priority");
-      if (selector2 && selector2.options.length > 0) {
-        selector2.value = selector2.options[0].value;
-      }
-      document.getElementById("deadline").value = new Date()
-        .toISOString()
-        .split("T")[0]; // Reset to today's date
-        setIsOpen(false)
-    }
-    if (isError) {
-      console.error("Error:", error.message);
-      toast.error("error.message");
-    }
-  }, [data, isError, error]);
-
-  const onSubmit = async (taskData) => {
-    const formatedDeadline = taskData.deadline.split("-").reverse().join("-");
-    const taskobj = {
-      ...taskData,
-      status: "pending",
-      addedBy: user,
-      steps: [],
-      time: time,
-      date: fullDate,
-      deadline: formatedDeadline,
-    };
-
-    console.log(taskobj);
-    createTask({ _id: tasksInitial?._id, taskobj });
-  };
-
-  // Get today's date in YYYY-MM-DD format
+  // setting up the date for deadline input
   const today = new Date().toISOString().split("T")[0];
 
+  // added by the current user
+  const { userData } = useSelector((state) => state.userSlice);
+  const currUserId = userData?._id;
+
+  // setting up all members for input assignedTo
   const { projectData } = useSelector((state) => state.projectSlice);
 
   const membersIDs = projectData?.members?.map((m) => m.userId);
@@ -80,6 +42,72 @@ const AddTask = () => {
       dispatch(storeMembersInfo(allMembers));
     }
   }, [allMembers]);
+
+  // cancel button func
+  const onCancel = () => {
+    reset();
+    setIsOpen(false);
+  };
+
+  // Function to reset the form and modal
+  const resetForm = () => {
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+
+    const selector = document.getElementById("assignedTo");
+    if (selector && selector.options.length > 0) {
+      selector.value = selector.options[0].value;
+    }
+
+    const selector2 = document.getElementById("priority");
+    if (selector2 && selector2.options.length > 0) {
+      selector2.value = selector2.options[0].value;
+    }
+
+    document.getElementById("deadline").value = new Date()
+      .toISOString()
+      .split("T")[0];
+
+    setIsOpen(false);
+  };
+
+  // useEffect now just handles the `isError` check
+  useEffect(() => {
+    if (isError) {
+      console.error("Error:", error?.message);
+      toast.error(error?.message || "Something went wrong.");
+    }
+  }, [isError, error]);
+
+  const onSubmit = async (taskData) => {
+    const formatedDeadline = taskData.deadline.split("-").reverse().join("-");
+    const taskobj = {
+      ...taskData,
+      status: "pending",
+      addedBy: currUserId,
+      steps: [],
+      time: time,
+      date: fullDate,
+      deadline: formatedDeadline,
+    };
+
+    try {
+      const taskCreationResponse = await createTask({
+        _id: tasksInitial?._id,
+        taskobj,
+      }).unwrap();
+      if (taskCreationResponse.success === true) {
+        toast.success(taskCreationResponse.message);
+        allTaskRefetch();
+        resetForm();
+
+      } else {
+        toast.error(error?.message)
+      }
+    } catch (error) {
+      console.error("Task creation error:", error);
+    }
+  };
 
   return (
     <div>
@@ -152,10 +180,12 @@ const AddTask = () => {
               id="assignedTo"
               {...register("assignedTo")}
             >
-              
-              {
-                allMembers?.map(m => <option key={m._id} value={m?._id} > {m?.name?.firstname + " " + m?.name?.lastname} </option>)
-              }
+              {allMembers?.map((m) => (
+                <option key={m._id} value={m?._id}>
+                  {" "}
+                  {m?.name?.firstname + " " + m?.name?.lastname}{" "}
+                </option>
+              ))}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center px-2 text-gray-700">
               <svg
@@ -224,4 +254,7 @@ const AddTask = () => {
   );
 };
 
+AddTask.propTypes = {
+  allTaskRefetch: PropTypes.func.isRequired,
+};
 export default AddTask;

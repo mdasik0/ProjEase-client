@@ -23,13 +23,9 @@ const projectsApi = createApi({
                 url: `/getProject/${_id}`,
             })
         }),
-        getTasksInit: builder.query({
-            query: (_id) => ({
-                url: `/getTasksInit/${_id}`,
-            })
-        })
+        
     })
 })
 
-export const {useGetProjectQuery, useGetTasksInitQuery ,useCreateProjectMutation,  useUpdateProjectMutation} = projectsApi;
+export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation} = projectsApi;
 export default projectsApi;

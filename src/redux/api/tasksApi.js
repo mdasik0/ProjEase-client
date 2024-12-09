@@ -12,13 +12,19 @@ const tasksApi = createApi({
       }),
       providesTags: ["tasks"],
     }),
+    getTasksInit: builder.query({
+      query: (_id) => ({
+        url: `/getTasksInit/${_id}`,
+      }),
+      providesTags: ["tasksInit"],
+    }),
     createTask: builder.mutation({
-      query: ({_id, taskobj}) => ({
+      query: ({ _id, taskobj }) => ({
         url: `/createTasks/${_id}`,
         method: "POST",
         body: taskobj,
       }),
-      invalidatesTags: ["tasks"],
+      invalidatesTags: ["tasks", "tasksInit"],
     }),
     updateStatus: builder.mutation({
       query: (_id) => ({
@@ -63,6 +69,7 @@ const tasksApi = createApi({
 });
 
 export const {
+  useGetTasksInitQuery,
   useCreateTaskMutation,
   useGetAllTasksQuery,
   useUpdateStatusMutation,
