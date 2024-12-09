@@ -81,14 +81,16 @@ const TaskCard = ({
   const completedsteps = steps?.filter((s) => s.isCompleted === true).length;
 
   return (
+    // parent div
     <div
       onClick={() => setIsOpen(true)}
       className={`task_cards ${
         (priority === "low" && "bg-green-200 border-green-300") ||
         (priority === "medium" && "bg-yellow-200 border-yellow-400") ||
         (priority === "high" && "bg-red-200 border-red-300")
-      }  pt-3 px-2 border flex flex-col justify-between h-[200px] rounded-xl cursor-pointer`}
+      } border rounded-xl cursor-pointer p-4 h-[200px] w-[400px]`}
     >
+      {/* steps and date */}
       <div className="flex items-center justify-between">
         <p className="text-sm flex  gap-1">
           <IoMdStar className="text-yellow-500 text-lg" />
@@ -100,23 +102,26 @@ const TaskCard = ({
           </span>
         )}
       </div>
-      <div className="mt-5 flex-grow">
-      <h2 className="text-2xl block pl-2 font-[500]">
-      {title?.length > 45 ? title?.substring(0, 50) + " ..." : title}
+      {/* task title */}
+      <div className="h-[105px] py-0.5 flex-grow overflow-hidden">
+      <h2 className="text-[22px] leading-[30px]">
+      {title?.length > 80 ? title?.substring(0, 80) + " ..." : title}
       </h2>
+      
       </div>
-      <div className="ml-2 pb-3 pt-3 flex justify-between items-end">
+      {/* time and status update */}
+      <div className="flex justify-between items-end">
         <span className="text-sm ">{time}</span>
         <span
           onClick={(e) => handleStatusUpdate(e, _id, status)}
-          className="border duration-300 hover:bg-[rgba(0,0,0,0.17)] border-gray-600  p-2 rounded-full mr-2 cursor-pointer"
+          className="border duration-300 hover:bg-[rgba(0,0,0,0.17)] border-gray-600 rounded-full cursor-pointer p-2"
         >
           {isLoading ? <>
             <span className="loading loading-spinner loading-sm"></span>
           </> : ArrowSvg}
         </span>
       </div>
-      {/* sidebar */}
+      {/* sidebar (absolute content) */}
       <TaskSideBar
         _id={_id}
         title={title}
