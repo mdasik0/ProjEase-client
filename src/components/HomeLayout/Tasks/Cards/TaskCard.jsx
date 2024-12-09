@@ -19,14 +19,11 @@ const TaskCard = ({
   title,
   _id,
 }) => {
-  console.log(date,time)
-  // Log task to verify prop is being passed correctly
-  // opens and closes the task sidebar
   const [isOpen, setIsOpen] = useState(false);
 
   const sidebarRef = useRef(null);
   const inputRef = useRef();
-  const [updateStatus, { data, isLoading }] = useUpdateStatusMutation();
+  const [updateStatus, { error, isLoading }] = useUpdateStatusMutation();
 
   const ArrowSvg = (
     <svg
@@ -57,17 +54,11 @@ const TaskCard = ({
     };
   }, [isOpen]);
 
-  const handleStatusUpdate = (e, id) => {
+  const handleStatusUpdate = async (e, id) => {
     e.stopPropagation();
-    let newStatus;
-    if (status === "pending") newStatus = "in-progress";
-    else if (status === "in-progress") newStatus = "completed";
-    else newStatus = "task is already completed";
-    updateStatus(id);
-    if (data) {
-      toast.success(`task is ${newStatus}`);
-    } else if (newStatus === "task is already completed") {
-      toast(newStatus, {
+    
+    if (status === "completed") {
+      toast("Task is already completed", {
         icon: "⚠️",
         style: {
           borderRadius: "10px",
@@ -75,6 +66,15 @@ const TaskCard = ({
           color: "#ffffff",
         },
       });
+      return;
+    }
+
+    const statusUpdateResponse = await updateStatus(id);
+
+    if(statusUpdateResponse.data.success) {
+      toast.success(statusUpdateResponse.data.message);
+    } else {
+      toast.error(error.message);
     }
   };
 
