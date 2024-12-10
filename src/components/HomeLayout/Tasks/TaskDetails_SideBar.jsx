@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { FaRegCircle } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import PropTypes from "prop-types";
-import { LuPlusSquare } from "react-icons/lu";
 import { IoTrashSharp } from "react-icons/io5";
 import {
   useAddStepsMutation,
@@ -14,6 +13,7 @@ import { BsCalendar2Date } from "react-icons/bs";
 import { calculateDaysLeft, formatDate } from "../../../utils/getDate";
 import { FiUser, FiUserPlus } from "react-icons/fi";
 import StepsCard from "./Cards/StepsCard";
+import { TiTick, TiTimes } from "react-icons/ti";
 
 const TaskDetails_SideBar = ({
   sidebarRef,
@@ -32,10 +32,7 @@ const TaskDetails_SideBar = ({
   title,
   _id,
 }) => {
-  const [addStepsInfo, setAddStepsInfo] = useState({
-    inputHover: false,
-    onchangeStpes: "",
-  });
+  const [inputData, setInputData] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
   const [addSteps, { data: stepsMutation }] = useAddStepsMutation();
@@ -91,53 +88,40 @@ const TaskDetails_SideBar = ({
       <div
         ref={sidebarRef}
         onClick={(e) => e.stopPropagation()}
-        className={`task-details-sidebar bg-gray-200 w-[280px] h-screen  duration-500 overflow-y-auto scrollbar-sidebar`}
+        className={`task-details-sidebar bg-white w-[330px] h-screen  duration-500 overflow-y-auto scrollbar-sidebar p-4`}
       >
-        <div className="p-3 flex items-center justify-between">
-          <span className="text-sm pl-2 text-gray-500">{time}</span>
-          <RxCross2 className=" text-2xl" onClick={() => setIsOpen(!isOpen)} />
+        {/* close button and time */}
+        <div className=" mb-2 flex items-center justify-end">
+          
+          <RxCross2 className=" text-[28px]" onClick={() => setIsOpen(!isOpen)} />
         </div>
         {/* task body */}
-        <div className="mx-4 font-semibold">
-          <h1 className="text-xl">{title}.</h1>
-          <hr className="mt-6 border-gray-500" />
-          {/* add steps section */}
-          <section className="mt-3">
-            {/* card start */}
-            {steps?.map((d) => (
-              <StepsCard
-                key={d._id}
-                _id={_id}
-                d={d}
-                steps={addStepsInfo}
-                setSteps={setAddStepsInfo}
-              />
-            ))}
-            {/* card end */}
-            <div
-              onClick={inputFocus}
-              className="flex items-center gap-3 bg-white px-3 py-2 rounded-lg"
-            >
-              {addStepsInfo.onchangeStpes ? (
-                <FaRegCircle onClick={(e) => handleAddSteps(e, _id)} />
-              ) : (
-                <LuPlusSquare />
-              )}
+        <div className="">
+          <p className="text-sm text-gray-500 -mb-1">Title</p>
+          <h1 className="text-[25px]">{title}.</h1>
+          {/*steps section */}
+          <section className="mt-3 bg-gray-200 rounded-lg">
+            <div className="steps-container p-1.5">
+              <div className="step-card flex items-center justify-between bg-white ps-2 pe-1 py-1.5 rounded-[6px]">
+                <p className="step-title text-sm">This is a step task you. not how you do it now that happend</p>
+                <div className="flex">
+                <TiTick className="text-xl text-green-500" />
+                <TiTimes className="text-xl text-red-500" />
+                </div>
 
-              <input
-                ref={inputRef}
-                id="addSteps"
-                onChange={(e) =>
-                  setAddStepsInfo({
-                    ...addStepsInfo,
-                    onchangeStpes: e.target.value,
-                  })
-                }
-                className="font-normal bg-transparent placeholder:text-black placeholder:focus:text-gray-400 placeholder:text-sm focus:outline-none focus:border-b border-gray-500 hover:cursor-pointer"
-                type="text"
-                placeholder="Add Steps"
-              />
+              </div>
+              
             </div>
+
+            <form onSubmit={handleAddSteps}
+              className="flex items-center gap-1 p-1 rounded-lg"
+            >
+              <input required onChange={(e) => setInputData(e.target.value)} className="border-[1px] flex-grow focus:outline-none py-1 px-2  rounded-[7px]" placeholder="Add step" type="text" />
+              <button type="submit" className="bg-white p-[6px] rounded-md" >
+              <FaPlus className="text-xl text-green-500" />
+              </button>
+            </form >
+
           </section>
           {/* <div className="flex items-center gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
           <IoIosAttach /> <span className="font-normal text-sm">Add files</span>
