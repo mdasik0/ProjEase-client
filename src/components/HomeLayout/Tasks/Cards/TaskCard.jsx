@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { IoMdStar } from "react-icons/io";
-import TaskSideBar from "../TaskSideBar";
+import TaskDetails_SideBar from "../TaskDetails_SideBar";
 import { useUpdateStatusMutation } from "../../../../redux/api/tasksApi";
 import toast from "react-hot-toast";
 import { fullDate } from "../../../../utils/getDate";
@@ -36,7 +36,6 @@ const TaskCard = ({
     </svg>
   );
 
- 
   const handleClickOutside = (event) => {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
       setIsOpen(false);
@@ -56,7 +55,7 @@ const TaskCard = ({
 
   const handleStatusUpdate = async (e, id) => {
     e.stopPropagation();
-    
+
     if (status === "completed") {
       toast("Task is already completed", {
         icon: "⚠️",
@@ -71,7 +70,7 @@ const TaskCard = ({
 
     const statusUpdateResponse = await updateStatus(id);
 
-    if(statusUpdateResponse.data.success) {
+    if (statusUpdateResponse.data.success) {
       toast.success(statusUpdateResponse.data.message);
     } else {
       toast.error(error.message);
@@ -93,8 +92,14 @@ const TaskCard = ({
       {/* steps and date */}
       <div className="flex items-center justify-between">
         <p className="text-sm flex  gap-1">
-          
-          {fullDate === date ? <span className="flex gap-1"><IoMdStar className="text-yellow-500 text-lg" />Today</span> : date}
+          {fullDate === date ? (
+            <span className="flex gap-1">
+              <IoMdStar className="text-yellow-500 text-lg" />
+              Today
+            </span>
+          ) : (
+            date
+          )}
         </p>
         {steps?.length != 0 && (
           <span className="text-sm mr-2">
@@ -104,10 +109,9 @@ const TaskCard = ({
       </div>
       {/* task title */}
       <div className="h-[105px] py-0.5 flex-grow overflow-hidden">
-      <h2 className="text-[22px] leading-[30px]">
-      {title?.length > 80 ? title?.substring(0, 80) + " ..." : title}
-      </h2>
-      
+        <h2 className="text-[22px] leading-[30px]">
+          {title?.length > 80 ? title?.substring(0, 80) + " ..." : title}
+        </h2>
       </div>
       {/* time and status update */}
       <div className="flex justify-between items-end">
@@ -116,13 +120,20 @@ const TaskCard = ({
           onClick={(e) => handleStatusUpdate(e, _id, status)}
           className="border duration-300 hover:bg-[rgba(0,0,0,0.17)] border-gray-600 rounded-full cursor-pointer p-2"
         >
-          {isLoading ? <>
-            <span className="loading loading-spinner loading-sm"></span>
-          </> : ArrowSvg}
+          {isLoading ? (
+            <>
+              <span className="loading loading-spinner loading-sm"></span>
+            </>
+          ) : (
+            ArrowSvg
+          )}
         </span>
       </div>
+
+      
       {/* sidebar (absolute content) */}
-      <TaskSideBar
+      {
+        isOpen && <TaskDetails_SideBar
         _id={_id}
         title={title}
         description={description}
@@ -139,6 +150,7 @@ const TaskCard = ({
         sidebarRef={sidebarRef}
         inputRef={inputRef}
       />
+      }
     </div>
   );
 };

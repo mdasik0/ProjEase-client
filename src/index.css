@@ -417,5 +417,28 @@ input[type="number"] {
   }
 }
 
+.task-details-backdrop {
+  background-color: rgba(0, 0, 0, 0.349);
+  backdrop-filter: blur(3px );
+  z-index: 1;
+}
+
+.task-details-sidebar {
+  z-index: 100;
+  position: absolute;
+  animation: slidein 0.4s ease-out forwards; /* Adjusted duration and timing function */
+}
+
+@keyframes slidein {
+  0% {
+    top: 0;
+    right: -340px;
+  }
+  100% {
+    top: 0;
+    right: 0;
+  }
+}
+
 
 
