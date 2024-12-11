@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import PropTypes from "prop-types";
 import { IoTrashSharp } from "react-icons/io5";
@@ -9,9 +8,8 @@ import toast from "react-hot-toast";
 import { BsCalendar2Date } from "react-icons/bs";
 import { calculateDaysLeft, formatDate } from "../../../utils/getDate";
 import { FiUser, FiUserPlus } from "react-icons/fi";
-import StepsCard from "./Cards/StepsCard";
-import { TiTick, TiTimes } from "react-icons/ti";
 import StepsSection from "./Cards/StepsSection";
+import { useSelector } from "react-redux";
 
 const TaskDetails_SideBar = ({
   sidebarRef,
@@ -30,6 +28,15 @@ const TaskDetails_SideBar = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
+  const {members} = useSelector(state => state.projectSlice);
+  console.log();
+
+  const assignedToMember = members?.find(member => member?._id === assignedTo)?.name
+  const assignedByMember = members?.find(member => member?._id === addedBy)?.name
+
+  
+
+
 
   // sidebar functio
   // sidebar function
@@ -115,11 +122,11 @@ const TaskDetails_SideBar = ({
           </div>
           <div className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
             <div className="flex items-center gap-3 mt-1">
-              <FiUserPlus /> Assigned By {addedBy}
+              <FiUserPlus /> Assigned By { assignedByMember ? assignedByMember?.firstname + " " + assignedByMember?.lastname : 'unknown'}
             </div>
             <hr className="my-3" />
             <div className="flex items-center gap-3 mb-1">
-              <FiUser /> Assigned To {assignedTo}
+              <FiUser /> Assigned To {assignedToMember ? assignedToMember?.firstname + " " + assignedToMember?.lastname : 'unknown'}
             </div>
           </div>
           <button

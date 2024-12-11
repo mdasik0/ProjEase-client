@@ -5,6 +5,7 @@ import TaskDetails_SideBar from "../TaskDetails_SideBar";
 import { useUpdateStatusMutation } from "../../../../redux/api/tasksApi";
 import toast from "react-hot-toast";
 import { fullDate } from "../../../../utils/getDate";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
 const TaskCard = ({
   addedBy,
@@ -116,7 +117,12 @@ const TaskCard = ({
       {/* time and status update */}
       <div className="flex justify-between items-end">
         <span className="text-sm ">{time}</span>
-        <span
+        {status === 'completed' ? 
+        <div className="tooltip" data-tip="Task Complete"> 
+        <IoCheckmarkDoneCircle className="text-[54px] -mb-3" /> 
+        </div>
+        
+        :  <span
           onClick={(e) => handleStatusUpdate(e, _id, status)}
           className="border duration-300 hover:bg-[rgba(0,0,0,0.17)] border-gray-600 rounded-full cursor-pointer p-2"
         >
@@ -127,7 +133,7 @@ const TaskCard = ({
           ) : (
             ArrowSvg
           )}
-        </span>
+        </span>}
       </div>
 
       
