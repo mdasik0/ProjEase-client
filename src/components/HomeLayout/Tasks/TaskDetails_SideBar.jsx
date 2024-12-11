@@ -17,7 +17,6 @@ import { TiTick, TiTimes } from "react-icons/ti";
 
 const TaskDetails_SideBar = ({
   sidebarRef,
-  inputRef,
   isOpen,
   setIsOpen,
   addedBy,
@@ -28,7 +27,6 @@ const TaskDetails_SideBar = ({
   priority,
   status,
   steps,
-  time,
   title,
   _id,
 }) => {
@@ -37,21 +35,15 @@ const TaskDetails_SideBar = ({
   const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
   const [addSteps, { data: stepsMutation }] = useAddStepsMutation();
 
-  // sidebar function
-  const inputFocus = (e) => {
-    e.stopPropagation();
-    inputRef.current.focus();
-  };
-
+  // sidebar functio
   // sidebar function
 
   const handleAddSteps = (e, _id) => {
     e.preventDefault();
     const stepsData = {
-      text: addStepsInfo.onchangeStpes,
+      text: inputData,
       isCompleted: false,
     };
-    console.log(stepsData);
     if (steps.length >= 5) {
       return toast.error("you can't add more than 5 steps in a Task");
     } else {
@@ -59,7 +51,7 @@ const TaskDetails_SideBar = ({
     }
 
     document.getElementById("addSteps").value = "";
-    setAddStepsInfo({ ...addStepsInfo, onchangeStpes: "" });
+    setInputData('');
   };
 
   const handleDeleteTasks = (_id) => {
@@ -123,6 +115,7 @@ const TaskDetails_SideBar = ({
             </form >
 
           </section>
+          {/* steps section ends */}
           {/* <div className="flex items-center gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
           <IoIosAttach /> <span className="font-normal text-sm">Add files</span>
         </div> */}
