@@ -11,19 +11,11 @@ import { FiUserPlus } from "react-icons/fi";
 const Project_sidebar = () => {
   const location = useLocation();
 
-  // const nav = {
-  //   pathname: "/test/nav/video-call"
-  // }
-
   const currentRoute = location.pathname.split("/")[2];
 
-  // console.log(currentRoute);
   return (
-    <div className={`shadow-lg shadow-gray-300 h-screen w-[250px] duration-300 `}>
+    <div style={{position: 'sticky', top:0}} className={`shadow-lg shadow-gray-300 min-w-[250px] min-h-screen duration-300`}>
       <div className=" flex items-center justify-center my-6">
-        {/* 2 menus */}
-        {/* main menu example: home, video call, tasks, chat etc.. */}
-        {/* page specific menu. for tasks example: archive, my tasks, priority tasks etc.. */}
 
         <img className="w-[120px]" src={logo} alt="projease logo" />
       </div>

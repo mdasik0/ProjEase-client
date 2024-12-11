@@ -32,7 +32,7 @@ const OverdueTasks = () => {
 });
 console.log(overdueTasks);
   return (
-    <div className="w-screen h-screen p-12 flex-grow flex flex-col">
+    <div className="w-screen h-screen p-6 flex-grow flex flex-col overflow-y-scroll">
       <div className="border border-gray-300 bg-gray-100 w-full p-6 rounded-xl">
         <h1 className="text-3xl font-[500] text-black mb-3">Overdue Tasks </h1>
         <p>Welcome to overdue tasks. Any tasks that&apos;s past its due date will show up here.</p>
