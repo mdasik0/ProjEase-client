@@ -3,9 +3,7 @@ import { FaPlus } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import PropTypes from "prop-types";
 import { IoTrashSharp } from "react-icons/io5";
-import {
-  useDeleteTaskMutation,
-} from "../../../redux/api/tasksApi";
+import { useDeleteTaskMutation } from "../../../redux/api/tasksApi";
 import Modal from "../../Shared/Modal";
 import toast from "react-hot-toast";
 import { BsCalendar2Date } from "react-icons/bs";
@@ -33,11 +31,8 @@ const TaskDetails_SideBar = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
 
-
   // sidebar functio
   // sidebar function
-
-  
 
   const handleDeleteTasks = (_id) => {
     deleteTask(_id);
@@ -57,8 +52,8 @@ const TaskDetails_SideBar = ({
 
   return (
     <>
-    {/* backdrop */}
-    <div className="task-details-backdrop w-screen h-screen absolute top-0 left-0 flex justify-end"></div>
+      {/* backdrop */}
+      <div className="task-details-backdrop w-screen h-screen absolute top-0 left-0 flex justify-end"></div>
       <div
         ref={sidebarRef}
         onClick={(e) => e.stopPropagation()}
@@ -66,8 +61,10 @@ const TaskDetails_SideBar = ({
       >
         {/* close button and time */}
         <div className=" mb-2 flex items-center justify-end">
-          
-          <RxCross2 className=" text-[28px]" onClick={() => setIsOpen(!isOpen)} />
+          <RxCross2
+            className=" text-[28px]"
+            onClick={() => setIsOpen(!isOpen)}
+          />
         </div>
         {/* task body */}
         <div className="">
@@ -75,16 +72,19 @@ const TaskDetails_SideBar = ({
           <h1 className="text-[25px]">{title}.</h1>
           {/*steps section */}
           <StepsSection steps={steps} _id={_id} />
-          {/* steps section ends */}
-          {/* <div className="flex items-center gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
-          <IoIosAttach /> <span className="font-normal text-sm">Add files</span>
-        </div> */}
-          <p className="font-normal text-sm gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
-            <span className="block font-semibold text-gray-500 mb-2">
-              Description
-            </span>
-            {description}
-          </p>
+          {/* description */}
+          {description && (
+            <>
+              <div className="border-r-4 border-red-500 my-6 ">
+              <div className="border-r-4 border-red-300 pl-1">
+              <p className="text-sm mb-0.5 text-gray-500">Description</p>
+              <div className=" text-sm text-black rounded-[7px]">
+                {description}
+              </div>
+              </div>
+              </div>
+            </>
+          )}
           <p
             className={`font-normal text-sm gap-3 ${
               (status === "pending" && "bg-yellow-500") ||
@@ -157,7 +157,6 @@ const TaskDetails_SideBar = ({
         </div>
       </div>
     </>
-
   );
 };
 
