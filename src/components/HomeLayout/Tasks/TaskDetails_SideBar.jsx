@@ -4,7 +4,6 @@ import { RxCross2 } from "react-icons/rx";
 import PropTypes from "prop-types";
 import { IoTrashSharp } from "react-icons/io5";
 import {
-  useAddStepsMutation,
   useDeleteTaskMutation,
 } from "../../../redux/api/tasksApi";
 import Modal from "../../Shared/Modal";
@@ -14,6 +13,7 @@ import { calculateDaysLeft, formatDate } from "../../../utils/getDate";
 import { FiUser, FiUserPlus } from "react-icons/fi";
 import StepsCard from "./Cards/StepsCard";
 import { TiTick, TiTimes } from "react-icons/ti";
+import StepsSection from "./Cards/StepsSection";
 
 const TaskDetails_SideBar = ({
   sidebarRef,
@@ -30,29 +30,14 @@ const TaskDetails_SideBar = ({
   title,
   _id,
 }) => {
-  const [inputData, setInputData] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
-  const [addSteps, { data: stepsMutation }] = useAddStepsMutation();
+
 
   // sidebar functio
   // sidebar function
 
-  const handleAddSteps = (e, _id) => {
-    e.preventDefault();
-    const stepsData = {
-      text: inputData,
-      isCompleted: false,
-    };
-    if (steps.length >= 5) {
-      return toast.error("you can't add more than 5 steps in a Task");
-    } else {
-      addSteps({ _id, body: stepsData });
-    }
-
-    document.getElementById("addSteps").value = "";
-    setInputData('');
-  };
+  
 
   const handleDeleteTasks = (_id) => {
     deleteTask(_id);
@@ -68,10 +53,7 @@ const TaskDetails_SideBar = ({
     if (deleteMutation) {
       toast.success(deleteMutation.message);
     }
-    if (stepsMutation) {
-      toast.success(stepsMutation.message);
-    }
-  }, [deleteMutation, stepsMutation]);
+  }, [deleteMutation]);
 
   return (
     <>
@@ -92,29 +74,7 @@ const TaskDetails_SideBar = ({
           <p className="text-sm text-gray-500 -mb-1">Title</p>
           <h1 className="text-[25px]">{title}.</h1>
           {/*steps section */}
-          <section className="mt-3 bg-gray-200 rounded-lg">
-            <div className="steps-container p-1.5">
-              <div className="step-card flex items-center justify-between bg-white ps-2 pe-1 py-1.5 rounded-[6px]">
-                <p className="step-title text-sm">This is a step task you. not how you do it now that happend</p>
-                <div className="flex">
-                <TiTick className="text-xl text-green-500" />
-                <TiTimes className="text-xl text-red-500" />
-                </div>
-
-              </div>
-              
-            </div>
-
-            <form onSubmit={handleAddSteps}
-              className="flex items-center gap-1 p-1 rounded-lg"
-            >
-              <input required onChange={(e) => setInputData(e.target.value)} className="border-[1px] flex-grow focus:outline-none py-1 px-2  rounded-[7px]" placeholder="Add step" type="text" />
-              <button type="submit" className="bg-white p-[6px] rounded-md" >
-              <FaPlus className="text-xl text-green-500" />
-              </button>
-            </form >
-
-          </section>
+          <StepsSection steps={steps} _id={_id} />
           {/* steps section ends */}
           {/* <div className="flex items-center gap-3 bg-white duration-300 hover:bg-gray-100 rounded-lg px-3 py-2.5 mt-4">
           <IoIosAttach /> <span className="font-normal text-sm">Add files</span>

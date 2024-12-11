@@ -1,14 +1,13 @@
-import { FaRegCheckCircle, FaRegCircle } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { RxCross2 } from "react-icons/rx";
 import { useCompleteStepsMutation, useDeleteStepsMutation } from "../../../../redux/api/tasksApi";
+import { TiTick, TiTimes } from "react-icons/ti";
 
-const StepsCard = ({ d, _id }) => {
+const StepsCard = ({ _id, step }) => {
   const [completeSteps,{data : completeStep}] = useCompleteStepsMutation();
   const [deleteSteps,{data: deleteStep}] = useDeleteStepsMutation();
-  const handleUpdateSteps = (stepid) => {
+  const handleCompleteStep = (stepid) => {
     const obj = {
       _id,
       stepid
@@ -36,27 +35,21 @@ const StepsCard = ({ d, _id }) => {
   }, [completeStep, deleteStep]);
   
   return (
-    <div className="flex items-center gap-2 justify-between mx-2 mb-2">
-      <div className="flex items-center gap-2">
-      <div>
-        {d.isCompleted && <FaRegCheckCircle className="cursor-pointer" />}
-        {!d.isCompleted && (
-          <FaRegCircle className="cursor-pointer" onClick={() => handleUpdateSteps(d._id)} />
-        )}
-      </div>
-      <h4 title={d?.text} className={`font-normal ${d.isCompleted ? "text-gray-500 line-through" : "text-black"}`}>
-        {d?.text.length > 20 ? d?.text.substring(0, 20) + '...' : d?.text}
-      </h4>
-      </div>
-      <RxCross2 onClick={() => handleDeleteStep(d._id)} title="delete step" className="text-lg text-red-500" />
-    </div>
+    <div className="step-card flex items-center justify-between bg-white ps-2 pe-1 py-1.5 rounded-[6px]">
+                <p className={`step-title text-sm ${step?.isCompleted && 'line-through'}`}>{step?.text}</p>
+                 <div className="flex">
+                 {!step?.isCompleted &&<TiTick onClick={() => handleCompleteStep(step?._id)} className="text-xl text-green-500" />}
+                <TiTimes onClick={() => handleDeleteStep(step?._id)} className="text-xl text-red-500" />
+                </div>
+
+              </div>
   );
 };
 
 // PropTypes validation
 StepsCard.propTypes = {
   _id: PropTypes.string,
-  d: PropTypes.shape({
+  step: PropTypes.shape({
     isCompleted: PropTypes.bool,
     text: PropTypes.string,
     _id: PropTypes.any,
