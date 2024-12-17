@@ -29,7 +29,6 @@ const TaskDetails_SideBar = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
   const {members} = useSelector(state => state.projectSlice);
-  console.log();
 
   const assignedToMember = members?.find(member => member?._id === assignedTo)?.name
   const assignedByMember = members?.find(member => member?._id === addedBy)?.name

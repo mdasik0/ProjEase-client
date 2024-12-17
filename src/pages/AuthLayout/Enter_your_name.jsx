@@ -17,7 +17,6 @@ const Enter_your_name = () => {
       firstname,
       lastname,
     };
-    console.log(userData?._id);
     if(!userData?._id) {
       return toast.error('Please refresh the page and try again.')
     }

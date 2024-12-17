@@ -12,7 +12,6 @@ const StepsCard = ({ _id, step }) => {
       _id,
       stepid
     }
-    console.log(obj)
     completeSteps(obj);
   };
   const handleDeleteStep = (stepid) => {
@@ -20,7 +19,6 @@ const StepsCard = ({ _id, step }) => {
       _id,
       stepid
     }
-    console.log(obj)
     deleteSteps(obj);
   };
 

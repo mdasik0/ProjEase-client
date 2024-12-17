@@ -25,7 +25,6 @@ export const uploadImageToImgbb = createAsyncThunk(
     const formData = new FormData();
     formData.append('image', file);
     const imgbbApiKey = import.meta.env.VITE_IMGBB_apiKey
-    console.log(imgbbApiKey)
     const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
       method: 'POST',
       body: formData,
@@ -107,7 +106,6 @@ export const googleLogin = createAsyncThunk(
     try {
       const provider = new GoogleAuthProvider();
       const data = await signInWithPopup(auth, provider);
-      console.log(data);
       return {
         email: data.user.email,
       };

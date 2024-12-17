@@ -47,7 +47,6 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
       toast.error(error);
     }
     else if (email && login_method === 'email') {
-      console.log(userData)
       if (userData?.success === true) {
         toast.success(userData?.message)
         // name check

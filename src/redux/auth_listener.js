@@ -21,7 +21,6 @@ export const listenForAuthChanges = (dispatch) => {
       try {
         const response = await fetch(`http://localhost:5000/getUser/${email}`);
         const data = await response.json();
-        // console.log(data);
         if(data) {
           dispatch(setUser({email: email, userData: data}));
           dispatch(setLoading(false))

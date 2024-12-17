@@ -32,7 +32,6 @@ const OverdueTasks = () => {
     // no planning today we will work from tommorow
     return deadlineMidnight < currentMidnight;
 });
-console.log(overdueTasks);
   return (
     <div className="w-screen h-screen p-6 flex-grow flex flex-col overflow-y-scroll">
       <div className="border border-gray-300 bg-gray-100 w-full p-6 rounded-xl">

@@ -14,26 +14,27 @@ const ProjectLayout = () => {
   const joinedProjects = userData?.joinedProjects;
 
   const dispatch = useDispatch();
-  console.log();
   const activeProjectId = joinedProjects?.find(
     (p) => p.status === "active"
   ).projectId;
 
-  const { data : projectData } = useGetProjectQuery(activeProjectId);
+  const { data: projectData } = useGetProjectQuery(activeProjectId,  {
+    skip: ! activeProjectId});
+
   const _id = projectData?.taskId;
-  const { data : getTaskInit } = useGetTasksInitQuery(_id);
-  
+
+  const { data: getTaskInit } = useGetTasksInitQuery(_id, {
+ skip: !_id });
 
   useEffect(() => {
     if (projectData) {
       dispatch(storeActiveProject(projectData));
     } else {
-      console.log('no project found');
-    } 
-    if( getTaskInit) {
-      dispatch(updateTaskInit(getTaskInit))
+      console.log("no project found");
     }
-    
+    if (getTaskInit) {
+      dispatch(updateTaskInit(getTaskInit));
+    }
   }, [projectData, getTaskInit]);
 
   if (isLoading) {
