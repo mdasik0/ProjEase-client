@@ -24,7 +24,7 @@ const Navbar = () => {
 
   const logOut = () => {
     dispatch(logoutUser());
-    dispatch(resetProjSlice())
+    dispatch(resetProjSlice()) 
     dispatch(resetTaskSlice())
     toast.success("User logged out successfully")
   };
