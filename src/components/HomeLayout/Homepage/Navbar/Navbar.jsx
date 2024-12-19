@@ -12,6 +12,8 @@ import { MdLogin, MdOutlineLogout } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../redux/features/userSlice";
 import toast from "react-hot-toast";
+import { resetProjSlice } from "../../../../redux/features/projectSlice";
+import { resetTaskSlice } from "../../../../redux/features/tasksSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
   const {
@@ -19,8 +21,11 @@ const Navbar = () => {
     userData,
     isLoading,
   } = useSelector((state) => state.userSlice);
+
   const logOut = () => {
     dispatch(logoutUser());
+    dispatch(resetProjSlice())
+    dispatch(resetTaskSlice())
     toast.success("User logged out successfully")
   };
 

@@ -15,10 +15,14 @@ const tasksSlice = createSlice({
         },
         updateTaskInit: (state, {payload}) => {
             state.tasksInitial = payload;
+        },
+        resetTaskSlice: (state) => {
+            state.tasksInitial = {};
+            state.allTasks = [];
         }
     },
 })
 
-export const { themeChange, updateTaskInit } = tasksSlice.actions;
+export const { themeChange, updateTaskInit, resetTaskSlice } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

@@ -14,6 +14,10 @@ const projectSlice = createSlice({
     }, 
     storeMembersInfo: (state, {payload}) => {
         state.members = payload;
+    },
+    resetProjSlice: (state) => {
+        state.members = [];
+        state.projectData = {};
     }
     }
 })
@@ -22,5 +26,5 @@ const projectSlice = createSlice({
 // then fetch the project
 // then store the project in the projectSlice
 
-export const {storeActiveProject, storeMembersInfo} = projectSlice.actions;
+export const {storeActiveProject, storeMembersInfo,resetProjSlice} = projectSlice.actions;
 export default projectSlice.reducer;
