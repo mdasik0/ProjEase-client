@@ -12,6 +12,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 const initialState = {
   userData: {},
   email: "",
+  name: "",
   login_method: '',
   isLoading: false,
   socialLoginLoading:false,
@@ -108,6 +109,7 @@ export const googleLogin = createAsyncThunk(
       const data = await signInWithPopup(auth, provider);
       return {
         email: data.user.email,
+        name: data.user.displayName,
       };
     } catch (error) {
       return rejectWithValue(error.message);

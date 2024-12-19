@@ -1,0 +1,15 @@
+export const projectTypes = [
+    { value: "software", label: "Software Development" },
+    { value: "marketing", label: "Marketing Campaign" },
+    { value: "design", label: "Design & Creative" },
+    { value: "construction", label: "Construction" },
+    { value: "education", label: "Education/Training" },
+    { value: "finance", label: "Finance & Accounting" },
+    { value: "human_resources", label: "Human Resources" },
+    { value: "research", label: "Research & Development" },
+    { value: "event", label: "Event Planning" },
+    { value: "healthcare", label: "Healthcare" },
+    { value: "non_profit", label: "Non-Profit" },
+    { value: "personal", label: "Personal" },
+    { value: "other", label: "Other" },
+]; 

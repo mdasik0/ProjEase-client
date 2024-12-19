@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useUpdateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { refetchUpdate } from "../../redux/features/userSlice";
 
 const AdditionalProjectInfo = () => {
   const [formData, setFormData] = useState({
@@ -17,16 +18,21 @@ const AdditionalProjectInfo = () => {
   const navigate = useNavigate();
   const currentProj = userData?.joinedProjects?.find(
     (p) => p.status === "active"
-  ) ;
+  );
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    if (!currentProj) {
+      toast.error("Please refresh the page and try again.");
+      return; // Stop execution if no active project
+    }
+   
     try {
       const response = await updateProject({
         _id: currentProj.projectId,
         newObj: formData,
       });
-
+  
       if (response.data?.success) {
         toast.success(response.data.message);
         navigate("/projects");
@@ -40,6 +46,26 @@ const AdditionalProjectInfo = () => {
       toast.error("An error occurred while creating the project.");
     }
   };
+  
+  const { email } = useSelector((state) => state.userSlice);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/getUser/${email}`);
+        const data = await response.json();
+        if (data) {
+          dispatch(refetchUpdate(data));
+        }
+      } catch (err) {
+        toast.error("There was an error. Please refresh the page.");
+      }
+    };
+  
+    if (email) fetchUserData();
+  }, [email, dispatch]);
+  
 
   return (
     <main className="w-screen h-screen lg:px-20 md:pt-16 p-6 relative">

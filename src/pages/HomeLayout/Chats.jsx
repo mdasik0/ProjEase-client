@@ -10,8 +10,9 @@ const Chats = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
+  // const {} = useSelector((state) => state.)
   useEffect(() => {
-   
+    // socket.emit("joinGroup", groupId);
 
     socket.on("registerResponse", (data) => {
       if (data.success) {
@@ -53,7 +54,7 @@ const Chats = () => {
     if (!groupId) {
       return toast.error("Group ID is required");
     }
-    socket.emit("joinGroup", groupId);
+    
   };
 
   const handleSendGroupMessage = () => {

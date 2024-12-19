@@ -1,38 +1,21 @@
 import { useEffect, useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { GrCircleInformation } from "react-icons/gr";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useCreateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { projectTypes } from "../../components/Shared/resources";
 import {
   MdError,
   MdOutlineCheckBox,
   MdOutlineCheckBoxOutlineBlank,
 } from "react-icons/md";
-import userApi, {
+import {
   useUpdateJoinedProjectsMutation,
 } from "../../redux/api/userApi";
-import { refetchUpdate } from "../../redux/features/userSlice";
 
 const CreateProject = () => {
-  //Store projectTypes in a js file JSONFILE
-  const projectTypes = [
-    { value: "software", label: "Software Development" },
-    { value: "marketing", label: "Marketing Campaign" },
-    { value: "design", label: "Design & Creative" },
-    { value: "construction", label: "Construction" },
-    { value: "education", label: "Education/Training" },
-    { value: "finance", label: "Finance & Accounting" },
-    { value: "human_resources", label: "Human Resources" },
-    { value: "research", label: "Research & Development" },
-    { value: "event", label: "Event Planning" },
-    { value: "healthcare", label: "Healthcare" },
-    { value: "non_profit", label: "Non-Profit" },
-    { value: "personal", label: "Personal" },
-    { value: "other", label: "Other" },
-  ];
-
   const [formData, setFormData] = useState({
     projectName: "",
     projectPassword: "",
@@ -54,7 +37,6 @@ const CreateProject = () => {
   const [createProject] = useCreateProjectMutation();
   const [updateJoinedProjects] = useUpdateJoinedProjectsMutation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   // animation
   useEffect(() => {
@@ -133,7 +115,6 @@ const CreateProject = () => {
     const project = {
       ...formData,
       taskId: "",
-      ChatId: "",
       members: [
         {
           userId: userData?._id,
@@ -143,6 +124,7 @@ const CreateProject = () => {
       CreatedBy: userData?._id,
     };
     try {
+      // API 1
       const response = await createProject(project);
       if (response.data?.success) {
         toast.success(response.data.message);
@@ -151,15 +133,12 @@ const CreateProject = () => {
           projectId: response.data.projectId,
           status: "active",
         };
+        // API 2
         const updateResponse = await updateJoinedProjects({
           _id: userData?._id,
           data: joinedProjects,
         });
         if (updateResponse?.data?.success) {
-          const refetchResponse = await dispatch(
-            userApi.endpoints.getUser.initiate(userData?.email)
-          ).unwrap();
-          dispatch(refetchUpdate(refetchResponse));
           return navigate("/additional-project-info");
         }
       } else if (response.error?.data?.message) {

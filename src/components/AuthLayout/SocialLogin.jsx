@@ -27,6 +27,8 @@ const SocialLogin = () => {
 
     const response = await createUser(obj);
 
+    console.log(response);
+
     if (response?.data?.success === false) {
       toast.success(response.data.message);
       if (!response.data.userNameExists) {
