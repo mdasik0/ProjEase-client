@@ -2,6 +2,7 @@ import { MdError } from "react-icons/md";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-web";
+import toast from "react-hot-toast";
 
 const JoinProject = () => {
   const [formData, setFormData] = useState({ projId: "", password: "" });
@@ -41,6 +42,14 @@ const JoinProject = () => {
       };
     }
   }, [setFormData]);
+
+  const handleJoinProject = () => {
+    if(!formData.projId || !formData.password) {
+      return toast.success('Please enter your project id and password.')
+    } 
+
+    
+  }
 
   return (
     <div className="w-screen h-screen p-20">
