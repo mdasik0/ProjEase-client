@@ -5,6 +5,7 @@ import Lottie from "lottie-web";
 import toast from "react-hot-toast";
 import { useJoinProjectMutation } from "../../redux/api/projectsApi";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const JoinProject = () => {
   const [formData, setFormData] = useState({ projId: "", password: "" });
@@ -15,32 +16,43 @@ const JoinProject = () => {
 
   const iconMenuRef = useRef(null);
 
+  const navigate = useNavigate();
 
-
-  const handleJoinProject = async () => {
-    if (!formData.projId ) {
-      return setValErr({...valErr, projIdErr: 'Please enter your project id'})
+  const handleJoinProject = async (e) => {
+    e.preventDefault();
+    if (!formData.projId) {
+      return setValErr({
+        ...valErr,
+        projIdErr: "Please enter your project id",
+      });
     }
-    if ( !formData.password) {
-      return setValErr({...valErr, projIdErr: 'Please enter your project password'})
+    if (!formData.password) {
+      return setValErr({
+        ...valErr,
+        projIdErr: "Please enter your project password",
+      });
     }
 
     try {
       const userId = userData?._id;
       if (userId) {
         const info = {
-          projId: (formData.projId).trim(),
-          password: (formData.password).trim(),
+          projId: formData.projId.trim(),
+          password: formData.password.trim(),
           userId,
         };
         const response = await joinProject(info);
         console.log(response);
+        if (response.data.success) {
+          toast.success(response.data.message);
+          return navigate("/projects");
+        } else {
+          toast.error(response.error.message);
+        }
       }
     } catch (error) {
       toast.error(error.message);
     }
-
-    //api here that will send the form data to the backend and it will be authenticated.
   };
 
   useEffect(() => {
