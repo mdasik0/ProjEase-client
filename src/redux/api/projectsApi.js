@@ -23,9 +23,16 @@ const projectsApi = createApi({
                 url: `/getProject/${_id}`,
             })
         }),
+        joinProject : builder.mutation({
+            query: (info) => ({
+                url: '/join-project',
+                method: 'POST',
+                body: info,
+            })
+        })
         
     })
 })
 
-export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation} = projectsApi;
+export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation, useJoinProjectMutation} = projectsApi;
 export default projectsApi;

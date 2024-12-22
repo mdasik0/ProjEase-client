@@ -3,14 +3,45 @@ import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-web";
 import toast from "react-hot-toast";
+import { useJoinProjectMutation } from "../../redux/api/projectsApi";
+import { useSelector } from "react-redux";
 
 const JoinProject = () => {
   const [formData, setFormData] = useState({ projId: "", password: "" });
   const [valErr, setValErr] = useState({ projIdErr: "", passErr: "" });
+  const { userData } = useSelector((state) => state.userSlice);
+
+  const [joinProject, { isLoading }] = useJoinProjectMutation();
 
   const iconMenuRef = useRef(null);
 
-  const isLoading = false;
+
+
+  const handleJoinProject = async () => {
+    if (!formData.projId ) {
+      return setValErr({...valErr, projIdErr: 'Please enter your project id'})
+    }
+    if ( !formData.password) {
+      return setValErr({...valErr, projIdErr: 'Please enter your project password'})
+    }
+
+    try {
+      const userId = userData?._id;
+      if (userId) {
+        const info = {
+          projId: (formData.projId).trim(),
+          password: (formData.password).trim(),
+          userId,
+        };
+        const response = await joinProject(info);
+        console.log(response);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+
+    //api here that will send the form data to the backend and it will be authenticated.
+  };
 
   useEffect(() => {
     if (iconMenuRef.current) {
@@ -43,14 +74,6 @@ const JoinProject = () => {
     }
   }, [setFormData]);
 
-  const handleJoinProject = () => {
-    if(!formData.projId || !formData.password) {
-      return toast.success('Please enter your project id and password.')
-    } 
-
-    
-  }
-
   return (
     <div className="w-screen h-screen p-20">
       <TitleandSub
@@ -59,7 +82,7 @@ const JoinProject = () => {
           "You can join project with email and password or by invitation."
         }
       >
-        <form className="sm:w-[480px] text-black">
+        <form onSubmit={handleJoinProject} className="sm:w-[480px] text-black">
           <div className="mb-4 relative">
             <label className="text-sm  block mb-1" htmlFor="project-id">
               Project Id
@@ -116,15 +139,15 @@ const JoinProject = () => {
             )}
           </div>
           <button
-        type="submit"
-        className="block bg-[#1a1a1a] mt-10 border-[#1a1a1a] border hover:bg-white hover:text-black font-[500] w-full text-white py-2.5 rounded-lg duration-500 active:scale-90"
-      >
-        {isLoading ? (
-          <span className="loading loading-spinner loading-sm"></span>
-        ) : (
-          <span>Submit</span>
-        )}
-      </button>
+            type="submit"
+            className="block bg-[#1a1a1a] mt-10 border-[#1a1a1a] border hover:bg-white hover:text-black font-[500] w-full text-white py-2.5 rounded-lg duration-500 active:scale-90"
+          >
+            {isLoading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              <span>Submit</span>
+            )}
+          </button>
         </form>
       </TitleandSub>
     </div>
