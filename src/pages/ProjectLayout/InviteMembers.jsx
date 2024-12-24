@@ -3,29 +3,43 @@ import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { useInviteMembersMutation } from "../../redux/api/projectsApi";
 
 const InviteMembers = () => {
   const [emails, setEmails] = useState(["", "", ""]);
-  const {userData} = useSelector(state => state.userSlice)
-  const {projectData} = useSelector(state => state.projectSlice)
+  const { userData } = useSelector((state) => state.userSlice);
+  const { projectData } = useSelector((state) => state.projectSlice);
+  const [inviteMembers, { isLoading }] = useInviteMembersMutation();
 
-  const isLoading = false;
-
-  const handleSendInvitations = (e) => {
+  const handleSendInvitations = async (e) => {
     e.preventDefault();
     if (!emails[0] && !emails[1] && !emails[2]) {
       return toast.error("No emails available to send invitation");
     }
-    const emptyEmails = emails.filter(e => e.length !== 0)
-    if(emptyEmails.length === 1) {
-      const singleEmail = {email: emptyEmails[0] , senderId: userData?._id, projectId:projectData?._id  }
-      console.log(singleEmail);
-    } else {
-      const multipleEmail = emptyEmails.map((email) => ({
-        email: email, 
-        senderId: userData?._id, projectId:projectData?._id
-      }));
-      console.log(multipleEmail);
+    const emptyEmails = emails.filter((e) => e.length !== 0);
+
+    let invitationInfo = emptyEmails.map((email) => ({
+      email: email,
+      senderName: userData?.name,
+      projectId: projectData?._id,
+      projectName: projectData?.projectName,
+      sentDate: Date.now(),
+    }));
+    try {
+      const response = await inviteMembers(invitationInfo);
+      if (response.data) {
+        console.log(response.data.insertedIds);
+      }
+      if (response.error) {
+        toast.error(response.error.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setEmails(["", "", ""]);
+      document
+        .querySelectorAll(".invite-member-email-inputs")
+        .forEach((i) => (i.value = ""));
     }
   };
 
@@ -37,7 +51,11 @@ const InviteMembers = () => {
       />
       <form onSubmit={handleSendInvitations} className="">
         <p className="mb-5 font-[500]">Send invitation{"'"}s</p>
-        {["Enter Email address 1", "Enter Email address 2", "Enter Email address 3"].map((placeholder, index) => (
+        {[
+          "Enter Email address 1",
+          "Enter Email address 2",
+          "Enter Email address 3",
+        ].map((placeholder, index) => (
           <label
             key={index}
             className="input focus-within:outline-gray-400 border-gray-400 mb-6 max-w-sm flex items-center gap-2"
@@ -54,11 +72,11 @@ const InviteMembers = () => {
             <input
               onChange={(e) => {
                 const updatedEmails = [...emails];
-                updatedEmails[index] = e.target.value; // Update the specific index
+                updatedEmails[index] = e.target.value;
                 setEmails(updatedEmails);
               }}
               type="email"
-              className=""
+              className="invite-member-email-inputs"
               placeholder={placeholder}
             />
           </label>
