@@ -45,10 +45,6 @@ const router = createBrowserRouter([
       {
         path: "join-project",
         element: <JoinProject />,
-      },
-      {
-        path: "join-project/:inviteurl",
-        element: <div>this is the element here</div>
       }
     ],
   },

@@ -9,7 +9,6 @@ const TitleandSub = ({ children, title, subTitle }) => {
       {subTitle && <p className="mt-3 text-gray-500">{subTitle}</p>}
       </div>
       <div className="">
-
       {children}
       </div>
     </div>
