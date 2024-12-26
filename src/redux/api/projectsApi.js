@@ -36,10 +36,15 @@ const projectsApi = createApi({
                 method: 'POST',
                 body: invitationInfo
             })
+        }),
+        getInvitationInfo : builder.query({
+            query: (_id) => ({
+                url: `/invitation-info/${_id}`,
+            })
         })
         
     })
 })
 
-export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation, useJoinProjectMutation, useInviteMembersMutation} = projectsApi;
+export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation, useJoinProjectMutation, useInviteMembersMutation, useGetInvitationInfoQuery} = projectsApi;
 export default projectsApi;

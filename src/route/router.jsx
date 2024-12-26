@@ -18,6 +18,7 @@ import InviteMembers from "../pages/ProjectLayout/InviteMembers";
 import ProjectsDashboard from "../pages/ProjectLayout/ProjectsDashboard";
 import MyTasks from "../pages/ProjectLayout/MyTasks";
 import OverdueTasks from "../pages/ProjectLayout/OverdueTasks";
+import JoinProject_with_Invitation from "../pages/HomeLayout/JoinProject_with_Invitation";
 
 
 
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "join-project",
         element: <JoinProject />,
+      },
+      {
+        path: "join-project/:token",
+        element: <JoinProject_with_Invitation />,
       }
     ],
   },
