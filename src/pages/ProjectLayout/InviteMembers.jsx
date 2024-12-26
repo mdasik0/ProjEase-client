@@ -4,13 +4,14 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useInviteMembersMutation } from "../../redux/api/projectsApi";
-
+import emailjs from "@emailjs/browser";
 const InviteMembers = () => {
   const [emails, setEmails] = useState(["", "", ""]);
   const { userData } = useSelector((state) => state.userSlice);
   const { projectData } = useSelector((state) => state.projectSlice);
   const [inviteMembers, { isLoading }] = useInviteMembersMutation();
 
+  
   const handleSendInvitations = async (e) => {
     e.preventDefault();
     if (!emails[0] && !emails[1] && !emails[2]) {
@@ -31,8 +32,12 @@ const InviteMembers = () => {
         // console.log(response.data.insertedIds);
         // email pathaba eikhan thika. ok understand!!
         const emailReadyObjs = invitationInfo.map((obj, index) => {
-          return {...obj, tokenId: response.data.insertedIds[index]}
-      })
+          return { ...obj, tokenId: response.data.insertedIds[index] };
+        });
+
+        emailReadyObjs.forEach((obj) => {
+          sendEmail(obj);
+        });
       }
       if (response.error) {
         toast.error(response.error.data.message);
@@ -45,6 +50,42 @@ const InviteMembers = () => {
         .querySelectorAll(".invite-member-email-inputs")
         .forEach((i) => (i.value = ""));
     }
+  };
+
+  const sendEmail = (obj) => {
+    const sender = obj.senderName.firstname + " " + obj.senderName.lastname;
+    const recieverName = obj.email.split("@")[0];
+    const baseUrl = import.meta.env.VITE_BASEURL;
+    const tokenUrl = `/join-project/token=${obj.tokenId}`;
+    const invitationLink = baseUrl + tokenUrl;
+
+
+    emailjs
+      .send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID , // Use your environment variable for the service ID
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID  , // Use your environment variable for the template ID
+        {
+          reciever_name: recieverName,
+          invitation_link: invitationLink,
+          reply_to: obj.email,
+          sender_name: sender,
+          project_name: obj.projectName,
+          today: new Date(obj.sentDate).toLocaleString(), 
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY // Use your environment variable for the public key
+      )
+      .then(
+        (result) => {
+          if (result.status == 200) {
+            console.log(`Email successfully sent to ${obj.email}`);
+            toast.success(`Invitation sent to ${obj.email}`);
+          }
+        },
+        (error) => {
+          console.error(`Failed to send email to ${obj.email}`, error.text);
+          toast.error(`Failed to send invitation to ${obj.email}`);
+        }
+      );
   };
 
   return (
@@ -80,7 +121,7 @@ const InviteMembers = () => {
                 setEmails(updatedEmails);
               }}
               type="email"
-              className="invite-member-email-inputs"
+              className="invite-member-email-inputs w-full"
               placeholder={placeholder}
             />
           </label>
