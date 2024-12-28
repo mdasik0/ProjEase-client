@@ -25,10 +25,11 @@ const Login_Form = () => {
   const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
-  const shouldFetchEmailData = email && login_method === 'email';
+  const shouldFetchEmailData = email && login_method === "email";
 
-const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFetchEmailData });
-
+  const { data: userData } = useEmailLoginQuery(formData.email, {
+    skip: !shouldFetchEmailData,
+  });
 
   const iconMenuRef = useRef(null);
 
@@ -45,20 +46,16 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
   useEffect(() => {
     if (error) {
       toast.error(error);
-    }
-    else if (email && login_method === 'email') {
+    } else if (email && login_method === "email") {
       if (userData?.success === true) {
-        toast.success(userData?.message)
-        // name check
-        if(!userData?.userNameExists) {
-          return navigate("/auth/enter-your-name");
-        }
-        //profile picture check
-        if (!userData?.userImageExists) {
-          return navigate("/auth/upload-profile-picture");
-        } 
-        else {
-          return navigate("/");
+        toast.success(userData?.message);
+        const isInvited = JSON.parse(
+          sessionStorage.getItem("joinProject_with_invitation")
+        );
+        if (isInvited) {
+          return navigate(`/join-project/token=${isInvited}`);
+        } else {
+          return navigate("/project");
         }
       }
     }
@@ -73,19 +70,19 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
         autoplay: true,
         path: "/Visibility V3/visibility-V3.json",
       });
-  
+
       let directionMenu = -1;
-  
+
       const toggleAnimation = () => {
         animationMenu.setDirection(directionMenu);
         animationMenu.play();
-  
+
         directionMenu = -directionMenu;
         setFormData((prevData) => ({ ...prevData, show: directionMenu === 1 }));
       };
-  
+
       iconMenuRef.current.addEventListener("click", toggleAnimation);
-  
+
       return () => {
         if (iconMenuRef.current) {
           iconMenuRef.current.removeEventListener("click", toggleAnimation);
@@ -94,9 +91,6 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
       };
     }
   }, [setFormData]);
-  
-  
-  
 
   return (
     <form onSubmit={handleSubmit} className="px-6">
@@ -119,7 +113,10 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
           name="email"
           id="email"
         />
-        <div className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open" data-tip='Email'>
+        <div
+          className="bg-gray-200 w-fit p-1.5 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer tooltip hover:tooltip-open"
+          data-tip="Email"
+        >
           <MdAlternateEmail />
         </div>
       </div>
@@ -140,14 +137,22 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
         />
         <div
           ref={iconMenuRef} // Attach the ref to the container
-          className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open" data-tip="Show password"
+          className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open"
+          data-tip="Show password"
         >
           <div className="show-password-anim"></div>
         </div>
-      </div> 
+      </div>
 
       <div className="flex items-center justify-between mb-4 mt-1">
-        <p className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${error ? "opacity-100" : "opacity-0"}`}><BiError />{error}</p>
+        <p
+          className={`text-sm text-red-500 flex items-center gap-1 font-[500] ${
+            error ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <BiError />
+          {error}
+        </p>
         <span className="text-sm hover:underline hover:text-blue-500 duration-200 cursor-pointer">
           Forgot Password?
         </span>
@@ -161,7 +166,7 @@ const { data: userData } = useEmailLoginQuery(formData.email, { skip: !shouldFet
         ) : (
           <span>Submit</span>
         )}
-      </button> 
+      </button>
     </form>
   );
 };

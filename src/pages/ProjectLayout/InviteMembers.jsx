@@ -23,14 +23,14 @@ const InviteMembers = () => {
       email: email,
       senderName: userData?.name,
       projectId: projectData?._id,
+      isPrivate: projectData?.isPrivate,
+      isUsed: false,
       projectName: projectData?.projectName,
       sentDate: Date.now(),
     }));
     try {
       const response = await inviteMembers(invitationInfo);
       if (response.data) {
-        // console.log(response.data.insertedIds);
-        // email pathaba eikhan thika. ok understand!!
         const emailReadyObjs = invitationInfo.map((obj, index) => {
           return { ...obj, tokenId: response.data.insertedIds[index] };
         });

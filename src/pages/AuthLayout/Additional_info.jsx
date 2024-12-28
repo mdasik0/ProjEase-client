@@ -67,7 +67,12 @@ const Additional_info = () => {
         console.log(refetchedUser);
         dispatch(refetchUpdate(refetchedUser.data));
   
-        navigate("/"); // Navigate after refetch
+        const isInvited = JSON.parse(sessionStorage.getItem("joinProject_with_invitation"))
+      if(isInvited) {
+        return navigate(`/join-project/token=${isInvited}`)
+      } else {
+        return navigate("/project");
+      }
       } else {
         toast.error(response?.message || "Failed to update information.");
       }
@@ -86,7 +91,14 @@ const Additional_info = () => {
         userApi.endpoints.getUser.initiate(email)
       );
       dispatch(refetchUpdate(refetchedUser.data));
-      navigate("/");
+
+      const isInvited = JSON.parse(sessionStorage.getItem("joinProject_with_invitation"))
+      if(isInvited) {
+        return navigate(`/join-project/token=${isInvited}`)
+      } else {
+        return navigate("/project");
+      }
+
     } catch (error) {
       toast.error("Failed to skip additional info.");
       console.error(error);

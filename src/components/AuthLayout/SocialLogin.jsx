@@ -31,13 +31,13 @@ const SocialLogin = () => {
 
     if (response?.data?.success === false) {
       toast.success(response.data.message);
-      if (!response.data.userNameExists) {
-        return navigate("/auth/enter-your-name");
-      }
-      if (!response.data.userImageExists) {
-        return navigate("/auth/upload-profile-picture");
+      const isInvited = JSON.parse(
+        sessionStorage.getItem("joinProject_with_invitation")
+      );
+      if (isInvited) {
+        return navigate(`/join-project/token=${isInvited}`);
       } else {
-        navigate("/");
+        return navigate("/project");
       }
     } else if (response?.data?.success === true) {
       toast.success(response.data.message);
