@@ -50,7 +50,7 @@ const Login_Form = () => {
       if (userData?.success === true) {
         toast.success(userData?.message);
         const isInvited = JSON.parse(
-          sessionStorage.getItem("joinProject_with_invitation")
+          sessionStorage.getItem("JoinProject_with_invitation")
         );
         if (isInvited) {
           return navigate(`/join-project/token=${isInvited}`);

@@ -32,12 +32,12 @@ const SocialLogin = () => {
     if (response?.data?.success === false) {
       toast.success(response.data.message);
       const isInvited = JSON.parse(
-        sessionStorage.getItem("joinProject_with_invitation")
+        sessionStorage.getItem("JoinProject_with_invitation")
       );
       if (isInvited) {
         return navigate(`/join-project/token=${isInvited}`);
       } else {
-        return navigate("/project");
+        return navigate("/projects");
       }
     } else if (response?.data?.success === true) {
       toast.success(response.data.message);

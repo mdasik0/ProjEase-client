@@ -9,34 +9,35 @@ import toast from "react-hot-toast";
 
 const JoinProject_with_INV = ({ data, email, userLoading }) => {
   const [password, setPassword] = useState({ password: "", show: "" });
-  const {userData} = useSelector(state => state.userSlice)
-  const [joinProject,{isLoading}] = useJoinProjectMutation();
+  const { userData } = useSelector((state) => state.userSlice);
+  const [joinProject, { isLoading }] = useJoinProjectMutation();
 
   const iconMenuRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleJoin = async () => {
     const info = {
-      projId : data?.projectId,
+      projId: data?.projectId,
       password,
       userId: userData?._id,
-      invited: true
+      invited: true,
     };
 
     const response = await joinProject(info);
-        console.log(response);
-        if (response.data.success) {
-          toast.success(response.data.message);
-          return navigate("/projects");
-        } else {
-          toast.error(response.error.message);
-        }
-  }
+    if (response.data.success) {
+      toast.success(response.data.message);
+      sessionStorage.removeItem('JoinProject_with_invitation')
+      return navigate("/projects");
+    } else {
+      toast.error(response.error.message);
+    }
+  };
 
   useEffect(() => {
-    if (iconMenuRef.current) {
+    const iconrefCurrent = iconMenuRef.current;
+    if (iconrefCurrent) {
       const animationMenu = Lottie.loadAnimation({
-        container: iconMenuRef.current,
+        container: iconrefCurrent,
         renderer: "svg",
         loop: false,
         autoplay: true,
@@ -53,11 +54,11 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
         setPassword((prevData) => ({ ...prevData, show: directionMenu === 1 }));
       };
 
-      iconMenuRef.current.addEventListener("click", toggleAnimation);
+      iconrefCurrent.addEventListener("click", toggleAnimation);
 
       return () => {
-        if (iconMenuRef.current) {
-          iconMenuRef.current.removeEventListener("click", toggleAnimation);
+        if (iconrefCurrent) {
+          iconrefCurrent.removeEventListener("click", toggleAnimation);
         }
         animationMenu.destroy();
       };
@@ -76,16 +77,16 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
           <p className="font-[400] mb-1.5 text-black text-lg">
             Hi there! {data?.email?.split("@")[0]} 👋
           </p>{" "}
-          You{"’"}ve been invited to join the project :{" "}
+          You&apos;ve been invited by{" "}
+          <span className="font-[500] text-black">
+            {data?.senderName?.firstname + " " + data?.senderName?.lastname}
+          </span>{" "}
+          to join the project :{" "}
           <span className="font-[500] text-black">
             {'"' + data?.projectName + '"'}
           </span>{" "}
-          on ProjEase by{" "}
-          <span className="font-[500] text-black">
-            {data?.senderName?.firstname + " " + data?.senderName?.lastname}
-          </span>
-          . Here, you can collaborate with your team, manage tasks, and stay
-          connected.
+          on ProjEase . Here, you can collaborate with your team, manage tasks,
+          and stay connected.
         </div>
 
         {!email
@@ -143,7 +144,6 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
                     >
                       <div className="show-password-anim"></div>
                     </div>
-                    
                   </div>
                 )}
 

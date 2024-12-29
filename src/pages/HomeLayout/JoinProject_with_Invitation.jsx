@@ -13,7 +13,7 @@ const JoinProject_with_Invitation = () => {
 
   useEffect(() => {
     sessionStorage.setItem("JoinProject_with_invitation", JSON.stringify(_id))
-  },[])
+  })
 
 
   return (

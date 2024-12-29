@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { CiCalendarDate } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import userApi, { useUpdateUserMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { refetchUpdate, setLoading } from "../../redux/features/userSlice";
-
+import { jobFields} from '../../components/Shared/resources'
 const Additional_info = () => {
   const [formData, setFormData] = useState({
     birthday: "",
@@ -20,24 +20,6 @@ const Additional_info = () => {
   );
   const navigate = useNavigate();
   const [updateUser] = useUpdateUserMutation();
-
-  const jobFields = [
-    { id: 1, name: "Software Engineer" },
-    { id: 2, name: "Data Scientist" },
-    { id: 3, name: "Product Manager" },
-    { id: 4, name: "Web Developer" },
-    { id: 5, name: "Graphic Designer" },
-    { id: 6, name: "Marketing Specialist" },
-    { id: 7, name: "Sales Associate" },
-    { id: 8, name: "Human Resources Manager" },
-    { id: 9, name: "Project Coordinator" },
-    { id: 10, name: "System Analyst" },
-    { id: 11, name: "Database Administrator" },
-    { id: 12, name: "UX/UI Designer" },
-    { id: 13, name: "Network Engineer" },
-    { id: 14, name: "Quality Assurance Tester" },
-    { id: 15, name: "Business Analyst" },
-  ];
 
   const dateInputRef = useRef(null);
 
@@ -86,17 +68,17 @@ const Additional_info = () => {
   
   const skipAdditionalInfo = async () => {
     dispatch(setLoading(true)); // Start loading
-    try {
-      const refetchedUser = await dispatch(
-        userApi.endpoints.getUser.initiate(email)
-      );
-      dispatch(refetchUpdate(refetchedUser.data));
-
-      const isInvited = JSON.parse(sessionStorage.getItem("joinProject_with_invitation"))
+    try {      
+      const isInvited = JSON.parse(sessionStorage.getItem("JoinProject_with_invitation"))
       if(isInvited) {
+        localStorage.removeItem("reloaded");
+
         return navigate(`/join-project/token=${isInvited}`)
+
       } else {
-        return navigate("/project");
+        localStorage.removeItem("reloaded");
+
+        return navigate("/projects");
       }
 
     } catch (error) {
@@ -106,6 +88,14 @@ const Additional_info = () => {
       dispatch(setLoading(false)); // End loading
     }
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem("reloaded")) {
+      localStorage.setItem("reloaded", "true");
+      window.location.reload();
+    }
+  }, []);
+  
   
 
   return (

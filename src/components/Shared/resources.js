@@ -13,3 +13,21 @@ export const projectTypes = [
     { value: "personal", label: "Personal" },
     { value: "other", label: "Other" },
 ]; 
+
+export const jobFields = [
+    { id: 1, name: "Software Engineer" },
+    { id: 2, name: "Data Scientist" },
+    { id: 3, name: "Product Manager" },
+    { id: 4, name: "Web Developer" },
+    { id: 5, name: "Graphic Designer" },
+    { id: 6, name: "Marketing Specialist" },
+    { id: 7, name: "Sales Associate" },
+    { id: 8, name: "Human Resources Manager" },
+    { id: 9, name: "Project Coordinator" },
+    { id: 10, name: "System Analyst" },
+    { id: 11, name: "Database Administrator" },
+    { id: 12, name: "UX/UI Designer" },
+    { id: 13, name: "Network Engineer" },
+    { id: 14, name: "Quality Assurance Tester" },
+    { id: 15, name: "Business Analyst" },
+  ];
