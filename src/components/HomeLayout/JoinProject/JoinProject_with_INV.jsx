@@ -1,16 +1,37 @@
 import PropTypes from "prop-types";
 import TitleandSub from "../../ProjectLayout/TitleandSub";
-import { Link } from "react-router-dom";
-import { MdError } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-web";
+import { useSelector } from "react-redux";
+import { useJoinProjectMutation } from "../../../redux/api/projectsApi";
+import toast from "react-hot-toast";
 
 const JoinProject_with_INV = ({ data, email, userLoading }) => {
-  const isLoading = false;
-  const [valErr, setValErr] = useState("");
   const [password, setPassword] = useState({ password: "", show: "" });
+  const {userData} = useSelector(state => state.userSlice)
+  const [joinProject,{isLoading}] = useJoinProjectMutation();
 
   const iconMenuRef = useRef(null);
+  const navigate = useNavigate()
+
+  const handleJoin = async () => {
+    const info = {
+      projId : data?.projectId,
+      password,
+      userId: userData?._id,
+      invited: true
+    };
+
+    const response = await joinProject(info);
+        console.log(response);
+        if (response.data.success) {
+          toast.success(response.data.message);
+          return navigate("/projects");
+        } else {
+          toast.error(response.error.message);
+        }
+  }
 
   useEffect(() => {
     if (iconMenuRef.current) {
@@ -122,17 +143,12 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
                     >
                       <div className="show-password-anim"></div>
                     </div>
-                    {valErr && (
-                      <span className="absolute text-sm right-0 text-red-500 flex items-center gap-1">
-                        <MdError />
-                        {valErr}
-                      </span>
-                    )}
+                    
                   </div>
                 )}
 
                 <button
-                  type="submit"
+                  onClick={handleJoin}
                   className={`btn text-gray-200 bg-[#1a1a1a] hover:text-black w-full ${
                     data?.isPrivate ? "mt-3" : "mt-6"
                   }  font-normal`}
