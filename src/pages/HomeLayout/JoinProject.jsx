@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-web";
 import toast from "react-hot-toast";
 import { useJoinProjectMutation } from "../../redux/api/projectsApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { resetProjSlice } from "../../redux/features/projectSlice";
+import { resetTaskSlice } from "../../redux/features/tasksSlice";
 
 const JoinProject = () => {
   const [formData, setFormData] = useState({ projId: "", password: "" });
@@ -17,7 +19,7 @@ const JoinProject = () => {
   const iconMenuRef = useRef(null);
 
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleJoinProject = async (e) => {
     e.preventDefault();
     if (!formData.projId) {
@@ -45,6 +47,8 @@ const JoinProject = () => {
         console.log(response);
         if (response.data.success) {
           toast.success(response.data.message);
+          dispatch(resetTaskSlice());
+          dispatch(resetProjSlice());
           return navigate("/projects");
         } else {
           toast.error(response.error.message);

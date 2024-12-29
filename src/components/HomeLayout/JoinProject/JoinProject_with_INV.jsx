@@ -3,9 +3,11 @@ import TitleandSub from "../../ProjectLayout/TitleandSub";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Lottie from "lottie-web";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useJoinProjectMutation } from "../../../redux/api/projectsApi";
 import toast from "react-hot-toast";
+import { resetTaskSlice } from "../../../redux/features/tasksSlice";
+import { resetProjSlice } from "../../../redux/features/projectSlice";
 
 const JoinProject_with_INV = ({ data, email, userLoading }) => {
   const [password, setPassword] = useState({ password: "", show: "" });
@@ -14,6 +16,8 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
 
   const iconMenuRef = useRef(null);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleJoin = async () => {
     const info = {
@@ -26,7 +30,9 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
     const response = await joinProject(info);
     if (response.data.success) {
       toast.success(response.data.message);
-      sessionStorage.removeItem('JoinProject_with_invitation')
+      sessionStorage.removeItem("JoinProject_with_invitation");
+      dispatch(resetTaskSlice());
+      dispatch(resetProjSlice());
       return navigate("/projects");
     } else {
       toast.error(response.error.message);
