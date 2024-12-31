@@ -30,7 +30,7 @@ const ProjectLayout = () => {
     if (projectData) {
       dispatch(storeActiveProject(projectData));
     } else {
-      console.log("no project found");
+      // console.log("no project found");
     }
     if (getTaskInit) {
       dispatch(updateTaskInit(getTaskInit));
