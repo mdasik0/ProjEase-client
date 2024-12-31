@@ -27,15 +27,20 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
       invited: true,
     };
 
-    const response = await joinProject(info);
-    if (response.data.success) {
-      toast.success(response.data.message);
-      sessionStorage.removeItem("JoinProject_with_invitation");
-      dispatch(resetTaskSlice());
-      dispatch(resetProjSlice());
-      return navigate("/projects");
-    } else {
-      toast.error(response.error.message);
+    try {
+      const response = await joinProject(info);
+      console.log(response);
+      if (response.data) {
+        toast.success(response.data.message);
+        sessionStorage.removeItem("JoinProject_with_invitation");
+        dispatch(resetTaskSlice());
+        dispatch(resetProjSlice());
+        return navigate("/projects");
+      } else if (response.error) {
+        toast.error(response.error.data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 

@@ -5,12 +5,12 @@ import { IoWarning } from "react-icons/io5";
 
 const OverdueTasks = () => {
   const { tasksInitial } = useSelector((state) => state.tasksSlice);
-  const { data: allTasks, isLoading } = useGetAllTasksQuery(
-    tasksInitial?.allTasks,
-    {
-      skip: tasksInitial?.allTasks?.length === 0,
-    }
-  );
+  const {
+    data: allTasks,
+    isLoading,
+  } = useGetAllTasksQuery(tasksInitial.allTasks, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const overdueTasks = allTasks?.filter((t) => {
     const deadlineDate = new Date(t.deadline);
@@ -28,46 +28,51 @@ const OverdueTasks = () => {
     currentMidnight.setHours(0, 0, 0, 0);
 
     // Check if the task deadline is strictly before today's date
-
-    // no planning today we will work from tommorow
     return deadlineMidnight < currentMidnight;
-});
+  });
+
   return (
-    <div className="w-screen h-screen p-6 flex-grow flex flex-col overflow-y-scroll">
+    <div
+      className={`w-screen h-screen p-6 flex-grow flex flex-col ${
+        overdueTasks?.length > 0 ? "overflow-y-scroll" : "overflow-y-hidden"
+      }`}
+    >
       <div className="border border-gray-300 bg-gray-100 w-full p-6 rounded-xl">
-        <h1 className="text-3xl font-[500] text-black mb-3">Overdue Tasks </h1>
-        <p>Welcome to overdue tasks. Any tasks that&apos;s past its due date will show up here.</p>
+        <h1 className="text-3xl font-[500] text-black mb-3">Overdue Tasks</h1>
+        <p>
+          Welcome to overdue tasks. Any tasks that&apos;s past its due date will
+          show up here.
+        </p>
       </div>
 
-      <div className="border border-gray-300 bg-gray-100 w-full p-6 rounded-xl mt-10 flex-grow ">
-        {
-            isLoading && <div className="w-full h-full flex items-center justify-center"> 
+      <div className="border border-gray-300 bg-gray-100 w-full p-6 rounded-xl mt-10 flex-grow">
+        {isLoading && (
+          <div className="w-full h-full flex items-center justify-center">
             <span className="loading loading-bars loading-lg text-gray-800"></span>
-
-            </div>
-        }
-        {overdueTasks?.length === 0 && (
+          </div>
+        )}
+        {!overdueTasks?.length && (
           <div className="flex items-center justify-center flex-col gap-6 w-full h-full">
             <IoWarning className="text-[#727272] text-[80px]" />
             <h1 className="text-[#727272] text-4xl">No Tasks Available</h1>
-            <p>No overdue tasks are avilable. add due date to your tasks.</p>
+            <p>No overdue tasks are available. Add due dates to your tasks.</p>
           </div>
         )}
         <div className="grid grid-cols-3 gap-5">
           {overdueTasks?.map((task) => (
             <TaskCard
-              key={task?._id}
-              _id={task?._id}
-              status={task?.status}
-              title={task?.title}
-              description={task?.description}
-              addedBy={task?.addedBy}
-              assignedTo={task?.assignedTo}
-              date={task?.date}
-              time={task?.time}
-              deadline={task?.deadline}
-              priority={task?.priority}
-              steps={task?.steps}
+              key={task._id}
+              _id={task._id}
+              status={task.status}
+              title={task.title}
+              description={task.description}
+              addedBy={task.addedBy}
+              assignedTo={task.assignedTo}
+              date={task.date}
+              time={task.time}
+              deadline={task.deadline}
+              priority={task.priority}
+              steps={task.steps}
             />
           ))}
         </div>

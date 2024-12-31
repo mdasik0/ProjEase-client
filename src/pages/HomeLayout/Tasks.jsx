@@ -43,11 +43,13 @@ const Tasks = () => {
     };
   }, []);
 
+  const {projectData} = useSelector(state => state.projectSlice)
+
   return (
     <div className="flex-grow">
       <section className="flex justify-between border-b px-10 py-5">
         {/* proj Name */}
-        <h1 className="text-3xl font-bold">Project 01</h1>
+        <h1 className="text-3xl font-bold">{projectData?.projectName}</h1>
         {/* icons */}
         <div className="flex gap-6">
           <p className="p-2.5 bg-gray-200 hover:bg-gray-300 cursor-pointer w-fit rounded-full duration-500 relative">

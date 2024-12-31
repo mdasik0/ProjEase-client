@@ -1,18 +1,13 @@
-import { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import PropTypes from "prop-types";
-import { IoTrashSharp } from "react-icons/io5";
-import { useDeleteTaskMutation } from "../../../redux/api/tasksApi";
-import Modal from "../../Shared/Modal";
-import toast from "react-hot-toast";
 import { BsCalendar2Date } from "react-icons/bs";
 import { calculateDaysLeft, formatDate } from "../../../utils/getDate";
 import { FiUser, FiUserPlus } from "react-icons/fi";
 import StepsSection from "./Cards/StepsSection";
 import { useSelector } from "react-redux";
+import DeleteTask from "./DeleteTask";
 
 const TaskDetails_SideBar = ({
-  sidebarRef,
   isOpen,
   setIsOpen,
   addedBy,
@@ -26,42 +21,20 @@ const TaskDetails_SideBar = ({
   title,
   _id,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteTask, { data: deleteMutation }] = useDeleteTaskMutation();
   const {members} = useSelector(state => state.projectSlice);
 
   const assignedToMember = members?.find(member => member?._id === assignedTo)?.name
   const assignedByMember = members?.find(member => member?._id === addedBy)?.name
 
-  
-
-
-
   // sidebar functio
   // sidebar function
 
-  const handleDeleteTasks = (_id) => {
-    deleteTask(_id);
-    setIsModalOpen(false);
-  };
-
-  const closeModal = (e) => {
-    e.stopPropagation();
-    setIsModalOpen(false);
-  };
-
-  useEffect(() => {
-    if (deleteMutation) {
-      toast.success(deleteMutation.message);
-    }
-  }, [deleteMutation]);
-
   return (
-    <>
+    <div>
       {/* backdrop */}
       <div className="task-details-backdrop w-screen h-screen absolute top-0 left-0 flex justify-end"></div>
       <div
-        ref={sidebarRef}
+        
         onClick={(e) => e.stopPropagation()}
         className={`task-details-sidebar bg-white w-[330px] h-screen  duration-500 overflow-y-auto scrollbar-sidebar p-4`}
       >
@@ -128,49 +101,18 @@ const TaskDetails_SideBar = ({
               <FiUser /> Assigned To {assignedToMember ? assignedToMember?.firstname + " " + assignedToMember?.lastname : 'unknown'}
             </div>
           </div>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-3 bg-red-500 text-white duration-300 hover:bg-red-400 font-semibold rounded-lg px-3 py-2.5 my-4 w-full"
-          >
-            <IoTrashSharp />{" "}
-            <span className="font-normal text-sm">Delete task</span>
-          </button>
+          <DeleteTask _id={_id} />
           <p className="flex items-center justify-center text-lg  font-normal gap-2  text-gray-500  duration-300  rounded-lg w-full  mb-4">
             Created on
             <span>{formatDate(date)}</span>
           </p>
-          <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-            <div>
-              <h2 className="text-xl text-center my-4">
-                Do you Want to Delete This Task ?
-              </h2>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => handleDeleteTasks(_id)}
-                  className="flex items-center justify-center gap-3 bg-red-500 text-white duration-300 hover:bg-red-400 font-semibold rounded-lg px-3 py-2.5 mt-4 w-full"
-                >
-                  <IoTrashSharp /> Delete
-                </button>
-                <button
-                  onClick={(e) => closeModal(e)}
-                  className="flex items-center justify-center gap-2 bg-green-500 text-white duration-300 hover:bg-green-400 font-semibold rounded-lg px-3 py-2.5 mt-4 w-full"
-                >
-                  <RxCross2 /> Cancel
-                </button>
-              </div>
-            </div>
-          </Modal>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
 TaskDetails_SideBar.propTypes = {
-  sidebarRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),
   inputRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
