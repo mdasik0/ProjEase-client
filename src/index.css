@@ -440,5 +440,15 @@ input[type="number"] {
   }
 }
 
+.members-container {
+  --avatar-size: 40px;
+  --column-size: calc(var(--avatar-size)/2);
+  display: grid;
+  grid-template-columns: repeat(10, var(--column-size));
+
+}
+
+
+
 
 
