@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 const ChatsHeader = ({ members, projectData, openChatSettingModal }) => {
   return (
-    <div className="flex items-center justify-between m-6 p-6 bg-gray-200 rounded-xl border text-black border-gray-400 h-28">
+    <div className="flex items-center justify-between m-8 mb-5 p-6 bg-gray-200 rounded-xl border text-black border-gray-400 h-28">
       <div>
         <p className=" mb-0.5 uppercase text-sm text-gray-400 font-[500]">
           {projectData?.projectName}/{" "}

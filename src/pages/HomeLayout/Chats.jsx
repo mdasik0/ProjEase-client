@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import ChatsHeader from "../../components/ProjectLayout/Chats/ChatsHeader";
 import { useGetMultiUserQuery } from "../../redux/api/userApi";
+import ChatBox from "../../components/ProjectLayout/Chats/ChatBox";
 
 const socket = io("http://localhost:5000");
 
@@ -86,8 +87,13 @@ const Chats = () => {
   const openChatSettingModal = () => {};
 
   return (
-    <div className=" w-screen h-screen ">
+    <div className=" w-screen h-screen flex flex-col">
       <ChatsHeader openChatSettingModal={openChatSettingModal} projectData={projectData} members={members} />
+      <ChatBox />
+      <div className='m-6'>
+      <input type="text" placeholder="Type here" className="input input-bordered focus:outline-none border-gray-500 placeholder:text-gray-600 min-w-full max-w-xs" />
+      
+      </div>
     </div>
   );
 };
