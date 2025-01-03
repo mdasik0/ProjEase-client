@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import ChatsHeader from "../../components/ProjectLayout/Chats/ChatsHeader";
 import { useGetMultiUserQuery } from "../../redux/api/userApi";
 import ChatBox from "../../components/ProjectLayout/Chats/ChatBox";
+import { FaArrowAltCircleRight, FaPaperPlane } from "react-icons/fa";
 
 const socket = io("http://localhost:5000");
 
@@ -88,11 +89,19 @@ const Chats = () => {
 
   return (
     <div className=" w-screen h-screen flex flex-col">
-      <ChatsHeader openChatSettingModal={openChatSettingModal} projectData={projectData} members={members} />
+      <ChatsHeader
+        openChatSettingModal={openChatSettingModal}
+        projectData={projectData}
+        members={members}
+      />
       <ChatBox />
-      <div className='m-6'>
-      <input type="text" placeholder="Type here" className="input input-bordered focus:outline-none border-gray-500 placeholder:text-gray-600 min-w-full max-w-xs" />
-      
+      <div className="m-6 flex items-center gap-3 justify-end mx-8">
+        <input
+          type="text"
+          placeholder="Type here"
+          className="input input-bordered rounded-full focus:outline-none border-gray-500 placeholder:text-gray-600 min-w-[45%]"
+        />
+        <button className="bg-blue-500 hover:bg-blue-400 duration-300 text-white p-3 rounded-full tooltip tooltip-left" data-tip='Press Enter/click'> <FaPaperPlane className="text-2xl" /></button>
       </div>
     </div>
   );
