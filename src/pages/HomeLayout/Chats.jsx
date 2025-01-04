@@ -6,13 +6,13 @@ import ChatsHeader from "../../components/ProjectLayout/Chats/ChatsHeader";
 import { useGetMultiUserQuery } from "../../redux/api/userApi";
 import ChatBox from "../../components/ProjectLayout/Chats/ChatBox";
 import { FaArrowAltCircleRight, FaPaperPlane } from "react-icons/fa";
+import SendChatMessage from "../../components/ProjectLayout/Chats/SendChatMessage";
 
 const socket = io("http://localhost:5000");
 
 const Chats = () => {
   const [userId, setUserId] = useState("");
   const [groupId, setGroupId] = useState("");
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   const { projectData } = useSelector((state) => state.projectSlice);
@@ -70,15 +70,7 @@ const Chats = () => {
     socket.emit("joinGroup", groupId);
   };
 
-  const handleSendGroupMessage = () => {
-    if (message && projectData?._id) {
-      // console.log('message', message);
-      // console.log('group', projectData?._id);
-      socket.emit("groupMessage", { groupId: projectData?._id, message });
-      return setMessage(""); // Clear the message input
-    }
-    return toast.error("Group ID and message are required");
-  };
+  
 
   const membersIDs = projectData?.members?.map((m) => m.userId);
 
@@ -95,14 +87,7 @@ const Chats = () => {
         members={members}
       />
       <ChatBox />
-      <div className="m-6 flex items-center gap-3 justify-end mx-8">
-        <input
-          type="text"
-          placeholder="Type here"
-          className="input input-bordered rounded-full focus:outline-none border-gray-500 placeholder:text-gray-600 min-w-[45%]"
-        />
-        <button className="bg-blue-500 hover:bg-blue-400 duration-300 text-white p-3 rounded-full tooltip tooltip-left" data-tip='Press Enter/click'> <FaPaperPlane className="text-2xl" /></button>
-      </div>
+      <SendChatMessage groupChatId={projectData?._id} socket={socket} />
     </div>
   );
 };
