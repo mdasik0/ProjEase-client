@@ -11,7 +11,7 @@ const SendChatMessage = ({ groupChatId, socket }) => {
       // console.log('message', message);
       // console.log('group', groupChatId);
       socket.emit("groupMessage", { groupId: groupChatId, message });
-      return setMessage(""); // Clear the message input
+      return setMessage("");
     }
     return toast.error("Group ID and message are required");
   };

@@ -56,22 +56,6 @@ const Chats = () => {
   //   };
   // }, [projectData?._id]); // Add projectData in the dependency array
 
-  const handleUserRegister = () => {
-    if (!userId) {
-      return toast.error("User ID is required");
-    }
-    socket.emit("register", userId);
-  };
-
-  const handleJoinGroup = () => {
-    if (!groupId) {
-      return toast.error("Group ID is required");
-    }
-    socket.emit("joinGroup", groupId);
-  };
-
-  
-
   const membersIDs = projectData?.members?.map((m) => m.userId);
 
   const { data: members } = useGetMultiUserQuery(membersIDs);
