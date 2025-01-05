@@ -14,7 +14,7 @@ const OthersChatCard = ({ message,image }) => {
 
         <div className="message-actions-container relative">
           <p className="message text-[15px] bg-gray-200  p-2 px-3.5 rounded-xl rounded-tl-none">
-            {message}{" "}
+            {message}
           </p>
           <div className="replyandActions opacity-0 group-hover:opacity-100 duration-300">
             <button
