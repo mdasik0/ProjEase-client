@@ -1,16 +1,14 @@
+import PropTypes from 'prop-types';
 import { LuReplyAll } from 'react-icons/lu';
 
-const MyChatCard = () => {
+const MyChatCard = ({message}) => {
     return (
-         <div className="flex flex-row-reverse">
-              <div className="chat-card-container block max-w-[50%] min-w-[10%]">
+         <div className="flex flex-row-reverse items-end">
+              <div className="chat-card-container flex justify-end max-w-[50%] min-w-[10%]">
                 <div className="w-fit">
-                  
-        
                   <div className="message-actions-container relative">
-                    
                     <p className="message text-[15px] bg-blue-400 text-white  p-2 px-3.5 rounded-xl rounded-br-none mt-2">
-                      Lorem ipsum Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni cumque enim ipsum doloribus amet earum fugiat nesciunt iure ex, est porro sed atque architecto eaque ab dignissimos alias eligendi commodi. Aut unde aspernatur temporibus ab eaque at velit! Ducimus modi rem et obcaecati, accusantium ea? Ipsum accusamus cumque eligendi laboriosam culpa vitae animi iusto, fugit ipsa? Laborum itaque ut quia adipisci deserunt sequi harum veritatis, distinctio accusantium ducimus atque doloribus fugiat. Commodi vitae sit vero sunt quae aperiam, iste, odio provident voluptatem porro dolore quaerat nam id, asperiores eaque itaque rem excepturi iure repellat! Perspiciatis quae tenetur iste ipsam quis? Aliquam laboriosam, nemo cupiditate maiores consectetur tempora, rerum porro temporibus iure impedit recusandae repellat odit corporis quia ducimus facere dolore in perspiciatis eaque molestias possimus ut incidunt dolorum. Praesentium placeat in fugiat, excepturi harum sed aliquid nam enim, quasi expedita veritatis magni nisi odit dolore magnam minima. Assumenda doloribus molestias voluptatibus voluptate hic est dolor, maxime totam iste, vero distinctio. Consectetur voluptas reiciendis, reprehenderit asperiores aspernatur provident sapiente sed laborum ducimus placeat velit nemo temporibus fuga at molestiae optio officiis quisquam doloribus cupiditate suscipit expedita vero. Quas voluptatum rem quaerat eius, exercitationem libero obcaecati, fuga placeat sed qui nihil numquam?
+                      {message}
                     </p>
                     <div className="replyandActions">
                       <button
@@ -26,5 +24,9 @@ const MyChatCard = () => {
               </div>
     );
 };
+
+MyChatCard.propTypes = ({
+  message: PropTypes.string,
+})
 
 export default MyChatCard;

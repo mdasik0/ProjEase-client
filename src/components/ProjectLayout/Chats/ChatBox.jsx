@@ -3,7 +3,7 @@ import MyChatCard from "./MyChatCard";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import toast from "react-hot-toast";
-const ChatBox = ({socket}) => {
+const ChatBox = ({socket, userId}) => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -24,8 +24,11 @@ const ChatBox = ({socket}) => {
 
   return (
     <div className="flex-grow scrollbar ms-8 me-4 pr-3 overflow-y-scroll overflow-x-hidden">
-      <OthersChatCard />
-      <MyChatCard />
+      {
+        messages.map((message, index) => (message?.sender === userId) ? <MyChatCard key={index} message={message?.message} /> : <OthersChatCard key={index} message={message?.message} />)
+      }
+      
+      
     </div>
   );
 };
@@ -36,6 +39,7 @@ ChatBox.propTypes = ({
       on: PropTypes.func,
       off: PropTypes.func,
     }).isRequired,
+    userId: PropTypes.string.isRequired,
 })
 
 export default ChatBox;
