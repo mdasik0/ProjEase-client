@@ -7,6 +7,9 @@ const SendChatMessage = ({ groupChatId, socket }) => {
   const [message, setMessage] = useState("");
 
   const handleSendGroupMessage = () => {
+
+
+
     if (message && groupChatId) {
       // console.log('message', message);
       // console.log('group', groupChatId);

@@ -18,14 +18,12 @@ const ChatBox = ({socket, userId}) => {
       socket.off("groupMessageReceived")
       socket.off("error")
     }
-  }, [])
-
-  console.log(messages);
+  })
 
   return (
-    <div className="flex-grow scrollbar ms-8 me-4 pr-3 overflow-y-scroll overflow-x-hidden">
+    <div className="flex-grow scrollbar ms-8 me-4 pr-3 overflow-y-scroll overflow-x-hidden flex flex-col gap-2 justify-end">
       {
-        messages.map((message, index) => (message?.sender === userId) ? <MyChatCard key={index} message={message?.message} /> : <OthersChatCard key={index} message={message?.message} />)
+        messages.map((message, index) => (message?.sender.userId === userId) ? <MyChatCard key={index} message={message?.message} /> : <OthersChatCard key={index} message={message?.message} image={message?.sender?.image} />)
       }
       
       
