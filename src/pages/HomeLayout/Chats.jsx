@@ -13,6 +13,9 @@ const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
   const { userData } = useSelector((state) => state.userSlice);
 
+
+  // jokhon 
+
   console.log(userData);
 
   const user = {
@@ -73,7 +76,7 @@ const Chats = () => {
         members={members}
       />
       <ChatBox socket={socket} userId={userData?._id} />
-      <SendChatMessage groupChatId={projectData?._id} socket={socket} />
+      <SendChatMessage groupChatId={projectData?._id} senderId={userData?._id} socket={socket} />
     </div>
   );
 };

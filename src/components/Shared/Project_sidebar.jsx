@@ -4,7 +4,7 @@ import { MdTaskAlt } from "react-icons/md";
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { NavLink, useLocation } from "react-router-dom";
-import logo from '../../../public/logo/Full-logo/logo-white-ov2.png'
+import logo from '/logo/Full-logo/logo-white-ov2.png'
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FiUserPlus } from "react-icons/fi";
 

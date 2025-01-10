@@ -3,17 +3,26 @@ import toast from "react-hot-toast";
 import { FaPaperPlane } from "react-icons/fa";
 import PropTypes from "prop-types";
 
-const SendChatMessage = ({ groupChatId, socket }) => {
+const SendChatMessage = ({ groupChatId, socket, senderId }) => {
   const [message, setMessage] = useState("");
+  
 
+  
   const handleSendGroupMessage = () => {
-
-
-
-    if (message && groupChatId) {
+    if (message && groupChatId && senderId) {
+      const messageObject = {
+        messageText: message,
+        sender: senderId,
+        groupChatId,
+        time: new Date(),
+        isSeen: false,
+        mediaUrl: '',
+        replyTo: '',
+         
+      }
       // console.log('message', message);
       // console.log('group', groupChatId);
-      socket.emit("groupMessage", { groupId: groupChatId, message });
+      socket.emit("groupMessage", { groupId: groupChatId, message: messageObject });
       return setMessage("");
     }
     return toast.error("Group ID and message are required");
@@ -41,6 +50,7 @@ const SendChatMessage = ({ groupChatId, socket }) => {
 
 SendChatMessage.propTypes = {
   groupChatId: PropTypes.string.isRequired,
+  senderId: PropTypes.string.isRequired,
   socket: PropTypes.shape({
     emit: PropTypes.func.isRequired,
     on: PropTypes.func,

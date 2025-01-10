@@ -20,10 +20,12 @@ const ChatBox = ({socket, userId}) => {
     }
   })
 
+  console.log(messages[0]?.sender?.userId);
+
   return (
     <div className="flex-grow scrollbar ms-8 me-4 pr-3 overflow-y-scroll overflow-x-hidden flex flex-col gap-2 justify-end">
       {
-        messages.map((message, index) => (message?.sender.userId === userId) ? <MyChatCard key={index} message={message?.message} /> : <OthersChatCard key={index} message={message?.message} image={message?.sender?.image} />)
+        messages.map((message, index) => (message.sender?.userId === userId) ? <MyChatCard key={index} message={message} /> : <OthersChatCard key={index} message={message} image={message?.sender?.image} />)
       }
       
       

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { MdOutlineReply } from "react-icons/md";
 
 const OthersChatCard = ({ message,image }) => {
+  console.log(message);
   return (
     <div className="w-full group">
       <div className="chat-card-container block max-w-[50%] min-w-[10%] group ">
@@ -14,7 +15,7 @@ const OthersChatCard = ({ message,image }) => {
 
         <div className="message-actions-container relative">
           <p className="message text-[15px] bg-gray-200  p-2 px-3.5 rounded-xl rounded-tl-none">
-            {message}
+            {message?.msgObj?.messageText}
           </p>
           <div className="replyandActions opacity-0 group-hover:opacity-100 duration-300">
             <button

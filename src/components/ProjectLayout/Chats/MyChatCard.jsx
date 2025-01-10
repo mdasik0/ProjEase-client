@@ -2,13 +2,14 @@ import PropTypes from "prop-types";
 import { MdOutlineReply } from "react-icons/md";
 
 const MyChatCard = ({ message }) => {
+  console.log(message);
   return (
     <div className="flex flex-row-reverse items-end group">
       <div className="chat-card-container flex justify-end max-w-[50%] min-w-[10%] ">
         <div className="w-fit">
           <div className="message-actions-container relative">
             <p className="message text-[15px] bg-blue-400 text-white  p-2 px-3.5 rounded-xl rounded-br-none mt-2">
-              {message}
+              {message?.msgObj?.messageText}
             </p>
             <div className="replyandActions opacity-0 group-hover:opacity-100 duration-300">
               <button
