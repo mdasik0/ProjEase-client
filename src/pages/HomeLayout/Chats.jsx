@@ -75,7 +75,7 @@ const Chats = () => {
         projectData={projectData}
         members={members}
       />
-      <ChatBox socket={socket} userId={userData?._id} />
+      <ChatBox socket={socket} userId={userData?._id} groupId={projectData?._id} />
       <SendChatMessage groupChatId={projectData?._id} senderId={userData?._id} socket={socket} />
     </div>
   );
