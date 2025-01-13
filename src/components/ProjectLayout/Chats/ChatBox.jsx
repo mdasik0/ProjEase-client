@@ -5,13 +5,16 @@ import PropTypes from "prop-types";
 import toast from "react-hot-toast";
 const ChatBox = ({socket, userId, groupId}) => {
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetch(`http://localhost:5000/messages/${groupId}`)
+    setLoading(true)
+    if(groupId) {
+      fetch(`http://localhost:5000/messages/${groupId}`)
     .then(response => response.json())
     .then(data => setMessages(data))
     .catch(err => toast.error(err.message))
-    
+    }
     socket.on("groupMessageReceived", (data) => {
       console.log(data);
       setMessages((prevMessages) => [...prevMessages, data]);
@@ -19,18 +22,20 @@ const ChatBox = ({socket, userId, groupId}) => {
     socket.on("error", (data) => {
       toast.error(data.message);
     });
+    setLoading(false)
     return () => {
       socket.off("groupMessageReceived")
       socket.off("error")
+      setLoading(false)
     }
-  })
+  },[groupId,socket])
 
   console.log(messages[0]?.sender?.userId);
 
   return (
     <div className="flex-grow scrollbar ms-8 me-4 pr-3 overflow-y-scroll overflow-x-hidden flex flex-col gap-2 justify-end">
       {
-        messages.map((message, index) => (message.sender?.userId === userId) ? <MyChatCard key={index} message={message} /> : <OthersChatCard key={index} message={message} image={message?.sender?.image} />)
+        loading ? <span className="loading loading-bars loading-lg"></span> : messages.map((message, index) => (message.sender?.userId === userId) ? <MyChatCard key={index} message={message} /> : <OthersChatCard key={index} message={message} image={message?.sender?.image} />)
       }
       
       
