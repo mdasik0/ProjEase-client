@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { storeActiveProject } from "../redux/features/projectSlice";
 import { updateTaskInit } from "../redux/features/tasksSlice";
 import { useGetTasksInitQuery } from "../redux/api/tasksApi";
+import RedirectHome from "../components/Shared/RedirectHome";
 
 const ProjectLayout = () => {
   const { userData, isLoading } = useSelector((state) => state.userSlice);
@@ -80,6 +81,7 @@ const ProjectLayout = () => {
   } else {
     return (
       <>
+      <RedirectHome />
         <div className="anim-backdrop-project-sp absolute w-screen h-screen top-0 left-0 bg-white z-50 flex items-center justify-center">
           <h1 className={`text-5xl font-[500] poppins project-ps-title`}>
             <span className="text-1">Welcome</span>{" "}
