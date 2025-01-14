@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { MdOutlineReply } from "react-icons/md";
 
 const OthersChatCard = ({ message,image }) => {
-  console.log(message);
+  // console.log(message);
   return (
     <div className="w-full group">
       <div className="chat-card-container block max-w-[50%] min-w-[10%] group ">
@@ -34,7 +34,11 @@ const OthersChatCard = ({ message,image }) => {
 };
 
 OthersChatCard.propTypes = {
-  message: PropTypes.string,
+  message: PropTypes.shape({
+      msgObj: PropTypes.shape({
+        messageText: PropTypes.string,
+      })
+    }),
   image: PropTypes.string,
 };
 

@@ -10,7 +10,7 @@ import { resetTaskSlice } from "../../../redux/features/tasksSlice";
 import { resetProjSlice } from "../../../redux/features/projectSlice";
 
 const JoinProject_with_INV = ({ data, email, userLoading }) => {
-  const [password, setPassword] = useState({ password: "", show: "" });
+  const [password, setPassword] = useState({ password: "", show: false });
   const { userData } = useSelector((state) => state.userSlice);
   const [joinProject, { isLoading }] = useJoinProjectMutation();
 
@@ -22,25 +22,24 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
   const handleJoin = async () => {
     const info = {
       projId: data?.projectId,
-      password,
+      password: password.password,
       userId: userData?._id,
       invited: true,
     };
 
     try {
       const response = await joinProject(info);
-      console.log(response);
       if (response.data) {
         toast.success(response.data.message);
         sessionStorage.removeItem("JoinProject_with_invitation");
         dispatch(resetTaskSlice());
         dispatch(resetProjSlice());
-        return navigate("/projects");
+        navigate("/");
       } else if (response.error) {
         toast.error(response.error.data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -68,13 +67,11 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
       iconrefCurrent.addEventListener("click", toggleAnimation);
 
       return () => {
-        if (iconrefCurrent) {
-          iconrefCurrent.removeEventListener("click", toggleAnimation);
-        }
+        iconrefCurrent.removeEventListener("click", toggleAnimation);
         animationMenu.destroy();
       };
     }
-  }, [setPassword]);
+  }, []);
 
   return (
     <div className="p-10">
@@ -150,11 +147,9 @@ const JoinProject_with_INV = ({ data, email, userLoading }) => {
                     />
                     <div
                       ref={iconMenuRef}
-                      className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open"
+                      className="bg-gray-200 w-fit p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer"
                       data-tip="Show password"
-                    >
-                      <div className="show-password-anim"></div>
-                    </div>
+                    ></div>
                   </div>
                 )}
 

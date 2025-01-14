@@ -22,6 +22,7 @@ const JoinProject = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleJoinProject = async (e) => {
+    
     e.preventDefault();
     if (!formData.projId) {
       return setValErr({

@@ -16,7 +16,6 @@ const ChatBox = ({socket, userId, groupId}) => {
     .catch(err => toast.error(err.message))
     }
     socket.on("groupMessageReceived", (data) => {
-      console.log(data);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
     socket.on("error", (data) => {
@@ -30,7 +29,6 @@ const ChatBox = ({socket, userId, groupId}) => {
     }
   },[groupId,socket])
 
-  console.log(messages[0]?.sender?.userId);
 
   return (
     <div className="flex-grow scrollbar ms-8 me-4 pr-3 overflow-y-scroll overflow-x-hidden flex flex-col gap-2 justify-end">
@@ -50,7 +48,7 @@ ChatBox.propTypes = ({
       off: PropTypes.func,
     }).isRequired,
     userId: PropTypes.string.isRequired,
-    groupId: PropTypes.string.isRequired,
+    groupId: PropTypes.string,
 })
 
 export default ChatBox;

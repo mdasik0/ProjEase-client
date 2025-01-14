@@ -49,7 +49,7 @@ const SendChatMessage = ({ groupChatId, socket, senderId }) => {
 };
 
 SendChatMessage.propTypes = {
-  groupChatId: PropTypes.string.isRequired,
+  groupChatId: PropTypes.string,
   senderId: PropTypes.string.isRequired,
   socket: PropTypes.shape({
     emit: PropTypes.func.isRequired,

@@ -13,19 +13,12 @@ const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
   const { userData } = useSelector((state) => state.userSlice);
 
-
-  // jokhon 
-
-  console.log(userData);
-
   const user = {
     userName: userData?.name?.firstname + " " + userData?.name?.lastname,
     userId: userData?._id,
     image: userData?.image,
     jobTitle: userData?.jobTitle
   }
-
-  console.log(user);
 
   useEffect(() => {
     //users registration

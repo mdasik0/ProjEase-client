@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { MdOutlineReply } from "react-icons/md";
 
 const MyChatCard = ({ message }) => {
-  console.log(message);
+  // console.log(message);
   return (
     <div className="flex flex-row-reverse items-end group">
       <div className="chat-card-container flex justify-end max-w-[50%] min-w-[10%] ">
@@ -27,7 +27,11 @@ const MyChatCard = ({ message }) => {
 };
 
 MyChatCard.propTypes = {
-  message: PropTypes.string,
+  message: PropTypes.shape({
+    msgObj: PropTypes.shape({
+      messageText: PropTypes.string,
+    })
+  }),
 };
 
 export default MyChatCard;
