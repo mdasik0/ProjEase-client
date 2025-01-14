@@ -42,12 +42,11 @@ const Chats = () => {
     });
 
     //group registration
-    if (projectData?._id) {
-      socket.emit("joinGroup", projectData?._id);
+    if (projectData?.ChatId) {
+      socket.emit("joinGroup", projectData?.ChatId);
     }
 
     socket.on("groupJoinResponse", (data) => {
-      console.log(data);
       toast.success(data.message);
     });
 
@@ -60,7 +59,7 @@ const Chats = () => {
       socket.off("groupJoinResponse");
       socket.off("error");
     };
-  }, [projectData?._id, user, userData]); // Add projectData in the dependency array
+  }, [projectData?.ChatId, user, userData]); // Add projectData in the dependency array
 
   const membersIDs = projectData?.members?.map((m) => m.userId);
 
@@ -75,8 +74,8 @@ const Chats = () => {
         projectData={projectData}
         members={members}
       />
-      <ChatBox socket={socket} userId={userData?._id} groupId={projectData?._id} />
-      <SendChatMessage groupChatId={projectData?._id} senderId={userData?._id} socket={socket} />
+      <ChatBox socket={socket} userId={userData?._id} groupId={projectData?.ChatId} />
+      <SendChatMessage groupChatId={projectData?.ChatId} senderId={userData?._id} socket={socket} />
     </div>
   );
 };

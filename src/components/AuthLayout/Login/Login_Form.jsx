@@ -55,11 +55,11 @@ const Login_Form = () => {
         if (isInvited) {
           return navigate(`/join-project/token=${isInvited}`);
         } else {
-          return navigate("/project");
+          return navigate("/");
         }
       }
     }
-  }, [error, email, navigate, userData]);
+  }, [error, email, navigate, userData,login_method]);
 
   useEffect(() => {
     if (iconMenuRef.current) {

@@ -38,29 +38,13 @@ const CreateProject = () => {
   const [updateJoinedProjects] = useUpdateJoinedProjectsMutation();
   const navigate = useNavigate();
 
-  // animation
-  useEffect(() => {
-    const titleSpans = document.querySelectorAll(".project-ps-title");
-    const timer = setTimeout(() => {
-      titleSpans.forEach((span) => {
-        span.classList.add("disappear");
-      });
-    }, 3200);
-    const timertwo = setTimeout(() => {
-      const fakebg = document.querySelector(".anim-backdrop-project-sp");
-      fakebg.classList.add("bg-disappear");
-    }, 4000);
-    const timerthree = setTimeout(() => {
-      const fakebg = document.querySelector(".anim-backdrop-project-sp");
-      fakebg.classList.add("hidden");
-    }, 5000);
+ 
 
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(timertwo);
-      clearTimeout(timerthree);
-    }; // Clean up the timer on component unmount
-  }, []);
+  useEffect(() => {
+    if (!userData._id) {
+      navigate("/auth/sign-in");
+    }
+  },[])
 
   // date function
   const handleDateChange = (e) => {
@@ -154,15 +138,7 @@ const CreateProject = () => {
 
   return (
     <div className="w-screen h-screen lg:px-20 md:pt-16 p-6 relative">
-      <div className="anim-backdrop-project-sp absolute w-screen h-screen top-0 left-0 bg-white z-50 flex items-center justify-center">
-        <h1 className={`text-5xl font-[500] poppins project-ps-title`}>
-          <span className="text-1">Welcome</span>{" "}
-          <span className="text-2">to</span>{" "}
-          <span className="text-3">Your</span>{" "}
-          <span className="text-4">Project</span>{" "}
-          <span className="text-5">Space!</span>
-        </h1>
-      </div>
+      
       <TitleandSub
         title="Create new project"
         subTitle="Let's get your ideas organized and your team ready to

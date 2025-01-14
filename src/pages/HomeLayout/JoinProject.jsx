@@ -60,6 +60,12 @@ const JoinProject = () => {
   };
 
   useEffect(() => {
+    if (!userData._id) {
+      navigate("/auth/sign-in");
+    }
+  },[])
+
+  useEffect(() => {
     if (iconMenuRef.current) {
       const animationMenu = Lottie.loadAnimation({
         container: iconMenuRef.current,
