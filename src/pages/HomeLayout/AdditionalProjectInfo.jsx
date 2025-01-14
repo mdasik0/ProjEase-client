@@ -47,6 +47,10 @@ const AdditionalProjectInfo = () => {
     }
   };
   
+  const handleSkip = () => {
+    navigate('/projects')
+  }
+
   const { email } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();
 
@@ -138,6 +142,7 @@ const AdditionalProjectInfo = () => {
               />
             </div>
 
+            <div className="flex items-center gap-4">
             <button
               className="text-white bg-[#1a1a1a] duration-500 hover:text-black hover:bg-gray-300 px-5 py-2 rounded mt-4"
               type="submit"
@@ -145,6 +150,15 @@ const AdditionalProjectInfo = () => {
             >
               Submit
             </button>
+            <button
+            onClick={handleSkip}
+              className="text-[#1a1a1a] bg-white duration-500 hover:bg-[#1a1a1a] hover:text-white px-5 py-2 rounded mt-4 border border-[#1a1a1a]"
+              type="submit"
+              aria-label="Submit project details"
+            >
+              Skip
+            </button>
+            </div>
           </form>
         </section>
       </TitleandSub>

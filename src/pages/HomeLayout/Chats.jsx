@@ -60,7 +60,7 @@ const Chats = () => {
       socket.off("groupJoinResponse");
       socket.off("error");
     };
-  }, [projectData?._id]); // Add projectData in the dependency array
+  }, [projectData?._id, user, userData]); // Add projectData in the dependency array
 
   const membersIDs = projectData?.members?.map((m) => m.userId);
 

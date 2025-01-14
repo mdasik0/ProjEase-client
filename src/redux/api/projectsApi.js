@@ -6,14 +6,14 @@ const projectsApi = createApi({
     endpoints: (builder) => ({
         createProject: builder.mutation({
             query: (projectObj) => ({
-                url: '/createProject',
+                url: '/project',
                 method: 'POST',
                 body:projectObj,
             })
         }),
         updateProject: builder.mutation({
             query: ({_id, newObj}) => ({
-                url: `/updateProject/${_id}`,
+                url: `/project/${_id}`,
                 method: 'PATCH',
                 body: newObj
             })
