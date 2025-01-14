@@ -45,14 +45,13 @@ const JoinProject = () => {
           userId,
         };
         const response = await joinProject(info);
-        console.log(response);
-        if (response.data.success) {
-          toast.success(response.data.message);
+        if (response.error) {
+          toast.error(response?.error?.data.message);
+        } else {
+          toast.success(response?.data?.message);
           dispatch(resetTaskSlice());
           dispatch(resetProjSlice());
           return navigate("/projects");
-        } else {
-          toast.error(response.error.message);
         }
       }
     } catch (error) {
@@ -64,7 +63,7 @@ const JoinProject = () => {
     if (!userData._id) {
       navigate("/auth/sign-in");
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     if (iconMenuRef.current) {
@@ -106,49 +105,49 @@ const JoinProject = () => {
         }
       >
         <form onSubmit={handleJoinProject} className="sm:w-[480px] text-black">
-        <div className="mb-4 relative">
-  <label className="text-sm block mb-1" htmlFor="project-id">
-    Project Id
-  </label>
-  <input
-    className={`border-[2px] ${
-      valErr.nameErr
-        ? "border-red-500 focus:outline-red-500"
-        : "border-black"
-    } block w-full px-3 py-2 rounded-lg `}
-    placeholder="Enter project Id here"
-    required
-    onChange={(e) =>
-      setFormData({ ...formData, projId: e.target.value })
-    }
-    value={formData.projId} // Ensure the input value is controlled
-    type="text"
-    name="project-id"
-    id="project-id"
-  />
+          <div className="mb-4 relative">
+            <label className="text-sm block mb-1" htmlFor="project-id">
+              Project Id
+            </label>
+            <input
+              className={`border-[2px] ${
+                valErr.nameErr
+                  ? "border-red-500 focus:outline-red-500"
+                  : "border-black"
+              } block w-full px-3 py-2 rounded-lg `}
+              placeholder="Enter project Id here"
+              required
+              onChange={(e) =>
+                setFormData({ ...formData, projId: e.target.value })
+              }
+              value={formData.projId} // Ensure the input value is controlled
+              type="text"
+              name="project-id"
+              id="project-id"
+            />
 
-  <div
-    className="bg-gray-200 h-7 p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open flex items-center justify-center"
-    data-tip="Paste"
-    onClick={async () => {
-      try {
-        const clipboardText = await navigator.clipboard.readText(); // Read text from clipboard
-        setFormData((prev) => ({ ...prev, projId: clipboardText })); // Update the state
-      } catch (error) {
-        console.error("Failed to read clipboard content:", error);
-      }
-    }}
-  >
-    <ImPaste />
-  </div>
+            <div
+              className="bg-gray-200 h-7 p-1 rounded-lg absolute bottom-2 right-2 hover:bg-gray-300 duration-500 cursor-pointer show-password-anim tooltip hover:tooltip-open flex items-center justify-center"
+              data-tip="Paste"
+              onClick={async () => {
+                try {
+                  const clipboardText = await navigator.clipboard.readText(); // Read text from clipboard
+                  setFormData((prev) => ({ ...prev, projId: clipboardText })); // Update the state
+                } catch (error) {
+                  console.error("Failed to read clipboard content:", error);
+                }
+              }}
+            >
+              <ImPaste />
+            </div>
 
-  {valErr.projIdErr && (
-    <span className="absolute text-sm right-0 text-red-500 flex items-center gap-1">
-      <MdError />
-      {valErr.projIdErr}
-    </span>
-  )}
-</div>
+            {valErr.projIdErr && (
+              <span className="absolute text-sm right-0 text-red-500 flex items-center gap-1">
+                <MdError />
+                {valErr.projIdErr}
+              </span>
+            )}
+          </div>
 
           <div className="relative">
             <label className="text-sm  block mb-1" htmlFor="password">
