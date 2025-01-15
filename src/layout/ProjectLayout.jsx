@@ -2,45 +2,57 @@ import { useDispatch, useSelector } from "react-redux";
 import ProjectAction from "../components/ProjectLayout/ProjectAction";
 import Project_sidebar from "../components/Shared/Project_sidebar";
 import { Outlet } from "react-router-dom";
-import { useGetProjectQuery } from "../redux/api/projectsApi";
-import { useEffect } from "react";
+import { useGetChatGroupQuery, useGetProjectQuery } from "../redux/api/projectsApi";
+import { useEffect, useMemo } from "react";
 import { storeActiveProject } from "../redux/features/projectSlice";
 import { updateTaskInit } from "../redux/features/tasksSlice";
 import { useGetTasksInitQuery } from "../redux/api/tasksApi";
 import RedirectHome from "../components/Shared/RedirectHome";
+import { setChatInfo } from "../redux/features/chatSlice";
 
 const ProjectLayout = () => {
   const { userData, isLoading } = useSelector((state) => state.userSlice);
-
   const joinedProjects = userData?.joinedProjects;
 
   const dispatch = useDispatch();
-  const activeProjectId = joinedProjects?.find(
-    (p) => p.status === "active"
-  ).projectId;
+
+  const activeProjectId = useMemo(() => {
+    return joinedProjects?.find((p) => p.status === "active")?.projectId;
+  }, [joinedProjects]);
 
   const { data: projectData } = useGetProjectQuery(activeProjectId, {
     skip: !activeProjectId,
   });
 
-  console.log(projectData)
+  const { data: chatgroupData } = useGetChatGroupQuery(projectData?._id, {
+    skip: !projectData?._id,
+  });
 
   const _id = projectData?.taskId;
-
-  const { data: getTaskInit } = useGetTasksInitQuery(_id, {
-    skip: !_id,
-  });
+  const { data: getTaskInit } = useGetTasksInitQuery(_id, { skip: !_id });
 
   useEffect(() => {
     if (projectData) {
       dispatch(storeActiveProject(projectData));
-    } else {
-      // console.log("no project found");
     }
+  }, [projectData,dispatch]);
+
+  useEffect(() => {
     if (getTaskInit) {
       dispatch(updateTaskInit(getTaskInit));
     }
-  }, [projectData, getTaskInit]);
+  }, [getTaskInit,dispatch]);
+
+  // useEffect(() => {
+  //   console.log("Project Data:", projectData);
+  // }, [projectData]);
+
+  useEffect(() => {
+    // console.log("Chat Group Data:", chatgroupData);
+    if(chatgroupData) {
+      dispatch(setChatInfo(chatgroupData))
+    }
+  }, [chatgroupData,dispatch]);
 
   if (isLoading) {
     return (
@@ -49,6 +61,7 @@ const ProjectLayout = () => {
       </div>
     );
   }
+
   if (joinedProjects) {
     return (
       <div className="flex items-start">

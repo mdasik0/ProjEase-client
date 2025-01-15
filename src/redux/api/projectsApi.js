@@ -41,10 +41,15 @@ const projectsApi = createApi({
             query: (_id) => ({
                 url: `/invitation-info/${_id}`,
             })
+        }),
+        getChatGroup: builder.query({
+            query: (_id) => ({
+                url: `/chat-group/${_id}`
+            })
         })
         
     })
 })
 
-export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation, useJoinProjectMutation, useInviteMembersMutation, useGetInvitationInfoQuery} = projectsApi;
+export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation, useJoinProjectMutation, useInviteMembersMutation, useGetInvitationInfoQuery, useGetChatGroupQuery} = projectsApi;
 export default projectsApi;
