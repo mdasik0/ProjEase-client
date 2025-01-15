@@ -2,14 +2,14 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaPaperPlane } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 const SendChatMessage = ({ groupChatId, socket, senderId }) => {
   const [message, setMessage] = useState("");
-  
-
+  const {projectData} = useSelector(state => state.projectSlice);
   
   const handleSendGroupMessage = () => {
-    if (message && groupChatId && senderId) {
+    if (message && groupChatId && senderId && projectData.members) {
       const messageObject = {
         messageText: message,
         sender: senderId,
@@ -20,12 +20,10 @@ const SendChatMessage = ({ groupChatId, socket, senderId }) => {
         replyTo: '',
          
       }
-      // console.log('message', message);
-      // console.log('group', groupChatId);
-      socket.emit("groupMessage", { groupId: groupChatId, message: messageObject });
+      socket.emit("groupMessage", { groupId: groupChatId, message: messageObject, members: projectData.members });
       return setMessage("");
     }
-    return toast.error("Group ID and message are required");
+    return toast.error("Refresh the page and try again.");
   };
 
   return (

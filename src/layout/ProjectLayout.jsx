@@ -23,6 +23,8 @@ const ProjectLayout = () => {
     skip: !activeProjectId,
   });
 
+  console.log(projectData)
+
   const _id = projectData?.taskId;
 
   const { data: getTaskInit } = useGetTasksInitQuery(_id, {

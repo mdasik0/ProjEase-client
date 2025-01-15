@@ -13,62 +13,74 @@ const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
   const { userData } = useSelector((state) => state.userSlice);
 
-  const user = {
-    userName: userData?.name?.firstname + " " + userData?.name?.lastname,
-    userId: userData?._id,
-    image: userData?.image,
-    jobTitle: userData?.jobTitle
-  }
-
   useEffect(() => {
-    //users registration
-    if (userData) {
+    const user = userData
+      ? {
+          userName: `${userData.name?.firstname || ""} ${userData.name?.lastname || ""}`.trim(),
+          userId: userData?._id,
+          image: userData?.image || null,
+          jobTitle: userData?.jobTitle || null,
+        }
+      : null;
+
+    if (user) {
       socket.emit("register", user);
     }
 
-    socket.on("registerResponse", (data) => {
-      if (data.success) {
-        toast.success(data.message);
-      } else {
-        toast.error(data.message);
-      }
-    });
-
-    //group registration
     if (projectData?.ChatId) {
-      socket.emit("joinGroup", projectData?.ChatId);
+      socket.emit("joinGroup", projectData.ChatId);
     }
 
+    socket.on("registerResponse", (data) => {
+      data.success
+        ? toast.success(`Welcome, ${data.userName || "User"}!`)
+        : toast.error(data.message);
+    });
+    
     socket.on("groupJoinResponse", (data) => {
-      toast.success(data.message);
+      toast.success(`Joined the group "${data.groupId}" successfully.`);
     });
 
     socket.on("error", (data) => {
-      toast.error(data.message);
+      toast.error(data.message || "An unexpected error occurred.");
     });
 
+    socket.on("User-disconnected",data => {console.log(data)})
     return () => {
+
       socket.off("registerResponse");
       socket.off("groupJoinResponse");
+      socket.off("userLeftGroup");
       socket.off("error");
     };
-  }, [projectData?.ChatId, user, userData]); // Add projectData in the dependency array
+  }, [projectData?.ChatId, userData]);
 
-  const membersIDs = projectData?.members?.map((m) => m.userId);
-
-  const { data: members } = useGetMultiUserQuery(membersIDs);
+  const membersIDs = projectData?.members?.map((m) => m.userId) || [];
+  const { data: members } = useGetMultiUserQuery(membersIDs.length ? membersIDs : null);
 
   const openChatSettingModal = () => {};
 
+  if (!projectData) {
+    return <div className="w-screen h-screen flex flex-col">Loading project details...</div>;
+  }
+
   return (
-    <div className=" w-screen h-screen flex flex-col">
+    <div className="w-screen h-screen flex flex-col">
       <ChatsHeader
         openChatSettingModal={openChatSettingModal}
         projectData={projectData}
         members={members}
       />
-      <ChatBox socket={socket} userId={userData?._id} groupId={projectData?.ChatId} />
-      <SendChatMessage groupChatId={projectData?.ChatId} senderId={userData?._id} socket={socket} />
+      <ChatBox
+        socket={socket}
+        userId={userData?._id}
+        groupId={projectData?.ChatId}
+      />
+      <SendChatMessage
+        groupChatId={projectData?.ChatId}
+        senderId={userData?._id}
+        socket={socket}
+      />
     </div>
   );
 };
