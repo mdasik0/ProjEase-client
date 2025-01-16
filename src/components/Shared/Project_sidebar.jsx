@@ -8,26 +8,53 @@ import logo from '/logo/Full-logo/logo-white-ov2.png'
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FiUserPlus } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 
 const Project_sidebar = memo(() => {
+  const [unseenCount, setUnseenCount] = useState(null)
   const location = useLocation();
-  const {chatInfo} = useSelector(state => state.chatSlice)
+  const {projectData} = useSelector(state => state.projectSlice)
   const {userData} = useSelector(state => state.userSlice)
 
-  const userUnseenMessageCount = 
-  chatInfo?.unseenMessageCount && userData?._id in chatInfo.unseenMessageCount
-    ? chatInfo.unseenMessageCount[userData._id]
-    : null;
-
-
-  // const unseenMessages = chatInfo ? chatInfo?.unseenMessageCount[userData?._id] : 0 ;
-
-
   const currentRoute = location.pathname.split("/")[2];
+  const fetchUnseenMessageCount = () => {
+    if (!projectData?._id || !userData) return; // Prevent making the request if data is missing
+    console.log("🚀 ~ fetchUnseenMessageCount ~ projectData?._id:", projectData?._id)
+    console.log("🚀 ~ fetchUnseenMessageCount ~ userData?._id:", userData?._id)
+  
+    fetch(`http://localhost:5000/unseenMessageCount/${projectData?._id}/${userData?._id}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setUnseenCount(data.unseenCount);
+      })
+      .catch((error) => {
+        console.error("Error fetching unseen message count:", error);
+      });
+  };
+  
+
+  useEffect(() => {
+    const handlePageFocus = () => {
+      fetchUnseenMessageCount();
+    };
+  
+    const sidebar = document.getElementById("project-sidebar");
+  
+    // Add the tabIndex to allow the div to receive focus
+    sidebar.setAttribute("tabIndex", 0); // This makes the div focusable
+  
+    sidebar.addEventListener("focus", handlePageFocus);
+  
+    return () => {
+      sidebar.removeEventListener("focus", handlePageFocus);
+    };
+  }, []);
+  
+  
 
   return (
-    <div style={{position: 'sticky', top:0}} className={`shadow-lg shadow-gray-300 min-w-[250px] min-h-screen duration-300`}>
+    <div id="project-sidebar" style={{position: 'sticky', top:0}} className={`shadow-lg shadow-gray-300 min-w-[250px] min-h-screen duration-300`}>
       <div className=" flex items-center justify-center my-6">
 
         <img className="w-[120px]" src={logo} alt="projease logo" />
@@ -58,12 +85,13 @@ const Project_sidebar = memo(() => {
           </li>
           <li className="sidebar_main_nav">
             <NavLink
-              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg")}
+            id="onfocus-fetcher"
+              className={({ isActive }) => (isActive ? " bg-gray-200  flex items-center gap-2 px-3  py-1.5 rounded-lg" : " flex items-center gap-2 px-3  py-1.5 rounded-lg ")}
               to={"/projects/chats"}
             >
               <IoChatbubblesOutline />
               Chat 
-              {userUnseenMessageCount ? <span className="bg-red-500 px-[4px] min-h-4 min-w-4 text-center text-white text-xs rounded-full"> {userUnseenMessageCount}
+              {unseenCount ? <span className="bg-red-500 px-[4px] min-h-4 min-w-4 text-center text-white text-xs rounded-full"> {unseenCount}
                 </span> : ""}
               
               
