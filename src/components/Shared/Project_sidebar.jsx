@@ -7,9 +7,22 @@ import { NavLink, useLocation } from "react-router-dom";
 import logo from '/logo/Full-logo/logo-white-ov2.png'
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FiUserPlus } from "react-icons/fi";
+import { useSelector } from "react-redux";
+import { memo } from "react";
 
-const Project_sidebar = () => {
+const Project_sidebar = memo(() => {
   const location = useLocation();
+  const {chatInfo} = useSelector(state => state.chatSlice)
+  const {userData} = useSelector(state => state.userSlice)
+
+  const userUnseenMessageCount = 
+  chatInfo?.unseenMessageCount && userData?._id in chatInfo.unseenMessageCount
+    ? chatInfo.unseenMessageCount[userData._id]
+    : null;
+
+
+  // const unseenMessages = chatInfo ? chatInfo?.unseenMessageCount[userData?._id] : 0 ;
+
 
   const currentRoute = location.pathname.split("/")[2];
 
@@ -49,7 +62,11 @@ const Project_sidebar = () => {
               to={"/projects/chats"}
             >
               <IoChatbubblesOutline />
-              Chat
+              Chat 
+              {userUnseenMessageCount ? <span className="bg-red-500 px-[4px] min-h-4 min-w-4 text-center text-white text-xs rounded-full"> {userUnseenMessageCount}
+                </span> : ""}
+              
+              
             </NavLink>
           </li>
           <li className="sidebar_main_nav">
@@ -148,6 +165,8 @@ const Project_sidebar = () => {
       </div>
     </div>
   );
-};
+});
+
+Project_sidebar.displayName = "ProjectSidebar";
 
 export default Project_sidebar;
