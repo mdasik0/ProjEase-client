@@ -32,8 +32,9 @@ const AddTask = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
 
   const membersIDs = projectData?.members?.map((m) => m.userId);
-
-  const { data: allMembers } = useGetMultiUserQuery(membersIDs);
+  const { data: allMembers } = useGetMultiUserQuery(membersIDs, {
+    skip : !membersIDs
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -14,9 +14,10 @@ const Tasks = () => {
   const {
     data: allTasks,
     isLoading,
-  } = useGetAllTasksQuery(tasksInitial?.allTasks || [], {
-    refetchOnMountOrArgChange: true,
+  } = useGetAllTasksQuery(tasksInitial?.allTasks, {
+    skip: !tasksInitial?.allTasks,
   });
+  
 
   const todoTasks = allTasks?.filter((t) => t.status === "pending");
   const inProgressTasks = allTasks?.filter((t) => t.status === "in-progress");

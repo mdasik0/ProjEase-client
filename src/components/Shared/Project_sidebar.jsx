@@ -18,17 +18,19 @@ const Project_sidebar = () => {
 
   const currentRoute = location.pathname.split("/")[2];
   
+  const currentUserId = userData?._id;
+  const currentProjectId = projectData?._id;
   
+
   useEffect(() => {
     const fetchUnseenMessageCount = () => {
-      if (!projectData?._id || !userData?._id) return; // Prevent making the request if data is missing
-      // console.log("🚀 ~ fetchUnseenMessageCount ~ projectData?._id:", projectData?._id)
+      if (!currentProjectId || !currentUserId) return; // Prevent making the request if data is missing
+      // console.log("🚀 ~ fetchUnseenMessageCount ~ currentProjectId:", currentProjectId)
       // console.log("🚀 ~ fetchUnseenMessageCount ~ userData?._id:", userData?._id)
     
-      fetch(`http://localhost:5000/unseenMessageCount/${projectData?._id}/${userData?._id}`)
+      fetch(`http://localhost:5000/unseenMessageCount/${currentProjectId}/${currentUserId}`)
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           setUnseenCount(data.unseenCount);
         })
         .catch((error) => {
