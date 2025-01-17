@@ -6,7 +6,6 @@ import projectSlice from "./features/projectSlice";
 import tasksApi from "./api/tasksApi";
 import userApi from "./api/userApi";
 import projectsApi from "./api/projectsApi";
-import chatSlice from "./features/chatSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,7 +16,6 @@ const store = configureStore({
     tasksSlice: tasksSlice,
     userSlice: userSlice,
     projectSlice: projectSlice,
-    chatSlice: chatSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

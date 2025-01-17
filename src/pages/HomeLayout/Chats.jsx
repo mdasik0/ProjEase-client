@@ -13,8 +13,6 @@ const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
   const { userData } = useSelector((state) => state.userSlice);
 
-  
-
   useEffect(() => {
     const user = userData
       ? {
@@ -57,9 +55,10 @@ const Chats = () => {
     };
   }, [projectData?.ChatId, userData]);
 
-  const membersIDs = projectData?.members?.map((m) => m.userId) || [];
-  const { data: members } = useGetMultiUserQuery(membersIDs.length ? membersIDs : null);
-
+  const membersIDs = projectData?.members?.map((m) => m.userId);
+  const { data: members } = useGetMultiUserQuery(membersIDs, {
+    skip : !membersIDs
+  });
   const openChatSettingModal = () => {};
 
   if (!projectData) {

@@ -2,13 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import ProjectAction from "../components/ProjectLayout/ProjectAction";
 import Project_sidebar from "../components/Shared/Project_sidebar";
 import { Outlet } from "react-router-dom";
-import { useGetChatGroupQuery, useGetProjectQuery } from "../redux/api/projectsApi";
+import { useGetProjectQuery } from "../redux/api/projectsApi";
 import { useEffect, useMemo } from "react";
 import { storeActiveProject } from "../redux/features/projectSlice";
 import { updateTaskInit } from "../redux/features/tasksSlice";
 import { useGetTasksInitQuery } from "../redux/api/tasksApi";
 import RedirectHome from "../components/Shared/RedirectHome";
-import { setChatInfo } from "../redux/features/chatSlice";
 
 const ProjectLayout = () => {
   const { userData, isLoading } = useSelector((state) => state.userSlice);
@@ -22,10 +21,6 @@ const ProjectLayout = () => {
 
   const { data: projectData } = useGetProjectQuery(activeProjectId, {
     skip: !activeProjectId,
-  });
-
-  const { data: chatgroupData } = useGetChatGroupQuery(projectData?._id, {
-    skip: !projectData?._id,
   });
 
   const _id = projectData?.taskId;
@@ -42,17 +37,6 @@ const ProjectLayout = () => {
       dispatch(updateTaskInit(getTaskInit));
     }
   }, [getTaskInit,dispatch]);
-
-  // useEffect(() => {
-  //   console.log("Project Data:", projectData);
-  // }, [projectData]);
-
-  useEffect(() => {
-    // console.log("Chat Group Data:", chatgroupData);
-    if(chatgroupData) {
-      dispatch(setChatInfo(chatgroupData))
-    }
-  }, [chatgroupData,dispatch]);
 
   if (isLoading) {
     return (
