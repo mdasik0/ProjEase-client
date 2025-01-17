@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import ChatsHeader from "../../components/ProjectLayout/Chats/ChatsHeader";
@@ -54,8 +54,12 @@ const Chats = () => {
       socket.off("error");
     };
   }, [projectData?.ChatId, userData]);
+  
+  const membersIDs = useMemo(() => {
+      return projectData?.members?.map((m) => m.userId);
+    }, [projectData]);
 
-  const membersIDs = projectData?.members?.map((m) => m.userId);
+ 
   const { data: members } = useGetMultiUserQuery(membersIDs, {
     skip : !membersIDs
   });

@@ -1,7 +1,7 @@
 import { TiPlus } from "react-icons/ti";
 import { useForm } from "react-hook-form";
 import Modal from "../../Shared/Modal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
 import { time, fullDate } from "../../../utils/getDate";
@@ -16,8 +16,7 @@ const AddTask = () => {
   //form
   const { register, handleSubmit, reset } = useForm();
   //task creator //TODO:: DATA REMOVED
-  const [createTask, { isLoading, isError, error }] =
-    useCreateTaskMutation();
+  const [createTask, { isLoading, isError, error }] = useCreateTaskMutation();
   // using taskinitial id to store it in all tasks
   const { tasksInitial } = useSelector((state) => state.tasksSlice);
 
@@ -31,9 +30,12 @@ const AddTask = () => {
   // setting up all members for input assignedTo
   const { projectData } = useSelector((state) => state.projectSlice);
 
-  const membersIDs = projectData?.members?.map((m) => m.userId);
+  const membersIDs = useMemo(() => {
+    return projectData?.members?.map((m) => m.userId);
+  }, [projectData]);
+  
   const { data: allMembers } = useGetMultiUserQuery(membersIDs, {
-    skip : !membersIDs
+    skip: !membersIDs,
   });
   const dispatch = useDispatch();
 
@@ -99,9 +101,8 @@ const AddTask = () => {
       if (taskCreationResponse.success === true) {
         toast.success(taskCreationResponse.message);
         resetForm();
-
       } else {
-        toast.error(error?.message)
+        toast.error(error?.message);
       }
     } catch (error) {
       console.error("Task creation error:", error);
