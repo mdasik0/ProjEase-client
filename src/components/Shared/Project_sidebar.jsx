@@ -8,48 +8,46 @@ import logo from '/logo/Full-logo/logo-white-ov2.png'
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FiUserPlus } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const Project_sidebar = memo(() => {
+const Project_sidebar = () => {
   const [unseenCount, setUnseenCount] = useState(null)
   const location = useLocation();
   const {projectData} = useSelector(state => state.projectSlice)
   const {userData} = useSelector(state => state.userSlice)
 
   const currentRoute = location.pathname.split("/")[2];
-  const fetchUnseenMessageCount = () => {
-    if (!projectData?._id || !userData) return; // Prevent making the request if data is missing
-    console.log("🚀 ~ fetchUnseenMessageCount ~ projectData?._id:", projectData?._id)
-    console.log("🚀 ~ fetchUnseenMessageCount ~ userData?._id:", userData?._id)
   
-    fetch(`http://localhost:5000/unseenMessageCount/${projectData?._id}/${userData?._id}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setUnseenCount(data.unseenCount);
-      })
-      .catch((error) => {
-        console.error("Error fetching unseen message count:", error);
-      });
-  };
   
-
   useEffect(() => {
+    const fetchUnseenMessageCount = () => {
+      if (!projectData?._id || !userData?._id) return; // Prevent making the request if data is missing
+      // console.log("🚀 ~ fetchUnseenMessageCount ~ projectData?._id:", projectData?._id)
+      // console.log("🚀 ~ fetchUnseenMessageCount ~ userData?._id:", userData?._id)
+    
+      fetch(`http://localhost:5000/unseenMessageCount/${projectData?._id}/${userData?._id}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setUnseenCount(data.unseenCount);
+        })
+        .catch((error) => {
+          console.error("Error fetching unseen message count:", error);
+        });
+    };
     const handlePageFocus = () => {
       fetchUnseenMessageCount();
     };
   
     const sidebar = document.getElementById("project-sidebar");
   
-    // Add the tabIndex to allow the div to receive focus
-    sidebar.setAttribute("tabIndex", 0); // This makes the div focusable
-  
-    sidebar.addEventListener("focus", handlePageFocus);
+
+    sidebar.addEventListener("click", handlePageFocus);
   
     return () => {
-      sidebar.removeEventListener("focus", handlePageFocus);
+      sidebar.removeEventListener("click", handlePageFocus);
     };
-  }, []);
+  }, [projectData?._id, userData?._id]);
   
   
 
@@ -193,8 +191,6 @@ const Project_sidebar = memo(() => {
       </div>
     </div>
   );
-});
-
-Project_sidebar.displayName = "ProjectSidebar";
+};
 
 export default Project_sidebar;
