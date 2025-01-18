@@ -12,7 +12,7 @@ const socket = io("http://localhost:5000");
 const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
   const { userData } = useSelector((state) => state.userSlice);
-
+  
   useEffect(() => {
     const user = userData
       ? {
@@ -24,7 +24,7 @@ const Chats = () => {
       : null;
 
     if (user) {
-      socket.emit("register", user);
+      socket.emit("register",user);
     }
 
     if (projectData?.ChatId) {
@@ -53,7 +53,7 @@ const Chats = () => {
       socket.off("userLeftGroup");
       socket.off("error");
     };
-  }, [projectData?.ChatId, userData]);
+  }, [projectData?.ChatId, userData, projectData?.members]);
 
   const membersIDs = useMemo(() => {
       return projectData?.members?.map((m) => m.userId);

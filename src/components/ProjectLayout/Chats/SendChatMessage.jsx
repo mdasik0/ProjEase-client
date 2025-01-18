@@ -9,7 +9,7 @@ const SendChatMessage = ({ groupChatId, socket, senderId }) => {
   const {projectData} = useSelector(state => state.projectSlice);
   
   const handleSendGroupMessage = () => {
-    if (message && groupChatId && senderId && projectData.members) {
+    if (message && groupChatId && senderId && projectData?.members) {
       const messageObject = {
         messageText: message,
         sender: senderId,
@@ -20,7 +20,7 @@ const SendChatMessage = ({ groupChatId, socket, senderId }) => {
         replyTo: '',
          
       }
-      socket.emit("groupMessage", { groupId: groupChatId, message: messageObject, members: projectData.members });
+      socket.emit("groupMessage", { groupId: groupChatId, message: messageObject, members: projectData?.members });
       return setMessage("");
     }
     return toast.error("Refresh the page and try again.");
