@@ -40,7 +40,7 @@ const Project_sidebar = () => {
     const handlePageFocus = () => {
       fetchUnseenMessageCount();
     };
-  
+
     const sidebar = document.getElementById("project-sidebar");
   
 
@@ -49,7 +49,9 @@ const Project_sidebar = () => {
     return () => {
       sidebar.removeEventListener("click", handlePageFocus);
     };
-  }, [projectData?._id, userData?._id]);
+  }, [currentProjectId, currentUserId])
+
+
   
   
 

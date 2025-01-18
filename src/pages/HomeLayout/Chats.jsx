@@ -54,7 +54,7 @@ const Chats = () => {
       socket.off("error");
     };
   }, [projectData?.ChatId, userData]);
-  
+
   const membersIDs = useMemo(() => {
       return projectData?.members?.map((m) => m.userId);
     }, [projectData]);
@@ -64,11 +64,7 @@ const Chats = () => {
     skip : !membersIDs
   });
   const openChatSettingModal = () => {};
-
-  if (!projectData) {
-    return <div className="w-screen h-screen flex flex-col">Loading project details...</div>;
-  }
-
+  
   return (
     <div className="w-screen h-screen flex flex-col">
       <ChatsHeader
