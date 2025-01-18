@@ -77,11 +77,7 @@ const Chats = () => {
         userId={userData?._id}
         groupId={projectData?.ChatId}
       />
-      <SendChatMessage
-        groupChatId={projectData?.ChatId}
-        senderId={userData?._id}
-        socket={socket}
-      />
+      
     </div>
   );
 };

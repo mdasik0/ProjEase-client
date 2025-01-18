@@ -3,6 +3,7 @@ import MyChatCard from "./MyChatCard";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import toast from "react-hot-toast";
+import SendChatMessage from "./SendChatMessage";
 const ChatBox = ({ socket, userId, groupId }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,11 @@ const ChatBox = ({ socket, userId, groupId }) => {
           )
         )
       )}
+      <SendChatMessage
+        groupId={groupId}
+        senderId={userId}
+        socket={socket}
+      />
     </div>
   );
 };
