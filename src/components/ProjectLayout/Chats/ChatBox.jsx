@@ -1,12 +1,13 @@
 import OthersChatCard from "./OthersChatCard";
 import MyChatCard from "./MyChatCard";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import toast from "react-hot-toast";
-import SendChatMessage from "./SendChatMessage";
-const ChatBox = ({ socket, userId, groupId }) => {
+
+const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const chatBoxRef = useRef(null); // Ref for the chat container
 
   useEffect(() => {
     setLoading(true);
@@ -14,6 +15,7 @@ const ChatBox = ({ socket, userId, groupId }) => {
       fetch(`http://localhost:5000/messages/${groupId}`)
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           setLoading(false);
           setMessages(data);
         })
@@ -22,12 +24,15 @@ const ChatBox = ({ socket, userId, groupId }) => {
           toast.error(err.message);
         });
     }
+
     socket.on("groupMessageReceived", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
     });
+
     socket.on("error", (data) => {
       toast.error(data.message);
     });
+
     return () => {
       socket.off("groupMessageReceived");
       socket.off("error");
@@ -35,45 +40,42 @@ const ChatBox = ({ socket, userId, groupId }) => {
     };
   }, [groupId, socket]);
 
-  const messageInputRef = useRef();
-
-  const [replyDetails, setReplyDetails] = useState({
-    originalMessage: "", 
-    originalSender: "",  
-  });
-  
-
-  const handleSendReply = (message,sender) => {
-    console.log("open send message input",message)
-    setReplyDetails({originalMessage: message, originalSender: sender})
-    messageInputRef.current.focus();
-  };
-
-  const cancelReply = () => {
-    setReplyDetails({originalMessage: "", originalSender: ""})
-  }
+  // Scroll to the bottom whenever messages update
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
-    <div className="flex-grow scrollbar ms-8 me-4 pr-3 overflow-y-scroll overflow-x-hidden flex flex-col gap-2 justify-end">
-      {loading ? (
-        <div className=" h-full flex justify-center items-center">
-          <span className="loading loading-bars loading-lg"></span>
-        </div>
-      ) : (
-        messages.map((message, index) =>
-          message.sender?.userId === userId ? (
-            <MyChatCard reply={handleSendReply} key={index} message={message} />
-          ) : (
-            <OthersChatCard
-              reply={handleSendReply}
-              key={index}
-              message={message}
-              image={message?.sender?.image}
-            />
+    <div
+      ref={chatBoxRef}
+      className="flex-grow ms-8 me-4 pr-3 overflow-y-scroll scrollbar overflow-x-hidden"
+    >
+      <div className="flex flex-col justify-end gap-2 h-full">
+        {loading ? (
+          <div className="h-full flex justify-center items-center">
+            <span className="loading loading-bars loading-lg"></span>
+          </div>
+        ) : (
+          messages.map((message, index) =>
+            message.sender?.userId === userId ? (
+              <MyChatCard
+                reply={handleSendReply}
+                key={index}
+                message={message}
+              />
+            ) : (
+              <OthersChatCard
+                reply={handleSendReply}
+                key={index}
+                message={message}
+                image={message?.sender?.image}
+              />
+            )
           )
-        )
-      )}
-      <SendChatMessage replyDetails={replyDetails} messageInputRef={messageInputRef} groupId={groupId} senderId={userId} socket={socket} cancelReply={cancelReply} />
+        )}
+      </div>
     </div>
   );
 };

@@ -4,10 +4,23 @@ import { MdOutlineReply } from "react-icons/md";
 const OthersChatCard = ({ message,image,reply }) => {
   // console.log(message);
   const messageText = message?.msgObj?.messageText;
-  const sender = message?.sender?.userName;
+  const sender = [message?.sender?.userName, message?.sender?.userId];
   return (
     <div className="w-full group">
       <div className="chat-card-container block max-w-[50%] min-w-[10%] group ">
+         {/* reply */}
+         {message?.msgObj?.reply?.originalMessage && (
+          <p className="text-[13px] text-black me-1 flex items-center gap-1 ">
+            <MdOutlineReply /> {message?.sender?.userName} replied to {message?.msgObj?.reply?.originalSender[0]}
+          </p>
+        )}
+        {message?.msgObj?.reply?.originalMessage && (
+          <div className="w-fit py-2 text-start px-3 pe-6 rounded-xl bg-blue-200 -mb-5">
+            <p className="replyText text-sm text-gray-700">{message?.msgObj?.reply?.originalMessage}</p>
+            <div className="p-3"></div>
+          </div>
+        )}
+        {/* reply */}
       <div className="w-fit flex items-center gap-3">
         <div className="avatar">
           <div className="user-avatar w-8 h-8 rounded-full bg-blue-500">

@@ -8,12 +8,14 @@ import { IoDocumentAttachOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 
 const SendChatMessage = ({
+  setReplyDetails,
   groupId,
+  currentUserId,
   socket,
   senderId,
   messageInputRef,
   replyDetails,
-  cancelReply
+  cancelReply,
 }) => {
   const [message, setMessage] = useState("");
   const { projectData } = useSelector((state) => state.projectSlice);
@@ -55,25 +57,34 @@ const SendChatMessage = ({
         message: messageObject,
         members: projectData?.members,
       });
+      setReplyDetails({
+        originalMessage: "",
+        originalSender: [],
+      })
       return setMessage("");
     }
     return toast.error("Refresh the page and try again.");
   };
 
   return (
-    <div className=" my-6 flex flex-col items-end gap-3 justify-end ">
-{
-  replyDetails.originalSender &&       <div className="reply-section bg-gray-100 px-2 py-1 w-full border-t flex items-center justify-between">
-  <div>
-  <h4 className="font-[500] text-black mb-1.5">Replying to {replyDetails?.originalSender}</h4>
-  <p classNme="text-sm font-gray-600">{replyDetails?.originalMessage?.length > 50 ? replyDetails.originalMessage.slice(0,50) + "..." : replyDetails?.originalMessage }</p>
-  </div>
-  <div className="bg-gray-200 hover:bg-gray-300 duration-500 cursor-pointer active:scale-75 p-1 rounded-full">
-  
-  <RxCross2 className="text-lg" onClick={cancelReply} />
-  </div>
+    <div className=" mx-8 my-6 flex flex-col items-end gap-3 justify-end ">
+      {replyDetails.originalMessage && (
+        <div className="reply-section bg-gray-100 px-2 py-1 w-full border-t flex items-center justify-between">
+          <div>
+            <h4 className="font-[500] text-black mb-1.5">
+              Replying to {replyDetails?.originalSender[1] === currentUserId ? "yourself" : replyDetails?.originalSender[0]}
+            </h4>
+            <p classNme="text-sm font-gray-600">
+              {replyDetails?.originalMessage?.length > 50
+                ? replyDetails.originalMessage.slice(0, 50) + "..."
+                : replyDetails?.originalMessage}
+            </p>
+          </div>
+          <div className="bg-gray-200 hover:bg-gray-300 duration-500 cursor-pointer active:scale-75 p-1 rounded-full">
+            <RxCross2 className="text-lg" onClick={cancelReply} />
+          </div>
         </div>
-}
+      )}
       <div className="flex items-center gap-3  w-full">
         <button
           className="bg-gray-200 hover:bg-gray-400 duration-300 p-3 rounded-full tooltip tooltip-right"

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import ChatsHeader from "../../components/ProjectLayout/Chats/ChatsHeader";
@@ -12,11 +12,21 @@ const socket = io("http://localhost:5000");
 const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
   const { userData } = useSelector((state) => state.userSlice);
-  
+  const [replyDetails, setReplyDetails] = useState({
+    originalMessage: "",
+    originalSender: [],
+  });
+
+  const userId=  userData?._id;
+
+  const messageInputRef = useRef();
+
   useEffect(() => {
     const user = userData
       ? {
-          userName: `${userData.name?.firstname || ""} ${userData.name?.lastname || ""}`.trim(),
+          userName: `${userData.name?.firstname || ""} ${
+            userData.name?.lastname || ""
+          }`.trim(),
           userId: userData?._id,
           image: userData?.image || null,
           jobTitle: userData?.jobTitle || null,
@@ -24,7 +34,7 @@ const Chats = () => {
       : null;
 
     if (user) {
-      socket.emit("register",user);
+      socket.emit("register", user);
     }
 
     if (projectData?.ChatId) {
@@ -36,7 +46,7 @@ const Chats = () => {
         ? toast.success(`Welcome, ${data.userName || "User"}!`)
         : toast.error(data.message);
     });
-    
+
     socket.on("groupJoinResponse", (data) => {
       toast.success(`Joined the group "${data.groupId}" successfully.`);
     });
@@ -45,9 +55,10 @@ const Chats = () => {
       toast.error(data.message || "An unexpected error occurred.");
     });
 
-    socket.on("User-disconnected",data => {console.log(data)})
+    socket.on("User-disconnected", (data) => {
+      console.log(data);
+    });
     return () => {
-
       socket.off("registerResponse");
       socket.off("groupJoinResponse");
       socket.off("userLeftGroup");
@@ -56,15 +67,27 @@ const Chats = () => {
   }, [projectData?.ChatId, userData, projectData?.members]);
 
   const membersIDs = useMemo(() => {
-      return projectData?.members?.map((m) => m.userId);
-    }, [projectData]);
+    return projectData?.members?.map((m) => m.userId);
+  }, [projectData]);
 
- 
   const { data: members } = useGetMultiUserQuery(membersIDs, {
-    skip : !membersIDs
+    skip: !membersIDs,
   });
-  const openChatSettingModal = () => {};
-  
+
+  const handleSendReply = (message, sender) => {
+    console.log("open send message input", message);
+    setReplyDetails({ originalMessage: message, originalSender: sender });
+    messageInputRef.current.focus();
+  };
+
+  const cancelReply = () => {
+    setReplyDetails({ originalMessage: "", originalSender: [] });
+  };
+
+  const openChatSettingModal = () => {
+    
+  }
+
   return (
     <div className="w-screen h-screen flex flex-col">
       <ChatsHeader
@@ -73,11 +96,21 @@ const Chats = () => {
         members={members}
       />
       <ChatBox
+        handleSendReply={handleSendReply}
         socket={socket}
         userId={userData?._id}
         groupId={projectData?.ChatId}
+        />
+      <SendChatMessage
+        setReplyDetails={setReplyDetails}
+      currentUserId={userId}
+        replyDetails={replyDetails}
+        messageInputRef={messageInputRef}
+        groupId={projectData?.ChatId}
+        senderId={userData?._id}
+        socket={socket}
+        cancelReply={cancelReply}
       />
-      
     </div>
   );
 };
