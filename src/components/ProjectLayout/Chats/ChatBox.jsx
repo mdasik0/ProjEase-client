@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
   const [messages, setMessages] = useState([]);
+  console.log("🚀 ~ ChatBox ~ messages:", messages)
   const [loading, setLoading] = useState(false);
   const chatBoxRef = useRef(null); // Ref for the chat container
 
@@ -15,7 +16,6 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
       fetch(`http://localhost:5000/messages/${groupId}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setLoading(false);
           setMessages(data);
         })
@@ -62,6 +62,8 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
             message.sender?.userId === userId ? (
               <MyChatCard
                 reply={handleSendReply}
+                setMessages={setMessages}
+                messages={messages}
                 key={index}
                 message={message}
               />
@@ -88,6 +90,7 @@ ChatBox.propTypes = {
   }).isRequired,
   userId: PropTypes.string.isRequired,
   groupId: PropTypes.string,
+  handleSendReply: PropTypes.func,
 };
 
 export default ChatBox;
