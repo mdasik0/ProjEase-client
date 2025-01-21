@@ -62,6 +62,7 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
             message.sender?.userId === userId ? (
               <MyChatCard
                 reply={handleSendReply}
+                socket={socket}
                 setMessages={setMessages}
                 messages={messages}
                 key={index}
