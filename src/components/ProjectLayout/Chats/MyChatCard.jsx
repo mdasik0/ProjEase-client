@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdDelete, MdOutlineReply } from "react-icons/md";
 import Modal from "../../Shared/Modal";
-import toast from "react-hot-toast";
 
 const MyChatCard = ({ message, reply, setMessages, messages, socket}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,15 +20,8 @@ const MyChatCard = ({ message, reply, setMessages, messages, socket}) => {
     setIsOpen(false);
   }
 
-  useEffect(()=>{
-    socket.on('deleteMessageResponse',(data) => {
-      if(data.success) {
-        toast.success(data.message)
-      } else {
-        toast.error(data.message)
-      }
-    })
-  },[socket])
+ 
+  
   return (
     <div className="flex flex-row-reverse items-end group w-full">
       <div className="chat-card-container flex flex-col items-end justify-end max-w-[50%] min-w-[10%] relative">

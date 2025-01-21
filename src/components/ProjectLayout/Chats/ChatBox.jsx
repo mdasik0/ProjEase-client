@@ -47,12 +47,28 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
     }
   }, [messages]);
 
+   useEffect(() => {
+      const handleDeleteMessageResponse = (data) => {
+        if (data.success) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
+      };
+    
+      socket.on('deleteMessageResponse', handleDeleteMessageResponse);
+    
+      return () => {
+        socket.off('deleteMessageResponse', handleDeleteMessageResponse);
+      };
+    }, [socket]);
+
   return (
     <div
       ref={chatBoxRef}
       className="flex-grow ms-8 me-4 pr-3 overflow-y-scroll scrollbar overflow-x-hidden"
     >
-      <div className="flex flex-col justify-end gap-2 h-full">
+      <div className="flex flex-col justify-end gap-2 bg-green-400">
         {loading ? (
           <div className="h-full flex justify-center items-center">
             <span className="loading loading-bars loading-lg"></span>
