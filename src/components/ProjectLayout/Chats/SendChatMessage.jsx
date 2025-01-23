@@ -18,7 +18,7 @@ const SendChatMessage = ({
   cancelReply,
 }) => {
   const [message, setMessage] = useState("");
-  const [selectFile, setSelectFile] = useState({rawFile: "", previewUrl:"", uploadedUrl:""})
+  // const [selectFile, setSelectFile] = useState({rawFile: "", previewUrl:"", uploadedUrl:""})
   const { projectData } = useSelector((state) => state.projectSlice);
   const enterButtonRef = useRef();
 

@@ -8,7 +8,7 @@ const Features = () => {
             <p className="font-[500] mb-8 text-gray-500">Features</p>
             <h1 className="text-5xl font-semibold">Powerful Features to Elevate Your Workflow</h1>
             <p className="text-sm w-1/2 mt-8 text-center">Explore advance tools that helps you make smarter decisions, track progress and manage your tasks with ease. Stay organized and in control with Features designed to enhance your Productivity.</p>
-            <div className="feature-cards-container grid grid-cols-4 gap-10 mt-14 mb-20">
+            <div className="feature-cards-container grid grid-cols-4 gap-10 mt-14 mb-10">
                 <div className="card-1 w-80 h-60  p-6 rounded-xl border hover:border-red-300 hover:bg-red-100 cursor-pointer duration-500">
                     <div className="icon bg-gray-100 w-14 h-14 rounded-lg">
                         <img src={lightbulbIcon} alt="make smart decisions icon" className="h-full w-full object-contain" />
