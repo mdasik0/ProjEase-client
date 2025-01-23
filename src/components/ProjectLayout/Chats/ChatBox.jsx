@@ -68,7 +68,7 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
       ref={chatBoxRef}
       className="flex-grow ms-8 me-4 pr-3 overflow-y-scroll scrollbar overflow-x-hidden"
     >
-      <div className="flex flex-col justify-end gap-2 bg-green-400">
+      <div className="flex flex-col justify-end gap-2">
         {loading ? (
           <div className="h-full flex justify-center items-center">
             <span className="loading loading-bars loading-lg"></span>

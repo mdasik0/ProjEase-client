@@ -18,6 +18,7 @@ const SendChatMessage = ({
   cancelReply,
 }) => {
   const [message, setMessage] = useState("");
+  const [selectFile, setSelectFile] = useState({rawFile: "", previewUrl:"", uploadedUrl:""})
   const { projectData } = useSelector((state) => state.projectSlice);
   const enterButtonRef = useRef();
 
@@ -74,7 +75,7 @@ const SendChatMessage = ({
             <h4 className="font-[500] text-black mb-1.5">
               Replying to {replyDetails?.originalSender[1] === currentUserId ? "yourself" : replyDetails?.originalSender[0]}
             </h4>
-            <p classNme="text-sm font-gray-600">
+            <p className="text-sm font-gray-600">
               {replyDetails?.originalMessage?.length > 50
                 ? replyDetails.originalMessage.slice(0, 50) + "..."
                 : replyDetails?.originalMessage}
@@ -86,12 +87,14 @@ const SendChatMessage = ({
         </div>
       )}
       <div className="flex items-center gap-3  w-full">
+        {/* document selection */}
         <button
           className="bg-gray-200 hover:bg-gray-400 duration-300 p-3 rounded-full tooltip tooltip-right"
           data-tip="Select Document"
         >
           <IoDocumentAttachOutline className="text-2xl" />
         </button>
+        {/* image selection */}
         <button
           className="bg-gray-200 hover:bg-gray-400 duration-300 p-3 rounded-full tooltip tooltip-top"
           data-tip="Select Image"
@@ -127,6 +130,13 @@ SendChatMessage.propTypes = {
     on: PropTypes.func,
     off: PropTypes.func,
   }).isRequired,
+  cancelReply: PropTypes.func,
+  messageInputRef: PropTypes.func,
+  setReplyDetails: PropTypes.func,
+  currentUserId: PropTypes.string,
+  replyDetails: PropTypes.func,
+
+
 };
 
 export default SendChatMessage;
