@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 const FeatureCard = ({title,subTitle,children}) => {
   return (
-    <div className="feature-card w-80 h-60  p-6 rounded-xl border hover:border-red-300 hover:bg-red-100 hover:scale-105 cursor-pointer duration-500">
+    <div className="feature-card w-80 h-60  p-6 rounded-xl border hover:border-red-300 hover:bg-red-100 hover:scale-105 cursor-pointer duration-300">
       <div className="icon bg-gray-100 w-14 h-14 rounded-lg">
         {children}
       </div>
