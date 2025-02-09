@@ -10,7 +10,7 @@ const ReasonsCard = ({
         <div className="no text-6xl ml-4">{index}</div>
         <div className="w-[2px] h-[70px] bg-gray-500 "></div>
 
-        <div className="title  h-full flex-grow -500 flex justify-between items-center">
+        <div className="title w-fit h-full flex-grow -500 flex justify-between items-center">
           {children}
           <div className="w-[2px] h-[70px] bg-gray-500 mx-4"></div>
           <div className="description">{description}</div>
