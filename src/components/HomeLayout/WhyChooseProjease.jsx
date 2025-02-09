@@ -87,39 +87,7 @@ const WhyChooseProjease = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="back">
-              <p>
-                All the project management tools you need in one application, so
-                you can stay focused without switching between multiple
-                platforms.
-              </p>
-            </div> */}
           </div>
-
-          {/* <div className="flex items-start gap-1 mb-3">
-            <span>⚡</span>
-            <p>
-              Stay connected with your team through instant updates, live edits,
-              and real-time notifications. Work together seamlessly without
-              delays or miscommunication.
-            </p>
-          </div>
-          <div className="flex items-start gap-1 mb-3">
-            <span>✅</span>
-            <p>
-              Create, assign, and update tasks with ease. Stay on top of
-              deadlines with clear progress tracking and automated reminders to
-              keep your projects moving forward.
-            </p>
-          </div>
-          <div className="flex items-start gap-1">
-            <span>🔒</span>
-            <p>
-              Communicate with confidence using end-to-end encrypted messaging
-              and crystal-clear video calls. Keep your team connected while
-              ensuring privacy and security at all times.
-            </p>
-          </div> */}
         </div>
       </div>
     </section>
