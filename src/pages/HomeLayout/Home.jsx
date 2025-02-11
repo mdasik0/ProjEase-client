@@ -3,7 +3,8 @@ import Features from "../../components/HomeLayout/Homepage/Features";
 import Footer from "../../components/HomeLayout/Homepage/Footer/Footer";
 import Header from "../../components/HomeLayout/Homepage/Header";
 import Navbar from "../../components/HomeLayout/Homepage/Navbar/Navbar";
-import WhyChooseProjease from "../../components/HomeLayout/WhyChooseProjease";
+import Testimonials from "../../components/HomeLayout/Homepage/Testimonials";
+import WhyChooseProjease from "../../components/HomeLayout/Homepage/WhyChooseProjease";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Companies />
       <WhyChooseProjease />
       <Features />
+      <Testimonials />
       <Footer />
     </>
   );

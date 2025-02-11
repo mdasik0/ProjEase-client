@@ -1,5 +1,5 @@
-import WhyChooseProjeaseImg from "../../../public/why-choose-us/projease-why-choose-us-image.png";
-import ReasonsCard from "./Homepage/ReasonsCard";
+import WhyChooseProjeaseImg from "/why-choose-us/projease-why-choose-us-image.png";
+import ReasonsCard from "./ReasonsCard";
 const WhyChooseProjease = () => {
   return (
     <section className="max-w-[90vw] mx-auto my-24 flex justify-between items-center pl-20">
