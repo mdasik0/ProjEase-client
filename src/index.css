@@ -262,7 +262,7 @@ input[type="number"] {
   backdrop-filter: blur(5px);
   height: 100vh;
   width: 100vw;
-  position:absolute;
+  position: absolute;
   top: 0;
   left: 0;
 }
@@ -271,12 +271,7 @@ input[type="number"] {
 .slider {
   height: var(--height);
   overflow: hidden;
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 10% 90%,
-    transparent
-  );
+  mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
 }
 
 .slider .list {
@@ -294,7 +289,7 @@ input[type="number"] {
   cursor: pointer;
   transition: filter 0.3s;
   animation: autorun 10s linear infinite;
-  animation-delay: calc((10s / var(--quantity))* (var(--position) - 1 ));
+  animation-delay: calc((10s / var(--quantity)) * (var(--position) - 1));
 }
 .slider .list .item img {
   width: 100%;
@@ -307,12 +302,12 @@ input[type="number"] {
     left: 100%;
   }
   to {
-    left : calc(var(--width) * -1)
+    left: calc(var(--width) * -1);
   }
 }
 
 .slider:hover .item {
-  animation-play-state: paused!important;
+  animation-play-state: paused !important;
   filter: grayscale(1);
 }
 
@@ -326,7 +321,12 @@ input[type="number"] {
 
 /* newsletter bg img */
 .newsletter {
-  background-image: linear-gradient(60deg, rgba(0, 0, 0, 0.692), rgba(0, 0, 0, 0.692)), url('https://i.ibb.co/zGn4wrL/alejandro-escamilla-N7-Xod-Rrbz-S0.jpg');
+  background-image: linear-gradient(
+      60deg,
+      rgba(0, 0, 0, 0.692),
+      rgba(0, 0, 0, 0.692)
+    ),
+    url("https://i.ibb.co/zGn4wrL/alejandro-escamilla-N7-Xod-Rrbz-S0.jpg");
 }
 
 .show-password-anim {
@@ -379,15 +379,25 @@ input[type="number"] {
 }
 
 /* Apply delays to each span to create the sequential effect */
-.project-ps-title .text-1 { animation-delay: 0s; }
-.project-ps-title .text-2 { animation-delay: 0.5s; }
-.project-ps-title .text-3 { animation-delay: 1s; }
-.project-ps-title .text-4 { animation-delay: 1.5s; }
-.project-ps-title .text-5 { animation-delay: 2s; }
+.project-ps-title .text-1 {
+  animation-delay: 0s;
+}
+.project-ps-title .text-2 {
+  animation-delay: 0.5s;
+}
+.project-ps-title .text-3 {
+  animation-delay: 1s;
+}
+.project-ps-title .text-4 {
+  animation-delay: 1.5s;
+}
+.project-ps-title .text-5 {
+  animation-delay: 2s;
+}
 
 .bg-disappear {
   opacity: 0;
-  transition: opacity 2s ease-out; 
+  transition: opacity 2s ease-out;
 }
 
 .disappear {
@@ -396,15 +406,13 @@ input[type="number"] {
 
 .help_T_pri_proj {
   opacity: 0;
-  transition: opacity 0.5s ease; 
+  transition: opacity 0.5s ease;
 }
 
 .pri_proj_icon:hover .help_T_pri_proj {
   opacity: 1;
-  pointer-events: auto; 
+  pointer-events: auto;
 }
-
-
 
 @keyframes fadeOutUp {
   0% {
@@ -419,7 +427,7 @@ input[type="number"] {
 
 .task-details-backdrop {
   background-color: rgba(0, 0, 0, 0.349);
-  backdrop-filter: blur(3px );
+  backdrop-filter: blur(3px);
   z-index: 1;
 }
 
@@ -442,13 +450,11 @@ input[type="number"] {
 
 .members-container {
   --avatar-size: 40px;
-  --column-size: calc(var(--avatar-size)/2);
+  --column-size: calc(var(--avatar-size) / 2);
   display: grid;
   grid-template-columns: repeat(10, var(--column-size));
-
 }
 
-
-
-
-
+.arrow-shadow-test {
+  box-shadow: -6px 6px 6px rgba(0,0,0,0.2);
+}
