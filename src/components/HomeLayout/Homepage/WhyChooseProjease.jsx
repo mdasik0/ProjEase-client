@@ -2,11 +2,11 @@ import WhyChooseProjeaseImg from "/why-choose-us/projease-why-choose-us-image.pn
 import ReasonsCard from "./ReasonsCard";
 const WhyChooseProjease = () => {
   return (
-    <section className="max-w-[90vw] mx-auto my-24 flex justify-between items-center pl-20">
-      <div className="WCP-img-sec flex flex-col items-start w-1/2">
+    <section className="max-w-[90vw] mx-auto md:my-24 my-10 flex flex-col md:flex-row justify-between items-center md:pl-20">
+      <div className="WCP-img-sec flex flex-col items-start md:w-1/2 w-full">
         <img className="scale-110" src={WhyChooseProjeaseImg} alt="" />
       </div>
-      <div className="WCP-main-sec w-1/2">
+      <div className="WCP-main-sec md:w-1/2 w-full md:pt-0 pt-8 ">
         <h1 className="text-5xl font-[500]">Why Choose Projease?</h1>
         <p className="wcp-main-sec-title text-sm text-gray-500 w-full my-6">
           Choosing the right project management tool is crucial for team
