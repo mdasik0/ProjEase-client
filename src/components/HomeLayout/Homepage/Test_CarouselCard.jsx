@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 const Test_CarouselCard = ({
   ratingValue,
-  index,
   imgIndex,
   userName,
   position = "user",
@@ -65,6 +64,7 @@ Test_CarouselCard.propTypes = {
   position: PropTypes.string,
   comment: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  imgIndex: PropTypes.number.isRequired,
 };
 
 export default Test_CarouselCard;

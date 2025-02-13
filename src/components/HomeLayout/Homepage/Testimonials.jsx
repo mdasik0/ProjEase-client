@@ -1,13 +1,10 @@
 import { useState } from "react";
 import Test_CarouselCard from "./Test_CarouselCard";
-import user1 from "/testimonials/user1.jpg";
 import { testimonials } from "../../Shared/resources";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const Testimonials = () => {
   const [imgIndex, setImgIndex] = useState(0);
-
-  console.log(testimonials)
 
   const showNextTest = () => {
     console.log(testimonials.length, imgIndex);
@@ -25,11 +22,6 @@ const Testimonials = () => {
       setImgIndex((prevIndex) => prevIndex - 1);
     }
   };
-
-  // testimonials on obj and must have a unique index
-  // usestate to manage the index +
-  // two buttons to toggle the slider
-  // extra: pagination buttons to toggle the slider.
 
   return (
     <div className="max-w-[90vw] mx-auto my-20">
