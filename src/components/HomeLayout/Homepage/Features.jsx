@@ -8,15 +8,15 @@ const Features = () => {
   return (
     <div className="max-w-[90vw] mx-auto my-10 flex flex-col items-center justify-center">
       <p className="font-[500] mb-8 text-gray-500">Features</p>
-      <h1 className="text-5xl font-semibold">
+      <h1 className="text-5xl font-semibold md:text-start text-center">
         Powerful Features to Elevate Your Workflow
       </h1>
-      <p className="text-sm w-1/2 mt-8 text-center">
+      <p className="text-sm w-full md:w-1/2 mt-8 text-center">
         Explore advance tools that helps you make smarter decisions, track
         progress and manage your tasks with ease. Stay organized and in control
         with Features designed to enhance your Productivity.
       </p>
-      <div className="feature-cards-container grid grid-cols-4 gap-10 mt-14 mb-10">
+      <div className="feature-cards-container grid md:grid-cols-4 grid-flow-cols-1 gap-10 mt-14 mb-10">
         <FeatureCard
           title={"Make Smart Decisions"}
           subTitle={

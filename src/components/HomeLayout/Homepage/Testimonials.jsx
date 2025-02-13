@@ -7,7 +7,6 @@ const Testimonials = () => {
   const [imgIndex, setImgIndex] = useState(0);
 
   const showNextTest = () => {
-    console.log(testimonials.length, imgIndex);
     if (imgIndex === testimonials.length - 1) {
       setImgIndex(0);
     } else {
@@ -24,7 +23,7 @@ const Testimonials = () => {
   };
 
   return (
-    <div className="max-w-[90vw] mx-auto my-20">
+    <div className="md:max-w-[90vw] w-full md:p-0 p-2 mx-auto md:my-20">
       <p className="text-gray-500 font-[500] text-center mb-6">Testimonials</p>
       <h1 className="text-center text-5xl font-[500]">
         What Our Users has to say about us?
