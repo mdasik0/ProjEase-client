@@ -6,7 +6,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const Testimonial_MobileSlider = ({showNextTest,showPrevTest,imgIndex}) => {
   return (
-    <div className="">
+    <div className="block sm:hidden">
       <div className="flex items-center w-full overflow-hidden">
       {testimonials.map(({ _id, ratingValue, userInfo, comment }) => {
                 return (
