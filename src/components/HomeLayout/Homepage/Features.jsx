@@ -6,7 +6,7 @@ import FeatureCard from "./FeatureCard";
 const Features = () => {
   
   return (
-    <div className="max-w-[90vw] mx-auto my-10 flex flex-col items-center justify-center">
+    <div className="max-w-[90vw] mx-auto md:my-10 flex flex-col items-center justify-center">
       <p className="font-[500] mb-8 text-gray-500">Features</p>
       <h1 className="text-5xl font-semibold md:text-start text-center">
         Powerful Features to Elevate Your Workflow
