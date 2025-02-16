@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { MdOutlineReply } from "react-icons/md";
 
-const OthersChatCard = ({ message, image, reply }) => {
+const OthersChatCard = ({ message, image, reply, index }) => {
   // console.log(message);
   const messageText = message?.msgObj?.messageText;
   const sender = [message?.sender?.userName, message?.sender?.userId];
@@ -41,7 +41,7 @@ const OthersChatCard = ({ message, image, reply }) => {
             <div className="replyandActions opacity-0 group-hover:opacity-100 duration-300">
               <button
                 onClick={() => reply(messageText, sender)}
-                className="bg-gray-200 p-2 rounded-full active:scale-95 hover:bg-gray-300 duration-300 tooltip absolute top-[50%] -translate-y-[50%] -right-[40px]"
+                className={`bg-gray-200 p-2 rounded-full active:scale-95 hover:bg-gray-300 duration-300 tooltip ${index === 0 ? 'tooltip-bottom' : 'tooltip-top'} absolute top-[50%] -translate-y-[50%] -right-[40px]`}
                 data-tip="reply"
               >
                 <MdOutlineReply />
@@ -70,6 +70,7 @@ OthersChatCard.propTypes = {
     }),
   }),
   image: PropTypes.string, 
+  index: PropTypes.number, 
   reply: PropTypes.func, 
 };
 

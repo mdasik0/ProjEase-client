@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MdDelete, MdOutlineReply } from "react-icons/md";
 import Modal from "../../Shared/Modal";
 
-const MyChatCard = ({ message, reply, setMessages, messages, socket}) => {
+const MyChatCard = ({ message, reply, setMessages, messages, socket, index}) => {
   const [isOpen, setIsOpen] = useState(false);
   const messageText = message?.msgObj?.messageText;
   const sender = [message?.sender?.userName, message?.sender?.userId];
@@ -48,7 +48,7 @@ const MyChatCard = ({ message, reply, setMessages, messages, socket}) => {
               {/* button reply */}
               <button
                 onClick={() => reply(messageText, sender)}
-                className="bg-gray-200 border border-gray-400 p-1.5 rounded-full active:scale-95 hover:bg-gray-200 duration-300 tooltip absolute top-[50%] -translate-y-[50%] -left-10"
+                className={`bg-gray-200 border border-gray-400 p-1.5 rounded-full active:scale-95 hover:bg-gray-200 duration-300 tooltip ${index === 0 ? 'tooltip-bottom' : 'tooltip-top'} absolute top-[50%] -translate-y-[50%] -left-10`}
                 data-tip="reply"
                 >
                 <MdOutlineReply className="text-lg" />
@@ -56,7 +56,7 @@ const MyChatCard = ({ message, reply, setMessages, messages, socket}) => {
                 {/* button delete message */}
               <button
                 onClick={() => openDeleteModal()}
-                className="bg-gray-200 border border-gray-400 p-1.5 rounded-full active:scale-95 hover:bg-gray-200 duration-300 tooltip absolute top-[50%] -translate-y-[50%] -left-20"
+                className={`bg-gray-200 border border-gray-400 p-1.5 rounded-full active:scale-95 hover:bg-gray-200 duration-300 tooltip ${index === 0 ? 'tooltip-bottom' : 'tooltip-top'} absolute top-[50%] -translate-y-[50%] -left-20`}
                 data-tip="delete"
               >
                 <MdDelete className="text-lg" />
@@ -100,6 +100,7 @@ MyChatCard.propTypes = {
     }),
   }),
   messages:  PropTypes.func,
+  index:  PropTypes.number,
   setMessages: PropTypes.func,
   reply: PropTypes.func, 
 };

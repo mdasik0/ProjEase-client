@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 
 const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
   const [messages, setMessages] = useState([]);
-  console.log("🚀 ~ ChatBox ~ messages:", messages)
   const [loading, setLoading] = useState(false);
   const chatBoxRef = useRef(null); // Ref for the chat container
 
@@ -81,12 +80,14 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
                 socket={socket}
                 setMessages={setMessages}
                 messages={messages}
+                index={index}
                 key={index}
                 message={message}
               />
             ) : (
               <OthersChatCard
                 reply={handleSendReply}
+                index={index}
                 key={index}
                 message={message}
                 image={message?.sender?.image}
