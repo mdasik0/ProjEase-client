@@ -56,7 +56,11 @@ const tasksApi = createApi({
       }),
       invalidatesTags: ["tasks"],
     }),
-
+    statusSum: builder.query({
+      query: (ids) => ({
+        url: `/tasks/status-summary?ids=${ids}`,
+      })
+    }),
     deleteSteps: builder.mutation({
       query: ({ _id, stepid }) => ({
         url: `/deleteSteps/${_id}`,
@@ -77,6 +81,7 @@ export const {
   useAddStepsMutation,
   useCompleteStepsMutation,
   useDeleteStepsMutation,
+  useStatusSumQuery
 } = tasksApi;
 
 export default tasksApi;
