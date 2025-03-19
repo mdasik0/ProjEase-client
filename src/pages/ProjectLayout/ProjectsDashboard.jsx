@@ -1,3 +1,4 @@
+import QuickActionsProjDash from "../../components/ProjectLayout/ProjectDash/QuickActionsProjDash";
 import TasksTotalOverview from "../../components/ProjectLayout/ProjectDash/TasksTotalOverview";
 
 
@@ -12,6 +13,7 @@ const ProjectsDashboard = () => {
       </div>
       <div className="w-full flex gap-3">
         <TasksTotalOverview />
+        <QuickActionsProjDash />
         {/* <div className="1 h-18 bg-red-300">what you missed</div>
         <div className="2 h-20 bg-red-300">total members</div>
         <div className="3 h-24 bg-red-300">overdue tasks</div>
