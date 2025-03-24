@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const QuickActionsProjDash = () => {
   return (
-    <div className="bg-gray-200 border border-gray-300 rounded-xl p-3 flex flex-col gap-3">
+    <div className="bg-gray-200 border border-gray-300 rounded-xl h-[290px] p-3 flex flex-col gap-3">
       <h3 className="text-lg font-[500] mb-3">Quick Actions</h3>
       <Link to="/projects/tasks">
       <button className="btn text-gray-200 bg-[#1a1a1a] hover:bg-[#2a2a2a] w-[20rem]  font-normal">

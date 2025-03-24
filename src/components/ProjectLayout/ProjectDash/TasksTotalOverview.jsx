@@ -20,7 +20,7 @@ const TasksTotalOverview = () => {
   const { data } = useStatusSumQuery(ids);
 
   return (
-    <div className="bg-gray-100 w-1/3 h-[290px] rounded-xl p-3">
+    <div className="bg-gray-100 w-full h-[290px] rounded-xl p-3">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-[500] ms-1">Total Task Overview</h3>
         <div title="this section describes projects total tasks status" className="mr-1 hover:bg-gray-200 duration-300 p-1 rounded-full cursor-pointer">
