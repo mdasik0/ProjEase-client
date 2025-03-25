@@ -1,4 +1,5 @@
 import EventCalender from "../../components/ProjectLayout/ProjectDash/EventCalender/EventCalender";
+import PDAllMembers from "../../components/ProjectLayout/ProjectDash/PDAllMembers";
 import QuickActionsProjDash from "../../components/ProjectLayout/ProjectDash/QuickActionsProjDash";
 import TasksTotalOverview from "../../components/ProjectLayout/ProjectDash/TasksTotalOverview";
 
@@ -12,9 +13,15 @@ const ProjectsDashboard = () => {
         </div>
       </div>
       <div className="w-full flex gap-3">
-        <div className="w-3/5 flex gap-3">
+        <div className="w-3/5 flex flex-col gap-3">
+          <div className="flex gap-3">
           <TasksTotalOverview />
           <QuickActionsProjDash />
+          </div>
+          <div>
+            {/* All Members View */}
+            <PDAllMembers />
+          </div>
         </div>
         <div className="w-2/5">
         <EventCalender />
