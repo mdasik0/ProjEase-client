@@ -15,7 +15,7 @@ const PDAllMembers = () => {
 
     return (
         <div className="border border-gray-300 rounded-lg py-3 ps-3 pe-2 w-2/5">
-            <h3 className="font-[500] mb-2 text-lg">Members</h3>
+            <h3 className="font-[500] mb-2 text-lg flex items-center gap-2">Members <span className="text-xs bg-gray-300 rounded-full px-2 py-0.5">{data?.length || 0}</span></h3>
             <div className="flex flex-col gap-3 h-[275px] overflow-y-auto pr-2">
                 {/* Members Card */}
                 {data?.map(({ _id, image, name, email }) => (

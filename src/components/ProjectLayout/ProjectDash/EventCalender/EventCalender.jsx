@@ -7,7 +7,7 @@ import ECEvents from "../ECEvents";
 const EventCalender = () => {
     const [value, onChange] = useState(new Date());
     return (
-        <div className="border border-gray-300 rounded-xl">
+        <div className="border border-gray-300 rounded-xl h-full">
           <Calendar onChange={onChange} value={value} />
           <ECEvents />
         </div>
