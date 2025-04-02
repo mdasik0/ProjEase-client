@@ -12,7 +12,6 @@ const PDAnnouncement = () => {
   const { projectData } = useSelector(state => state.projectSlice);
   const { userData } = useSelector(state => state.userSlice);
   
-  // Add refetch function from useGetAnnouncementQuery
   const { 
     data: announcements = [], 
     refetch: refetchAnnouncements 
@@ -48,7 +47,6 @@ const PDAnnouncement = () => {
   }, [projectData, userData]);
 
   useEffect(() => {
-    // Reset index when announcements change
     setAnnouncementsIndex(announcements.length > 0 ? announcements.length - 1 : 0);
   }, [announcements]);
 
@@ -72,7 +70,6 @@ const PDAnnouncement = () => {
       if (response.data?.success) {
         toast.success("Announcement Created Successfully!");
         handleCloseModal();
-        // Manually refetch announcements after successful creation
         refetchAnnouncements();
       } else {
         toast.error("Failed to create announcement!");

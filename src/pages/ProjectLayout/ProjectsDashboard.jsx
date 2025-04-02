@@ -31,11 +31,7 @@ const ProjectsDashboard = () => {
         <div className="w-2/5">
         <EventCalender />
         </div>
-        {/* <div className="1 h-18 bg-red-300">what you missed</div>
-        <div className="2 h-20 bg-red-300">total members</div>
-        <div className="3 h-24 bg-red-300">overdue tasks</div>
-        <div className="3 h-22 bg-red-300">quick actions</div>
-        <div className="3 h-20 bg-red-300">total tasks overview</div> */}
+      
       </div>
     </div>
   );

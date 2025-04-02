@@ -25,7 +25,7 @@ const ECEvents = () => {
     return (
         <div className="ps-4 pe-2 mt-3">
             <h3 className="text-lg font-[500]">Events</h3>
-            <div className="flex flex-col gap-3 mt-3 h-[245px] overflow-y-auto pr-2 pb-3">
+            <div className="flex flex-col gap-3 mt-3 h-[270px] overflow-y-auto pr-2">
                 {/* eventCards */}
                 {events.map((event) => (
                     <div key={event._id} className="bg-white border border-gray-300 border-t-4 odd:border-t-teal-500 even:border-t-purple-500 rounded-xl p-4 shadow-sm">
