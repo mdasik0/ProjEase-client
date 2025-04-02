@@ -25,7 +25,7 @@ const ProjectsDashboard = () => {
           <div className="flex gap-3">
             {/* All Members View */}
             <PDAllMembers />
-            <PDAnnouncement  />
+            <PDAnnouncement />
           </div>
         </div>
         <div className="w-2/5">

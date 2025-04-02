@@ -46,10 +46,17 @@ const projectsApi = createApi({
             query: (_id) => ({
                 url: `/chat-group/${_id}`
             })
+        }),
+        postAnnounecement: builder.mutation({
+            query: (data) => ({
+                url: `/announcement`,
+                method: 'POST',
+                body: data
+            })
         })
         
     })
 })
 
-export const {useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation, useJoinProjectMutation, useInviteMembersMutation, useGetInvitationInfoQuery, useGetChatGroupQuery} = projectsApi;
+export const {usePostAnnounecementMutation ,useGetProjectQuery ,useCreateProjectMutation,  useUpdateProjectMutation, useJoinProjectMutation, useInviteMembersMutation, useGetInvitationInfoQuery, useGetChatGroupQuery} = projectsApi;
 export default projectsApi;
