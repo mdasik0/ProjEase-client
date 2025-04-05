@@ -9,6 +9,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { FiUserPlus } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Project_switch_btn from "./Project_switch_btn";
 
 const Project_sidebar = () => {
   const [unseenCount, setUnseenCount] = useState(null)
@@ -24,10 +25,7 @@ const Project_sidebar = () => {
 
   useEffect(() => {
     const fetchUnseenMessageCount = () => {
-      if (!currentProjectId || !currentUserId) return; // Prevent making the request if data is missing
-      // console.log("🚀 ~ fetchUnseenMessageCount ~ currentProjectId:", currentProjectId)
-      // console.log("🚀 ~ fetchUnseenMessageCount ~ userData?._id:", userData?._id)
-    
+      if (!currentProjectId || !currentUserId) return;
       fetch(`http://localhost:5000/unseenMessageCount/${currentProjectId}/${currentUserId}`)
         .then(response => response.json())
         .then(data => {
@@ -51,16 +49,15 @@ const Project_sidebar = () => {
     };
   }, [currentProjectId, currentUserId])
 
-
-  
-  
-
   return (
-    <div id="project-sidebar" style={{position: 'sticky', top:0}} className={`shadow-lg shadow-gray-300 min-w-[250px] min-h-screen duration-300`}>
+    <div id="project-sidebar" style={{position: 'sticky', top:0}} className={`shadow-lg shadow-gray-300 min-w-[250px] min-h-screen duration-300 h-full flex flex-col justify-start`}>
       <div className=" flex items-center justify-center my-6">
 
         <img className="w-[120px]" src={logo} alt="projease logo" />
       </div>
+      <div className="flex-grow flex flex-col justify-between">
+
+      <div>
       <div className="main-manu pl-10">
         <h4 className="text-xs text-gray-500  flex items-center relative">
           Main Menu <IoIosArrowDown className="absolute right-4" />
@@ -193,6 +190,11 @@ const Project_sidebar = () => {
           </ul>
         )}
       </div>
+      </div>
+      <Project_switch_btn />
+
+      </div>
+
     </div>
   );
 };
