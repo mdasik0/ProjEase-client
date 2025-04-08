@@ -62,11 +62,19 @@ const userApi = createApi({
         body: data,
       }),
       invalidatesTags: ["users"],
+    }),
+    switchProjectStatus: builder.mutation({
+      query: ({projectId, userId}) => ({
+        url:`/switch-project-status?userId=${userId}&projectId=${projectId}`,
+        method: 'PATCH',
+        
+      })
     })
   }),
 });
 
 export const {
+  useSwitchProjectStatusMutation,
   useCreateUserMutation,
   useGetUserQuery,
   useGetMultiUserQuery,

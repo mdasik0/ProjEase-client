@@ -3,6 +3,8 @@ import { GoArrowSwitch } from "react-icons/go";
 import { IoIosArrowDown, IoMdCheckmark } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useMoreJoinedProjectsInfoMutation } from "../../redux/api/projectsApi";
+import { useSwitchProjectStatusMutation } from "../../redux/api/userApi";
+import toast from "react-hot-toast";
 
 const Project_switch_btn = () => {
   const [openProjectDropDown, setOpenProjectDropDown] = useState(false);
@@ -10,25 +12,41 @@ const Project_switch_btn = () => {
   const { userData } = useSelector((state) => state.userSlice);
   const [moreJoinedProjectsInfo, { data }] =
     useMoreJoinedProjectsInfoMutation();
+  const [switchProjectStatus] = useSwitchProjectStatusMutation();
 
-  const joinedProjects = useMemo(() => userData?.joinedProjects || [], [userData]);
+  const joinedProjects = useMemo(
+    () => userData?.joinedProjects || [],
+    [userData]
+  );
+  const userId = useMemo(() => userData?._id, [userData]);
 
   const toggleDropDown = useCallback(() => {
     setOpenProjectDropDown((prev) => !prev);
   }, []);
 
-  const selectProject = useCallback((projectId) => {
-    console.log(projectId);
-    setOpenProjectDropDown(false);
-  }, []);
+  const selectProject = useCallback(
+    async (projectId) => {
+      console.log(projectId, userId)
+      if (projectId && userId) {
+        const response = await switchProjectStatus({ projectId, userId });
+        if (response?.data?.success) {
+          return window.location.reload();
+        } else if (response?.error) {
+          console.log(response.error)
+          toast.error("Failed to switch project.");
+        }
+      } else {
+        return toast.error("Please provide projectId and userId");
+      }
+      setOpenProjectDropDown(false);
+    },
+    [userId, switchProjectStatus]
+  );
 
   // Detect outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpenProjectDropDown(false);
       }
     };
