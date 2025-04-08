@@ -53,7 +53,7 @@ const Additional_info = () => {
       if(isInvited) {
         return navigate(`/join-project/token=${isInvited}`)
       } else {
-        return navigate("/project");
+        return navigate("/projects");
       }
       } else {
         toast.error(response?.message || "Failed to update information.");

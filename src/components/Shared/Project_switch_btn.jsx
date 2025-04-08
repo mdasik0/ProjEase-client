@@ -26,13 +26,11 @@ const Project_switch_btn = () => {
 
   const selectProject = useCallback(
     async (projectId) => {
-      console.log(projectId, userId)
       if (projectId && userId) {
         const response = await switchProjectStatus({ projectId, userId });
         if (response?.data?.success) {
           return window.location.reload();
         } else if (response?.error) {
-          console.log(response.error)
           toast.error("Failed to switch project.");
         }
       } else {
@@ -72,7 +70,6 @@ const Project_switch_btn = () => {
 
   return (
     <div className="p-4 relative" ref={dropdownRef}>
-      {/* Dropdown list */}
       <div
         className={`absolute duration-300 w-[250px] p-3 bg-gray-300 border border-gray-300 rounded-xl flex flex-col gap-3 ${
           openProjectDropDown
