@@ -22,8 +22,13 @@ const Navbar = () => {
     isLoading,
   } = useSelector((state) => state.userSlice);
 
+  const resetToken = () => {
+    localStorage.removeItem("authToken");
+  }
+
   const logOut = () => {
     dispatch(logoutUser());
+    resetToken()
     dispatch(resetProjSlice()) 
     dispatch(resetTaskSlice())
     toast.success("User logged out successfully")

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useCreateUserMutation } from "../../redux/api/userApi";
 const SocialLogin = () => {
-  const { isError, error, email, login_method, socialLoginLoading } =
+  const { isError, error, email, login_method, socialLoginLoading, idToken } =
     useSelector((state) => state.userSlice);
 
   const [createUser] = useCreateUserMutation();
@@ -18,27 +18,35 @@ const SocialLogin = () => {
     dispatch(googleLogin());
   };
 
+  const invitedUserNav = () => {
+    const isInvited = JSON.parse(
+      sessionStorage.getItem("JoinProject_with_invitation")
+    );
+    if (isInvited) {
+      return navigate(`/join-project/token=${isInvited}`);
+    } else {
+      return navigate("/projects");
+    }
+  }
+
+  const storeToken = (token) => {
+    localStorage.setItem("authToken", token);
+  }
+
   const createUserInBackend = async () => {
     const obj = {
       email,
       login_method: "google",
       created: new Date(),
+      idToken,
     };
 
     const response = await createUser(obj);
 
-    console.log(response);
-
     if (response?.data?.success === false) {
       toast.success(response.data.message);
-      const isInvited = JSON.parse(
-        sessionStorage.getItem("JoinProject_with_invitation")
-      );
-      if (isInvited) {
-        return navigate(`/join-project/token=${isInvited}`);
-      } else {
-        return navigate("/projects");
-      }
+      storeToken(response.data.token)
+      invitedUserNav();
     } else if (response?.data?.success === true) {
       toast.success(response.data.message);
       if (!response.data.userNameExists) {

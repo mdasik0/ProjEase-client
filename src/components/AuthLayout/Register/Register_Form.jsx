@@ -12,7 +12,7 @@ import userApi, { useCreateUserMutation } from "../../../redux/api/userApi";
 import { refetchUpdate, signUpUser } from "../../../redux/features/userSlice";
 
 const Register_Form = () => {
-  const { isLoading, isError, error, email, login_method } = useSelector(
+  const { isLoading, isError, error, email, login_method, idToken } = useSelector(
     (state) => state.userSlice
   );
 
@@ -72,7 +72,6 @@ const Register_Form = () => {
       });
     }
 
-    // Weak password: Contains only one type (numbers, characters, or symbols)
     else {
       if (/^(?:\d+|[a-zA-Z]+|[^a-zA-Z\d]+)$/.test(password)) {
         setRTError({
@@ -82,7 +81,6 @@ const Register_Form = () => {
           passwordStrength: "weak",
         });
       }
-      // Medium password: Contains exactly 2 types (numbers + characters, characters + symbols, or numbers + symbols)
       else if (
         /(?=.*[A-Za-z])(?=.*\d)(?!.*[!@#$%^&*()]).{8,}$/.test(password) ||
         /(?=.*[A-Za-z])(?=.*[!@#$%^&*()])(?!.*\d).{8,}$/.test(password) ||
@@ -95,8 +93,7 @@ const Register_Form = () => {
           passwordStrength: "medium",
         });
       }
-      // Strong password: Contains all 3 types (numbers + characters + symbols)
-      //note: if any repitative characters are used like 12345 or $$$$$$ it will be considered medium strength password even if there is all types of characters avaiable and even if it exceeds 8 characters.
+      
       else if (
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}:<>?~]).{8,}$/.test(
           password
@@ -129,6 +126,7 @@ const Register_Form = () => {
         email,
         login_method: "email",
         created: new Date(),
+        idToken
       };
   
       const response = await createUser(obj);
@@ -136,6 +134,8 @@ const Register_Form = () => {
       if (!response?.data?.success) {
         return toast.error(response.data.message);
       }
+
+      localStorage.setItem("authToken", response.data.token);
   
       const fetchTheUser = await dispatch(userApi.endpoints.getUser.initiate(email)).unwrap();
       dispatch(refetchUpdate(fetchTheUser));
