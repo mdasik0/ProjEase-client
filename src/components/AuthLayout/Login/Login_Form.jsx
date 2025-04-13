@@ -15,16 +15,10 @@ const Login_Form = () => {
     show: false,
   });
 
-  //is login form complete?
-  //does it logs the user? yes
-  //when the user logs in with firebase and formData.email used to fetch user data from backend? yes
-  //does it fetchs user data from backend upon login? yes
-  //does it checks if the user has entered a new name? don't know
-  //does it checks if the user has entered a new profile picture? don't know
-
-  const { isLoading, error, email, login_method } = useSelector(
+  const { isLoading, error, email, login_method, idToken } = useSelector(
     (state) => state.userSlice
   );
+
   const shouldFetchEmailData = email && login_method === "email";
 
   const { data: userData } = useEmailLoginQuery(formData.email, {
@@ -43,20 +37,25 @@ const Login_Form = () => {
     dispatch(loginUser({ email, password }));
   };
 
+  const AfterLoginNav = () => {
+    const isInvited = JSON.parse(
+      sessionStorage.getItem("JoinProject_with_invitation")
+    )
+    if (isInvited) {
+      return navigate(`/join-project/token=${isInvited}`);
+    } else {
+      return navigate("/");
+    }
+  }
+
   useEffect(() => {
     if (error) {
       toast.error(error);
     } else if (email && login_method === "email") {
       if (userData?.success === true) {
         toast.success(userData?.message);
-        const isInvited = JSON.parse(
-          sessionStorage.getItem("JoinProject_with_invitation")
-        );
-        if (isInvited) {
-          return navigate(`/join-project/token=${isInvited}`);
-        } else {
-          return navigate("/");
-        }
+        localStorage.setItem("authToken", idToken);
+        AfterLoginNav();
       }
     }
   }, [error, email, navigate, userData,login_method]);
