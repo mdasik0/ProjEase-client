@@ -181,6 +181,7 @@ const userSlice = createSlice({
         state.login_method = 'email';
         state.isLoading = false;
         state.method = action.payload.method;
+        state.idToken = action.payload.idToken;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

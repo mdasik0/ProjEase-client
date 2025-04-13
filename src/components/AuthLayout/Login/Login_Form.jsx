@@ -56,6 +56,7 @@ const Login_Form = () => {
     } else if (email && login_method === "email") {
       if (userData?.success === true) {
         toast.success(userData?.message);
+        console.log(idToken)
         localStorage.setItem("authToken", idToken);
         AfterLoginNav();
       }
@@ -63,9 +64,10 @@ const Login_Form = () => {
   }, [error, email, navigate, userData,login_method,AfterLoginNav,idToken]);
 
   useEffect(() => {
-    if (iconMenuRef.current) {
+    const iconRef = iconMenuRef.current
+    if (iconRef) {
       const animationMenu = Lottie.loadAnimation({
-        container: iconMenuRef.current,
+        container: iconRef,
         renderer: "svg",
         loop: false,
         autoplay: true,
@@ -82,11 +84,11 @@ const Login_Form = () => {
         setFormData((prevData) => ({ ...prevData, show: directionMenu === 1 }));
       };
 
-      iconMenuRef.current.addEventListener("click", toggleAnimation);
+      iconRef.addEventListener("click", toggleAnimation);
 
       return () => {
-        if (iconMenuRef.current) {
-          iconMenuRef.current.removeEventListener("click", toggleAnimation);
+        if (iconRef) {
+          iconRef.removeEventListener("click", toggleAnimation);
         }
         animationMenu.destroy();
       };
