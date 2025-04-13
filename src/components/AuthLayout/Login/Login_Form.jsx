@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../redux/features/userSlice";
@@ -37,16 +37,18 @@ const Login_Form = () => {
     dispatch(loginUser({ email, password }));
   };
 
-  const AfterLoginNav = () => {
-    const isInvited = JSON.parse(
-      sessionStorage.getItem("JoinProject_with_invitation")
-    )
-    if (isInvited) {
-      return navigate(`/join-project/token=${isInvited}`);
-    } else {
-      return navigate("/");
-    }
-  }
+  const AfterLoginNav = useCallback(() => {
+    
+      const isInvited = JSON.parse(
+        sessionStorage.getItem("JoinProject_with_invitation")
+      )
+      if (isInvited) {
+        return navigate(`/join-project/token=${isInvited}`);
+      } else {
+        return navigate("/");
+      }
+    
+  },[navigate])
 
   useEffect(() => {
     if (error) {
@@ -58,7 +60,7 @@ const Login_Form = () => {
         AfterLoginNav();
       }
     }
-  }, [error, email, navigate, userData,login_method]);
+  }, [error, email, navigate, userData,login_method,AfterLoginNav,idToken]);
 
   useEffect(() => {
     if (iconMenuRef.current) {
