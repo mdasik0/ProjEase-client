@@ -2,8 +2,18 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const userApi = createApi({
   reducerPath: "users",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
-  tagTypes:["users"],
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:5000",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+
+  tagTypes: ["users"],
   endpoints: (builder) => ({
     createUser: builder.mutation({
       query: (body) => ({
@@ -11,41 +21,40 @@ const userApi = createApi({
         method: "POST",
         body: body,
       }),
-      invalidatesTags: ['users']
+      invalidatesTags: ["users"],
     }),
     getUser: builder.query({
       query: (email) => ({
         url: `/getUser/${email}`,
       }),
-      providesTags: ['users']
+      providesTags: ["users"],
     }),
     getMultiUser: builder.query({
       query: (userIdsArr) => ({
-        url: `/getMultUsers?userIds=${userIdsArr?.join(",")}`
-      })
-    })
-    ,
+        url: `/getMultUsers?userIds=${userIdsArr?.join(",")}`,
+      }),
+    }),
     emailLogin: builder.query({
       query: (email) => ({
         url: `/emailLogin/${email}`,
       }),
-      invalidatesTags: ['users']
+      invalidatesTags: ["users"],
     }),
     updateName: builder.mutation({
-      query: ({_id,data}) => ({
+      query: ({ _id, data }) => ({
         url: `/updateName/${_id}`,
-        method:'PATCH',
-        body:{data}
+        method: "PATCH",
+        body: { data },
       }),
-      invalidatesTags: ['users']
+      invalidatesTags: ["users"],
     }),
     uploadProfilePicture: builder.mutation({
-      query: ({_id,data}) => ({
+      query: ({ _id, data }) => ({
         url: `/updateProfilePicture/${_id}`,
-        method: 'PATCH',
-        body: {data},
+        method: "PATCH",
+        body: { data },
       }),
-      invalidatesTags: ['users']
+      invalidatesTags: ["users"],
     }),
     updateUser: builder.mutation({
       query: ({ _id, data }) => ({
@@ -54,22 +63,21 @@ const userApi = createApi({
         body: data,
       }),
       invalidatesTags: ["users"],
-    }),    
+    }),
     updateJoinedProjects: builder.mutation({
-      query: ({_id,data}) => ({
+      query: ({ _id, data }) => ({
         url: `/users/${_id}/joined-projects`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
       }),
       invalidatesTags: ["users"],
     }),
     switchProjectStatus: builder.mutation({
-      query: ({projectId, userId}) => ({
-        url:`/switch-project-status?userId=${userId}&projectId=${projectId}`,
-        method: 'PATCH',
-        
-      })
-    })
+      query: ({ projectId, userId }) => ({
+        url: `/switch-project-status?userId=${userId}&projectId=${projectId}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -81,9 +89,8 @@ export const {
   useUpdateUserMutation,
   useUpdateNameMutation,
   useUploadProfilePictureMutation,
-  useAddProjectsQuery,
   useEmailLoginQuery,
-  useUpdateJoinedProjectsMutation
+  useUpdateJoinedProjectsMutation,
 } = userApi;
 
 export default userApi;
