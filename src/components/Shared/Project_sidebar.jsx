@@ -26,7 +26,11 @@ const Project_sidebar = () => {
   useEffect(() => {
     const fetchUnseenMessageCount = () => {
       if (!currentProjectId || !currentUserId) return;
-      fetch(`http://localhost:5000/unseenMessageCount/${currentProjectId}/${currentUserId}`)
+      fetch(`http://localhost:5000/unseenMessageCount/${currentProjectId}/${currentUserId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        }
+      })
         .then(response => response.json())
         .then(data => {
           setUnseenCount(data.unseenCount);

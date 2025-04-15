@@ -2,7 +2,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const projectsApi = createApi({
   reducerPath: "projects",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000", prepareHeaders: (headers) => {
+    const token = localStorage.getItem("authToken");
+    if(token) {
+      headers.set("authorization", `Bearer ${token}`);
+    }
+    return headers;
+  }}),
   endpoints: (builder) => ({
     createProject: builder.mutation({
       query: (projectObj) => ({

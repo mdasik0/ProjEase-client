@@ -15,11 +15,14 @@ export const listenForAuthChanges = (dispatch) => {
         email: email || "",
       }));
 
-
+      const token = localStorage.getItem("authToken");
       dispatch(setLoading(true));
-      // just fetch the data normally here
       try {
-        const response = await fetch(`http://localhost:5000/getUser/${email}`);
+        const response = await fetch(`http://localhost:5000/getUser/${email}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         if(data) {
           dispatch(setUser({email: email, userData: data}));

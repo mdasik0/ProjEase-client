@@ -21,18 +21,18 @@ const AdditionalProjectInfo = () => {
   );
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!currentProj) {
       toast.error("Please refresh the page and try again.");
       return; // Stop execution if no active project
     }
-   
+
     try {
       const response = await updateProject({
         _id: currentProj.projectId,
         newObj: formData,
       });
-  
+
       if (response.data?.success) {
         toast.success(response.data.message);
         navigate("/projects");
@@ -46,10 +46,10 @@ const AdditionalProjectInfo = () => {
       toast.error("An error occurred while creating the project.");
     }
   };
-  
+
   const handleSkip = () => {
-    navigate('/projects')
-  }
+    navigate("/projects");
+  };
 
   const { email } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();
@@ -57,7 +57,11 @@ const AdditionalProjectInfo = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/getUser/${email}`);
+        const response = await fetch(`http://localhost:5000/getUser/${email}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
         const data = await response.json();
         if (data) {
           dispatch(refetchUpdate(data));
@@ -66,10 +70,9 @@ const AdditionalProjectInfo = () => {
         toast.error("There was an error. Please refresh the page.");
       }
     };
-  
+
     if (email) fetchUserData();
   }, [email, dispatch]);
-  
 
   return (
     <main className="w-screen h-screen lg:px-20 md:pt-16 p-6 relative">
@@ -143,21 +146,21 @@ const AdditionalProjectInfo = () => {
             </div>
 
             <div className="flex items-center gap-4">
-            <button
-              className="text-white bg-[#1a1a1a] duration-500 hover:text-black hover:bg-gray-300 px-5 py-2 rounded mt-4"
-              type="submit"
-              aria-label="Submit project details"
-            >
-              Submit
-            </button>
-            <button
-            onClick={handleSkip}
-              className="text-[#1a1a1a] bg-white duration-500 hover:bg-[#1a1a1a] hover:text-white px-5 py-2 rounded mt-4 border border-[#1a1a1a]"
-              type="submit"
-              aria-label="Submit project details"
-            >
-              Skip
-            </button>
+              <button
+                className="text-white bg-[#1a1a1a] duration-500 hover:text-black hover:bg-gray-300 px-5 py-2 rounded mt-4"
+                type="submit"
+                aria-label="Submit project details"
+              >
+                Submit
+              </button>
+              <button
+                onClick={handleSkip}
+                className="text-[#1a1a1a] bg-white duration-500 hover:bg-[#1a1a1a] hover:text-white px-5 py-2 rounded mt-4 border border-[#1a1a1a]"
+                type="submit"
+                aria-label="Submit project details"
+              >
+                Skip
+              </button>
             </div>
           </form>
         </section>

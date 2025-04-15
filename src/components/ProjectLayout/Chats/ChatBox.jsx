@@ -12,7 +12,11 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
   useEffect(() => {
     setLoading(true);
     if (groupId) {
-      fetch(`http://localhost:5000/messages/${groupId}`)
+      fetch(`http://localhost:5000/messages/${groupId}`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        }
+      })
         .then((response) => response.json())
         .then((data) => {
           setLoading(false);
