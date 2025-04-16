@@ -95,7 +95,7 @@ export const FooterOverview = () => {
           Tasks
         </li>
         <li className="cursor-pointer hover:text-gray-400 duration-500">
-          User Dashboard
+          User info
         </li>
       </ul>
     </div>

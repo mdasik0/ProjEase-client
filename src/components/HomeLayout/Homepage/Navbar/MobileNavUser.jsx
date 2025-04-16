@@ -79,7 +79,7 @@ const MobileNavUser = ({ userData, isLoading }) => {
             to={"/"}
           >
             <LuUserCircle className="text-lg" />
-            User Dashboard
+            User info
           </Link>
         </>
       )}

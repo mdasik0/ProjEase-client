@@ -5,6 +5,7 @@ import { MdDoNotDisturbOn, MdOutlineLogout } from "react-icons/md";
 import { LuUserSquare2 } from "react-icons/lu";
 import { FaMoon } from "react-icons/fa";
 import avatar from "/avatar/avatar.png";
+import Modal from "../../../Shared/Modal";
 
 const NavUser = ({ user, userData, logOut, isLoading }) => {
   const [dropdown, setDropdown] = useState(false);
@@ -12,8 +13,9 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
   const dropdownRef = useRef();
   const statusRef = useRef();
 
-  const fullName = userData?.name?.firstname + " " +userData?.name?.lastname ;
-  const nameCheck =  fullName.length > 8 ? fullName.slice(0,8) + '...' : fullName;
+  const fullName = userData?.name?.firstname + " " + userData?.name?.lastname;
+  const nameCheck =
+    fullName.length > 8 ? fullName.slice(0, 8) + "..." : fullName;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -56,9 +58,7 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
               </div>
               <div className="flex flex-col items-start gap-0">
                 <span className="tooltip tooltip-bottom" data-tip={fullName}>
-                  {userData?.name
-                    ? nameCheck
-                    : userData?.email?.split("@")[0]}
+                  {userData?.name ? nameCheck : userData?.email?.split("@")[0]}
                 </span>
                 <div className="-mt-1">
                   <span className="text-[12px] text-gray-500 ">
@@ -94,10 +94,7 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
                 <p className="bg-green-500 w-3 h-3 rounded-full border border-white"></p>{" "}
                 Change Status
               </li>
-              <li className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2">
-                <LuUserSquare2 className="text-lg" />
-                User Dashboard
-              </li>
+              <UserInfo userData={userData} />
               <li
                 onClick={() => logOut()}
                 className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2"
@@ -144,3 +141,33 @@ NavUser.propTypes = {
 };
 
 export default NavUser;
+
+export const UserInfo = ({ userData }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <>
+      <li
+        onClick={() => setIsOpen(!isOpen)}
+        className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2"
+      >
+        <LuUserSquare2 className="text-lg" />
+        User info
+      </li>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        This is user email : {userData?.email} <br />
+        data is here but requires some design and functionality <br />
+        coming soon...
+      </Modal>
+    </>
+  );
+
+};
+
+UserInfo.propTypes = {
+  userData: PropTypes.shape({
+    image: PropTypes.string,
+    name: PropTypes.object,
+    email: PropTypes.string,
+    status: PropTypes.string,
+  }),
+}
