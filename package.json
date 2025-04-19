@@ -15,6 +15,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "browser-image-compression": "^2.0.2",
     "firebase": "^10.11.1",
+    "jwt-decode": "^4.0.0",
     "localforage": "^1.10.0",
     "lottie-web": "^5.12.2",
     "match-sorter": "^6.3.4",

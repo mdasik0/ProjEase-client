@@ -18,7 +18,6 @@ const initialState = {
   socialLoginLoading:false,
   isError: false,
   error: "",
-  idToken: "",
 };
 
 export const uploadImageToImgbb = createAsyncThunk(
@@ -48,11 +47,9 @@ export const signUpUser = createAsyncThunk(
         payload.password
       );
       const user = result.user;
-      const idToken = await user.getIdToken();
 
       return {
         email: user.email,
-        idToken,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -71,10 +68,8 @@ export const loginUser = createAsyncThunk(
         payload.password
       );
       const user = result.user;
-      const idToken = await user.getIdToken();
       return {
         email: user.email,
-        idToken
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -103,7 +98,7 @@ export const logoutUser = createAsyncThunk(
   "/userSlice/logoutUser",
   async () => {
     await signOut(auth);
-    return { email: "", userData: {}, idToken: "" };
+    return { email: "", userData: {} };
   }
 );
 
@@ -115,11 +110,9 @@ export const googleLogin = createAsyncThunk(
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      const idToken = await user.getIdToken();
       return {
         email: user.email,
         name: user.displayName,
-        idToken,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -142,7 +135,6 @@ const userSlice = createSlice({
       state.image = "";
       state.method = "";
       state.isLoading = false;
-      state.idToken= "";
     },
     setLoading: (state, { payload }) => {
       state.isLoading = payload;
@@ -181,7 +173,6 @@ const userSlice = createSlice({
         state.login_method = 'email';
         state.isLoading = false;
         state.method = action.payload.method;
-        state.idToken = action.payload.idToken;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

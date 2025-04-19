@@ -4,14 +4,18 @@ const userApi = createApi({
   reducerPath: "users",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken")
-
-      if (token) {
+    credentials: "include",
+    prepareHeaders: (headers, { endpoint }) => {
+      const skipAuthEndpoints = ["createUser", "emailLogin"];
+      const token = localStorage.getItem("authToken");
+    
+      if (token && !skipAuthEndpoints.includes(endpoint)) {
         headers.set("authorization", `Bearer ${token}`);
       }
+    
       return headers;
     },
+    
   }),
 
   tagTypes: ["users"],

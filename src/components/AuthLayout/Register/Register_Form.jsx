@@ -12,7 +12,7 @@ import userApi, { useCreateUserMutation } from "../../../redux/api/userApi";
 import { refetchUpdate, signUpUser } from "../../../redux/features/userSlice";
 
 const Register_Form = () => {
-  const { isLoading, isError, error, email, login_method, idToken } = useSelector(
+  const { isLoading, isError, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
 
@@ -126,7 +126,6 @@ const Register_Form = () => {
         email,
         login_method: "email",
         created: new Date(),
-        idToken
       };
   
       const response = await createUser(obj);

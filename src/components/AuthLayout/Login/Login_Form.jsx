@@ -14,12 +14,25 @@ const Login_Form = () => {
     password: "",
     show: false,
   });
+  
+  const dispatch = useDispatch();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const email = formData.email;
+    const password = formData.password;
+    dispatch(loginUser({ email, password }));
+  };
+  // step 1: collect form data
+  // step 2: dispatch loginUser
+  // step 3: if login is successful, make email login query to generate tokens
+  // step 4: next store the tokens in local storage
+  // step 5: navigate to the home page
 
-  const { isLoading, error, email, login_method, idToken } = useSelector(
+  const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
-
   const shouldFetchEmailData = email && login_method === "email";
+
 
   const { data: userData } = useEmailLoginQuery(formData.email, {
     skip: !shouldFetchEmailData,
@@ -27,15 +40,8 @@ const Login_Form = () => {
 
   const iconMenuRef = useRef(null);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const email = formData.email;
-    const password = formData.password;
-    dispatch(loginUser({ email, password }));
-  };
 
   const AfterLoginNav = useCallback(() => {
     
@@ -56,12 +62,11 @@ const Login_Form = () => {
     } else if (email && login_method === "email") {
       if (userData?.success === true) {
         toast.success(userData?.message);
-        console.log(idToken)
-        localStorage.setItem("authToken", idToken);
+        localStorage.setItem("authToken", userData?.token);
         AfterLoginNav();
       }
     }
-  }, [error, email, navigate, userData,login_method,AfterLoginNav,idToken]);
+  }, [error, email, navigate, userData,login_method,AfterLoginNav]);
 
   useEffect(() => {
     const iconRef = iconMenuRef.current

@@ -11,9 +11,11 @@ export const listenForAuthChanges = (dispatch) => {
     if (user) {
       // User is signed in
       const { email } = user;
-      dispatch(setUser({
-        email: email || "",
-      }));
+      dispatch(
+        setUser({
+          email: email || "",
+        })
+      );
 
       const token = localStorage.getItem("authToken");
       dispatch(setLoading(true));
@@ -23,16 +25,30 @@ export const listenForAuthChanges = (dispatch) => {
             Authorization: `Bearer ${token}`,
           },
         });
+        if (!response.ok) {
+
+          //IF jwt token expired or invalid, asks for refresh token
+        const errorInfo = await response.json();
+          if(errorInfo.error === "Invalid or expired token.") {
+
+            const res = await fetch("http://localhost:5000/refresh-token", {
+              method: "POST",
+              credentials: "include", 
+            });
+            const newAccessToken = await res.json();
+            localStorage.setItem("authToken", newAccessToken.accessToken);
+          }
+        }
         const data = await response.json();
-        if(data) {
-          dispatch(setUser({email: email, userData: data}));
-          dispatch(setLoading(false))
+
+        if (data) {
+          dispatch(setUser({ email: email, userData: data }));
+          dispatch(setLoading(false));
         }
       } catch (err) {
-        console.error('There was an Error Fetching the user:', err.message)
-        dispatch(setLoading(false))
+        console.error("There was an Error Fetching the user:", err.message);
+        dispatch(setLoading(false));
       }
-
     } else {
       // User is signed out
       dispatch(resetUser());

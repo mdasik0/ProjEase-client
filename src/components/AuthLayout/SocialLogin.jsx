@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useCreateUserMutation } from "../../redux/api/userApi";
 const SocialLogin = () => {
-  const { isError, error, email, login_method, socialLoginLoading, idToken } =
+  const { isError, error, email, login_method, socialLoginLoading } =
     useSelector((state) => state.userSlice);
 
   const [createUser] = useCreateUserMutation();
@@ -38,7 +38,6 @@ const SocialLogin = () => {
       email,
       login_method: "google",
       created: new Date(),
-      idToken,
     };
 
     const response = await createUser(obj);
