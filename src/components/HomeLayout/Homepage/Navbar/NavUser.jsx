@@ -6,12 +6,14 @@ import { LuUserSquare2 } from "react-icons/lu";
 import { FaMoon } from "react-icons/fa";
 import avatar from "/avatar/avatar.png";
 import Modal from "../../../Shared/Modal";
+import { useDispatch } from "react-redux";
 
 const NavUser = ({ user, userData, logOut, isLoading }) => {
   const [dropdown, setDropdown] = useState(false);
   const [status, setStatus] = useState(false);
   const dropdownRef = useRef();
   const statusRef = useRef();
+  const dispatch = useDispatch();
 
   const fullName = userData?.name?.firstname + " " + userData?.name?.lastname;
   const nameCheck =
@@ -96,7 +98,7 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
               </li>
               <UserInfo userData={userData} />
               <li
-                onClick={() => logOut()}
+                onClick={() => logOut(dispatch)}
                 className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2"
               >
                 <MdOutlineLogout className="text-lg" /> Log out

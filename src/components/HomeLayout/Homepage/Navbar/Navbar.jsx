@@ -9,8 +9,8 @@ import { GoFileDirectory, GoHome } from "react-icons/go";
 import { LuUserCircle } from "react-icons/lu";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
 import { MdLogin, MdOutlineLogout } from "react-icons/md";
-import { useSelector } from "react-redux";
-import useLogout from "../../../../hooks/useLogout";
+import { useDispatch, useSelector } from "react-redux";
+import  logOut  from "../../../../utils/generalLogOut";
 const Navbar = () => {
   const {
     email: user,
@@ -19,7 +19,6 @@ const Navbar = () => {
   } = useSelector((state) => state.userSlice);
 
 
-  const logOut = useLogout()
   return (
     <>
       <DesktopAndTabNav
@@ -121,6 +120,8 @@ const MobileNav = ({ user, userData, logOut, isLoading }) => {
       inputElement.removeEventListener("change", handleMenuChange);
     };
   }, []);
+
+  const dispatch = useDispatch();
   return (
     <div className="flex md:hidden justify-between items-center mx-4 mt-4">
       <div>
@@ -179,7 +180,7 @@ const MobileNav = ({ user, userData, logOut, isLoading }) => {
           {user && (
             <>
               <button
-                onClick={() => logOut()}
+                onClick={() => logOut(dispatch)}
                 className="bg-[#2a2a2a] px-4 py-3 mt-2 rounded-[10px] border duration-300  border-red-500 hover:bg-red-500 flex gap-1.5 items-center"
               >
                 <MdOutlineLogout className="text-lg" />
