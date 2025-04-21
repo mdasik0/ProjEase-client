@@ -89,14 +89,14 @@ const SendChatMessage = ({
       <div className="flex items-center gap-3  w-full">
         {/* document selection */}
         <button
-          className="bg-gray-200 hover:bg-gray-400 duration-300 p-3 rounded-full tooltip tooltip-right"
+          className="bg-gray-200 -z-10 hover:bg-gray-400 duration-300 p-3 rounded-full tooltip tooltip-right"
           data-tip="Select Document"
         >
           <IoDocumentAttachOutline className="text-2xl" />
         </button>
         {/* image selection */}
         <button
-          className="bg-gray-200 hover:bg-gray-400 duration-300 p-3 rounded-full tooltip tooltip-top"
+          className="bg-gray-200 -z-10 hover:bg-gray-400 duration-300 p-3 rounded-full tooltip tooltip-top"
           data-tip="Select Image"
         >
           <IoIosImages className="text-2xl" />

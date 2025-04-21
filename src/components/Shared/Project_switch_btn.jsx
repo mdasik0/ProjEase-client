@@ -73,7 +73,7 @@ const Project_switch_btn = () => {
       <div
         className={`absolute duration-300 w-[250px] p-3 bg-gray-300 border border-gray-300 rounded-xl flex flex-col gap-3 ${
           openProjectDropDown
-            ? "-right-[102%] bottom-3"
+            ? "-right-[102%] bottom-3 z-50"
             : "-right-[70%] bottom-3 opacity-0 pointer-events-none"
         }`}
       >
