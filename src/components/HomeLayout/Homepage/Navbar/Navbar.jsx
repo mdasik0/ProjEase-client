@@ -14,6 +14,7 @@ import { logoutUser } from "../../../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { resetProjSlice } from "../../../../redux/features/projectSlice";
 import { resetTaskSlice } from "../../../../redux/features/tasksSlice";
+import { useRemoveRefreshTokenMutation } from "../../../../redux/api/userApi";
 const Navbar = () => {
   const dispatch = useDispatch();
   const {
@@ -22,11 +23,19 @@ const Navbar = () => {
     isLoading,
   } = useSelector((state) => state.userSlice);
 
-  const resetToken = () => {
-    localStorage.removeItem("authToken");
-  }
+  const [removeRefreshToken] = useRemoveRefreshTokenMutation();
 
-  const logOut = () => {
+  const resetToken = async () => {
+    localStorage.removeItem("authToken");
+  
+    try {
+      await removeRefreshToken().unwrap();
+    } catch (error) {
+      console.error("Failed to remove refresh token:", error);
+    }
+  };
+  
+   const logOut = () => {
     dispatch(logoutUser());
     resetToken()
     dispatch(resetProjSlice()) 

@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { resetUser, setUser, setLoading } from "./features/userSlice";
+import { resetUser, setUser, setLoading, logoutUser } from "./features/userSlice";
 
 export const listenForAuthChanges = (dispatch) => {
   const auth = getAuth();
@@ -26,17 +26,19 @@ export const listenForAuthChanges = (dispatch) => {
           },
         });
         if (!response.ok) {
-
           //IF jwt token expired or invalid, asks for refresh token
-        const errorInfo = await response.json();
-          if(errorInfo.error === "Invalid or expired token.") {
-
+          const errorInfo = await response.json();
+          if (errorInfo.error === "Invalid or expired token.") {
             const res = await fetch("http://localhost:5000/refresh-token", {
               method: "POST",
-              credentials: "include", 
+              credentials: "include",
             });
             const newAccessToken = await res.json();
-            localStorage.setItem("authToken", newAccessToken.accessToken);
+            if (newAccessToken) {
+              localStorage.setItem("authToken", newAccessToken.accessToken);
+            } else {
+              logoutUser();
+            }
           }
         }
         const data = await response.json();

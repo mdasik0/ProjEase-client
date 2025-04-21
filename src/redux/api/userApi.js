@@ -83,10 +83,17 @@ const userApi = createApi({
         method: "PATCH",
       }),
     }),
+    removeRefreshToken: builder.mutation({
+      query: () => ({
+        url: `/remove-refresh-token`,
+        method: "DELETE",
+      })
+    })
   }),
 });
 
 export const {
+  useRemoveRefreshTokenMutation,
   useSwitchProjectStatusMutation,
   useCreateUserMutation,
   useGetUserQuery,
