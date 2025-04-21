@@ -9,40 +9,17 @@ import { GoFileDirectory, GoHome } from "react-icons/go";
 import { LuUserCircle } from "react-icons/lu";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
 import { MdLogin, MdOutlineLogout } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../../../redux/features/userSlice";
-import toast from "react-hot-toast";
-import { resetProjSlice } from "../../../../redux/features/projectSlice";
-import { resetTaskSlice } from "../../../../redux/features/tasksSlice";
-import { useRemoveRefreshTokenMutation } from "../../../../redux/api/userApi";
+import { useSelector } from "react-redux";
+import useLogout from "../../../../hooks/useLogout";
 const Navbar = () => {
-  const dispatch = useDispatch();
   const {
     email: user,
     userData,
     isLoading,
   } = useSelector((state) => state.userSlice);
 
-  const [removeRefreshToken] = useRemoveRefreshTokenMutation();
 
-  const resetToken = async () => {
-    localStorage.removeItem("authToken");
-  
-    try {
-      await removeRefreshToken().unwrap();
-    } catch (error) {
-      console.error("Failed to remove refresh token:", error);
-    }
-  };
-  
-   const logOut = () => {
-    dispatch(logoutUser());
-    resetToken()
-    dispatch(resetProjSlice()) 
-    dispatch(resetTaskSlice())
-    toast.success("User logged out successfully")
-  };
-
+  const logOut = useLogout()
   return (
     <>
       <DesktopAndTabNav

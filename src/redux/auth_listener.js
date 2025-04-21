@@ -1,5 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { resetUser, setUser, setLoading, logoutUser } from "./features/userSlice";
+import { resetUser, setUser, setLoading } from "./features/userSlice";
+import useLogout from "../hooks/useLogout";
 
 export const listenForAuthChanges = (dispatch) => {
   const auth = getAuth();
@@ -37,7 +38,7 @@ export const listenForAuthChanges = (dispatch) => {
             if (newAccessToken) {
               localStorage.setItem("authToken", newAccessToken.accessToken);
             } else {
-              logoutUser();
+              useLogout(dispatch);
             }
           }
         }
