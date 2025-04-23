@@ -146,19 +146,51 @@ export default NavUser;
 
 export const UserInfo = ({ userData }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const createdAt = new Intl.DateTimeFormat('en-GB').format(new Date(userData?.created));
+  const addressObj = userData?.address;
+  const address = addressObj?.street + "," + addressObj?.city + "," + addressObj?.state + "," + addressObj?.country;
   return (
     <>
       <li
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded-lg flex items-center gap-2"
+        className="cursor-pointer duration-300 hover:bg-gray-300 py-1.5 px-3 rounded
+        -lg flex items-center gap-2"
       >
         <LuUserSquare2 className="text-lg" />
         User info
       </li>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        This is user email : {userData?.email} <br />
-        data is here but requires some design and functionality <br />
-        coming soon...
+        <div className="p-6 border-4 border-[#1a1a1a] rounded-2xl">
+          <div className="flex items-start gap-6">
+            <img className="w-2/5 rounded-full p-1 border border-gray-600" src={userData?.image} alt="user image" />
+            <div>
+              <h5 className="font-semibold text-gray-500 mb-3 text-sm">user info</h5>
+              <div>
+                <span className="text-sm text-gray-400">Name</span>
+                <p className="mb-2 text-black">
+                  {userData?.name?.firstname} {userData?.name?.lastname}
+                </p>
+                <span className="text-sm text-gray-400">Email</span>
+                <p className="mb-2 text-black">{userData?.email}</p>
+                <span className="text-sm text-gray-400">Account created</span>
+                <p className="text-sm">{createdAt}</p>
+              </div>
+            </div>
+          </div>
+        <div>
+          <h5 className="text-sm font-semibold text-gray-600 mb-3">Additional info</h5>
+          <div>
+            <span className="text-sm text-gray-400">Birthday</span>
+            <p className="mb-2 text-black">{userData?.birthday || 'Not Available'}</p>
+            <span className="text-sm text-gray-400">Bio</span>
+            <p className="mb-2 text-black">{userData?.bio || "Not Available"}</p>
+            <span className="text-sm text-gray-400">role</span>
+            <p className="mb-2 text-black">{userData?.jobTitle || "User"}</p>
+            <span className="text-sm text-gray-400">Address (private)</span>
+            <p className="mb-2 text-black">{ address || "Not Available"}</p>
+          </div>
+        </div>
+        </div>
       </Modal>
     </>
   );
@@ -171,5 +203,15 @@ UserInfo.propTypes = {
     name: PropTypes.object,
     email: PropTypes.string,
     status: PropTypes.string,
+    created: PropTypes.string,
+    bio: PropTypes.string,
+    jobTitle: PropTypes.string,
+    birthday: PropTypes.string,
+    address: PropTypes.shape({
+      street: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      country: PropTypes.string,
+    }),
   }),
 }
