@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
-import { MdDoNotDisturbOn, MdOutlineLogout } from "react-icons/md";
+import { MdOutlineLogout } from "react-icons/md";
 import { LuUserSquare2 } from "react-icons/lu";
-import { FaMoon } from "react-icons/fa";
 import avatar from "/avatar/avatar.png";
 import Modal from "../../../Shared/Modal";
 import { useDispatch } from "react-redux";
+import ChangeStatusDropdown from "./ChangeStatusDropdown";
+import { dayMonthYear } from "../../../../utils/getDate";
 
 const NavUser = ({ user, userData, logOut, isLoading }) => {
   const [dropdown, setDropdown] = useState(false);
@@ -103,30 +104,8 @@ const NavUser = ({ user, userData, logOut, isLoading }) => {
               >
                 <MdOutlineLogout className="text-lg" /> Log out
               </li>
-              <ul
-                ref={statusRef}
-                className={`absolute top-[-13px] ${
-                  status
-                    ? "right-[190px] opacity-100 scale-100"
-                    : "right-[-300px] opacity-0 scale-50"
-                } bg-gray-100 border p-3 rounded-xl w-[170px] duration-500`}
-              >
-                <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
-                  <p className="bg-green-500 w-4 h-4 rounded-full border border-white"></p>{" "}
-                  Online
-                </li>
-                <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
-                  <FaMoon className=" text-yellow-500" /> Idle
-                </li>
-                <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
-                  <MdDoNotDisturbOn className="text-red-500 text-lg" /> Do not
-                  disturb
-                </li>
-                <li className="hover:bg-gray-300 px-2 py-1.5 rounded-md cursor-pointer flex items-center gap-2">
-                  <p className="w-4 h-4 border-4 border-gray-400 rounded-full"></p>{" "}
-                  Invisible
-                </li>
-              </ul>
+              {/* status changing dropdown component */}
+              <ChangeStatusDropdown statusRef={statusRef} status={status} />
             </ul>
           </div>
         </div>
@@ -146,7 +125,7 @@ export default NavUser;
 
 export const UserInfo = ({ userData }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const createdAt = new Intl.DateTimeFormat('en-GB').format(new Date(userData?.created));
+  const createdAt = dayMonthYear(userData?.created);
   const addressObj = userData?.address;
   const address = addressObj?.street + "," + addressObj?.city + "," + addressObj?.state + "," + addressObj?.country;
   return (
@@ -173,7 +152,7 @@ export const UserInfo = ({ userData }) => {
                 <span className="text-sm text-gray-400">Email</span>
                 <p className="mb-2 text-black">{userData?.email}</p>
                 <span className="text-sm text-gray-400">Account created</span>
-                <p className="text-sm">{createdAt}</p>
+                <p className="text-sm">{createdAt || "Not Available"}</p>
               </div>
             </div>
           </div>

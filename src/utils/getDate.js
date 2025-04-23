@@ -66,6 +66,18 @@ const calculateDaysLeft = (deadline) => {
     : `Overdue by ${Math.abs(differenceInDays)} days`;
 };
 
+const dayMonthYear = (date) => {
+  let formatted = "";
+  if (date) {
+    const parsedDate = new Date(date); // use a different name to avoid overwriting the parameter
+    if (!isNaN(parsedDate)) {
+      formatted = new Intl.DateTimeFormat("en-GB").format(parsedDate);
+    }
+  }
+  return formatted;
+};
+
+
 const formatDate = (anyDate) => {
   const dateArr = anyDate.split("-");
   let dateSmthing;
@@ -111,5 +123,6 @@ export {
   time,
   fullDate,
   calculateDaysLeft,
-  formatDate
+  formatDate,
+  dayMonthYear
 };
