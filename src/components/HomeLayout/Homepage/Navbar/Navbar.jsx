@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import fullLogo from "/logo/Full-logo/logo-white-ov2.png";
 import miniLogo from "/logo/mini-logo/MINI_LOGO_FOR_WHITE_BG.png";
 import NavUser from "./NavUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MobileNavUser from "./MobileNavUser";
 import { GoFileDirectory, GoHome } from "react-icons/go";
 import { LuUserCircle } from "react-icons/lu";
@@ -18,11 +18,21 @@ const Navbar = () => {
     isLoading,
   } = useSelector((state) => state.userSlice);
 
+  const [onlineStatus, setOnlineStatus] = useState(userData?.onlineStatus);
+
+  useEffect(() => {
+    if (userData?.onlineStatus !== undefined) {
+      setOnlineStatus(userData?.onlineStatus);
+    }
+  }, [userData?.onlineStatus]);
+
 
   return (
     <>
       <DesktopAndTabNav
         isLoading={isLoading}
+        onlineStatus={onlineStatus}
+        setOnlineStatus={setOnlineStatus}
         logOut={logOut}
         user={user}
         userData={userData}
@@ -39,7 +49,7 @@ const Navbar = () => {
 
 export default Navbar;
 
-const DesktopAndTabNav = ({ user, userData, logOut, isLoading }) => {
+const DesktopAndTabNav = ({ user, userData, logOut, isLoading,onlineStatus, setOnlineStatus }) => {
   return (
     <nav
       className={`max-w-[90vw] mx-auto hidden md:flex items-center justify-between ${
@@ -83,6 +93,9 @@ const DesktopAndTabNav = ({ user, userData, logOut, isLoading }) => {
           </div>
         ) : (
           <NavUser
+            
+          onlineStatus={onlineStatus}
+          setOnlineStatus={setOnlineStatus}
             user={user}
             userData={userData}
             logOut={logOut}
@@ -99,6 +112,8 @@ DesktopAndTabNav.propTypes = {
   userData: PropTypes.object,
   logOut: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  onlineStatus: PropTypes.string,
+    setOnlineStatus: PropTypes.func.isRequired,
 };
 
 const MobileNav = ({ user, userData, logOut, isLoading }) => {

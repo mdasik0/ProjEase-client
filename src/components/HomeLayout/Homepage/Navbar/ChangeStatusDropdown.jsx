@@ -5,20 +5,27 @@ import { useSwitchOnlineStatusMutation } from "../../../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const ChangeStatusDropdown = ({ statusRef, status }) => {
+const ChangeStatusDropdown = ({
+  statusRef,
+  status,
+  setOnlineStatus,
+  setStatus,
+}) => {
   const { userData } = useSelector((state) => state.userSlice);
   const [switchOnlineStatus] = useSwitchOnlineStatusMutation();
-  const handleStatusChange = (newStatus) => {
+  const handleStatusChange = async (newStatus) => {
     // make an api call to change the status
     try {
       if (userData?._id) {
-        const response = switchOnlineStatus({
+        const response = await switchOnlineStatus({
           userId: userData?._id,
           status: newStatus,
-        });
-
-        if (response?.data?.success) {
+        }).unwrap();
+        // console.log(response)
+        if (response?.success) {
           toast.success("Status changed successfully");
+          setOnlineStatus(newStatus);
+          setStatus(false);
         }
       }
     } catch (error) {
@@ -67,6 +74,8 @@ const ChangeStatusDropdown = ({ statusRef, status }) => {
 ChangeStatusDropdown.propTypes = {
   statusRef: PropTypes.object.isRequired,
   status: PropTypes.bool.isRequired,
+  setOnlineStatus: PropTypes.func.isRequired,
+  setStatus: PropTypes.func.isRequired,
 };
 
 export default ChangeStatusDropdown;
