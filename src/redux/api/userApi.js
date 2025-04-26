@@ -83,11 +83,18 @@ const userApi = createApi({
         method: "PATCH",
       }),
     }),
-    
+    switchOnlineStatus: builder.mutation({
+      query: ({ userId, status }) => ({
+        url: `/change-online-status/${userId}`,
+        method: "PATCH",
+        body: { status },
+      }),
+    })
   }),
 });
 
 export const {
+  useSwitchOnlineStatusMutation,
   useSwitchProjectStatusMutation,
   useCreateUserMutation,
   useGetUserQuery,
