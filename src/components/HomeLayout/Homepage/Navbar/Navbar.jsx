@@ -72,7 +72,7 @@ const DesktopAndTabNav = ({ user, userData, logOut, isLoading,onlineStatus, setO
           <li>
             <Link
               className="hover:bg-gray-300 bg-gray-100 border border-gray-300 px-4 py-1.5 duration-500 rounded-full"
-              to={"/"}
+              to={"/about"}
             >
               About
             </Link>
