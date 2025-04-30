@@ -66,13 +66,21 @@ const NavUser = ({
                   />
                 </div>
                 <div className="online-status absolute top-0 -right-1 rounded-full">
-                    {onlineStatus === "idle" ? (
-                  <div className="bg-white p-0.5">
+                  {onlineStatus === "idle" ? (
+                    <div className="bg-white p-0.5">
                       <FaMoon className=" text-yellow-500 text-xs bg-white" />
-                  </div>
-                    ) : (
-                      onlineStatus === "do-not-disturb" ? <MdDoNotDisturbOn className="text-red-500 bg-white" /> : onlineStatus === "offline" ? <div className="bg-white p-0.5"><p className="w-3 h-3 border-[3px] border-gray-400 rounded-full"></p></div> : onlineStatus === "online" ? <div className="bg-white p-0.5"><p className="w-3 h-3 bg-green-400 rounded-full"></p></div> : ""
-                    )}
+                    </div>
+                  ) : onlineStatus === "do-not-disturb" ? (
+                    <MdDoNotDisturbOn className="text-red-500 bg-white" />
+                  ) : onlineStatus === "offline" ? (
+                    <div className="bg-white p-0.5">
+                      <p className="w-3 h-3 border-[3px] border-gray-400 rounded-full"></p>
+                    </div>
+                  ) : (
+                    <div className="bg-white p-0.5">
+                      <p className="w-2 h-2 bg-green-400 rounded-full"></p>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col items-start gap-0">

@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const tasksApi = createApi({
   reducerPath: "tasks",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" ,
+  baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_BACKEND_BASEURL}` ,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("authToken")
 

@@ -8,7 +8,7 @@ import { logoutUser } from "../redux/features/userSlice";
 const logOut = async (dispatch) => {
     localStorage.removeItem("authToken");
     try {
-        await fetch("http://localhost:5000/remove-refresh-token", {
+        await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/remove-refresh-token`, {
             method: "DELETE",
         });
     }

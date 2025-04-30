@@ -12,7 +12,7 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
   useEffect(() => {
     setLoading(true);
     if (groupId) {
-      fetch(`http://localhost:5000/messages/${groupId}`,{
+      fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/messages/${groupId}`,{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         }

@@ -57,7 +57,7 @@ const AdditionalProjectInfo = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/getUser/${email}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/getUser/${email}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },

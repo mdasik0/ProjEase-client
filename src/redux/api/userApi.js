@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const userApi = createApi({
   reducerPath: "users",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    baseUrl: `${import.meta.env.VITE_BACKEND_BASEURL}`,
     credentials: "include",
     prepareHeaders: (headers, { endpoint }) => {
       const skipAuthEndpoints = ["createUser", "emailLogin"];
