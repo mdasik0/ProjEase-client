@@ -27,11 +27,14 @@ const SocialLogin = () => {
     } else {
       return navigate("/projects");
     }
-  }
+  };
 
   const storeToken = (token) => {
-    localStorage.setItem("authToken", token);
-  }
+    console.log(token);
+    if (token) {
+      localStorage.setItem("authToken", token);
+    } else return;
+  };
 
   const createUserInBackend = async () => {
     const obj = {
@@ -44,7 +47,9 @@ const SocialLogin = () => {
 
     if (response?.data?.success === false) {
       toast.success(response.data.message);
-      storeToken(response.data.token)
+      if (response.data.token) {
+        storeToken(response.data.token);
+      }
       invitedUserNav();
     } else if (response?.data?.success === true) {
       toast.success(response.data.message);
