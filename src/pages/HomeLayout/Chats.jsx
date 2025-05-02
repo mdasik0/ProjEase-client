@@ -7,7 +7,9 @@ import ChatBox from "../../components/ProjectLayout/Chats/ChatBox";
 import SendChatMessage from "../../components/ProjectLayout/Chats/SendChatMessage";
 import toast from "react-hot-toast";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://projease-backend.onrender.com", {
+  withCredentials: true,
+});
 
 const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
