@@ -8,6 +8,7 @@ import SendChatMessage from "../../components/ProjectLayout/Chats/SendChatMessag
 import toast from "react-hot-toast";
 
 const socket = io("https://projease-backend.onrender.com", {
+  transports: ["polling", "websocket"],
   withCredentials: true,
 });
 
@@ -19,7 +20,7 @@ const Chats = () => {
     originalSender: [],
   });
 
-  const userId=  userData?._id;
+  const userId = userData?._id;
 
   const messageInputRef = useRef();
 
@@ -86,9 +87,7 @@ const Chats = () => {
     setReplyDetails({ originalMessage: "", originalSender: [] });
   };
 
-  const openChatSettingModal = () => {
-    
-  }
+  const openChatSettingModal = () => {};
 
   return (
     <div className="w-screen h-screen flex flex-col">
@@ -102,10 +101,10 @@ const Chats = () => {
         socket={socket}
         userId={userData?._id}
         groupId={projectData?.ChatId}
-        />
+      />
       <SendChatMessage
         setReplyDetails={setReplyDetails}
-      currentUserId={userId}
+        currentUserId={userId}
         replyDetails={replyDetails}
         messageInputRef={messageInputRef}
         groupId={projectData?.ChatId}
