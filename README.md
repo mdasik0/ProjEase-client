@@ -46,16 +46,24 @@ ProjEase is a collaborative project management platform designed to help teams m
 - Firebase project setup
 - Backend API running (from [Projease Backend Repo](#))
   
-##📁 Folder Structure
+## 📁 Folder Structure
 
-src/
-├── components/
-├── pages/
-├── redux/
-├── utils/
-└── App.jsx
+├── public/               # Static files like index.html, icons, etc.
+├── src/
+│   ├── assets/           # Images, icons, and other static assets
+│   ├── components/       # Reusable UI components
+│   ├── pages/            # Page-level components
+│   ├── redux/            # Redux store, slices, and API integrations
+│   ├── routes/           # Route definitions and layout wrappers
+│   ├── socket/           # Socket.io setup and listeners
+│   ├── styles/           # Global styles and Tailwind configs
+│   └── utils/            # Utility functions
+├── .env                  # Environment variables
+├── tailwind.config.js    # Tailwind CSS configuration
+├── vite.config.js        # Vite configuration
+└── README.md             # Project overview and documentation
 
-##📄 License
+## 📄 License
 
 This project is licensed under the MIT License.
 
