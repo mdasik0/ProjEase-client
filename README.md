@@ -45,6 +45,19 @@ ProjEase is a collaborative project management platform designed to help teams m
 - Node.js (v16 or higher)
 - Firebase project setup
 - Backend API running (from [Projease Backend Repo](#))
+  
+##📁 Folder Structure
+
+src/
+├── components/
+├── pages/
+├── redux/
+├── utils/
+└── App.jsx
+
+##📄 License
+
+This project is licensed under the MIT License.
 
 ### Installation
 
@@ -52,3 +65,4 @@ ProjEase is a collaborative project management platform designed to help teams m
 git clone https://github.com/yourusername/projease-frontend.git
 cd projease-frontend
 npm install
+
