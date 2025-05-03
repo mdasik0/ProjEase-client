@@ -53,7 +53,7 @@ This project is licensed under the MIT License.
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/projease-frontend.git
+git clone https://github.com/mdasik0/ProjEase-client.git
 cd projease-frontend
 npm install
 
