@@ -48,20 +48,21 @@ ProjEase is a collaborative project management platform designed to help teams m
   
 ## 📁 Folder Structure
 
-├── public/               # Static files like index.html, icons, etc.
+proj-ease-frontend/
+├── public/               # Static files (index.html, favicon, etc.)
 ├── src/
-│   ├── assets/           # Images, icons, and other static assets
-│   ├── components/       # Reusable UI components
-│   ├── pages/            # Page-level components
-│   ├── redux/            # Redux store, slices, and API integrations
-│   ├── routes/           # Route definitions and layout wrappers
+│   ├── assets/           # Images and static resources
+│   ├── components/       # Reusable components
+│   ├── pages/            # Page components (like Login, Dashboard)
+│   ├── redux/            # Redux Toolkit slices and API services
+│   ├── routes/           # Route configurations
 │   ├── socket/           # Socket.io setup and listeners
-│   ├── styles/           # Global styles and Tailwind configs
+│   ├── styles/           # Tailwind/global styles
 │   └── utils/            # Utility functions
 ├── .env                  # Environment variables
-├── tailwind.config.js    # Tailwind CSS configuration
-├── vite.config.js        # Vite configuration
-└── README.md             # Project overview and documentation
+├── tailwind.config.js    # Tailwind config
+├── vite.config.js        # Vite config
+└── README.md             # Project documentation
 
 ## 📄 License
 
