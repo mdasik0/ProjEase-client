@@ -1,4 +1,4 @@
-<img src="https://i.ibb.co.com/6cMzRsHm/MINI-LOGO-FOR-WHITE-BG.png" alt="MINI-LOGO-FOR-WHITE-BG" border="0">
+<img src="https://i.ibb.co.com/6cMzRsHm/MINI-LOGO-FOR-WHITE-BG.png" alt="ProjEase Logo" width="150" height="150" />
 
 # ProjEase — Frontend
 
