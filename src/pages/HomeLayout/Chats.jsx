@@ -7,9 +7,8 @@ import ChatBox from "../../components/ProjectLayout/Chats/ChatBox";
 import SendChatMessage from "../../components/ProjectLayout/Chats/SendChatMessage";
 import toast from "react-hot-toast";
 
-const socket = io("https://projease-backend.onrender.com", {
+const socket = io(import.meta.env.VITE_BACKEND_BASEURL, {
   transports: ["polling", "websocket"],
-  withCredentials: true,
 });
 
 const Chats = () => {

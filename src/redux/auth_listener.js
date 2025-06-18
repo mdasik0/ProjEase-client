@@ -40,9 +40,8 @@ export const listenForAuthChanges = (dispatch) => {
           const errorInfo = await response.json();
           if (errorInfo.error === "Invalid or expired token.") {
             
-            const res = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/refresh-token`, {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/refresh-token?refresh=${JSON.parse(localStorage.getItem('refreshToken'))}`, {
               method: "POST",
-              credentials: "include",
             });
             const newAccessToken = await res.json();
             if (newAccessToken) {

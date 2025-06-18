@@ -56,13 +56,26 @@ const Login_Form = () => {
     
   },[navigate])
 
+  const storeToken = (token, type) => {
+    console.log(token);
+    if (!token) {
+      return console.error("No" + type + "available");
+    }
+    if (type === "accessToken") {
+      return localStorage.setItem("authToken", token);
+    } else {
+      return localStorage.setItem("refreshToken", token)
+    }
+  };
+
   useEffect(() => {
     if (error) {
       toast.error(error);
     } else if (email && login_method === "email") {
       if (userData?.success === true) {
         toast.success(userData?.message);
-        localStorage.setItem("authToken", userData?.token);
+        storeToken(userData?.token, 'accessToken');
+        storeToken(userData?.refreshToken, 'refreshToken');
         AfterLoginNav();
       }
     }

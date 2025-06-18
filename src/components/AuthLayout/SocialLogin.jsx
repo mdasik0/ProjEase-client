@@ -18,6 +18,7 @@ const SocialLogin = () => {
     dispatch(googleLogin());
   };
 
+  // no relation with social login
   const invitedUserNav = () => {
     const isInvited = JSON.parse(
       sessionStorage.getItem("JoinProject_with_invitation")
@@ -29,11 +30,15 @@ const SocialLogin = () => {
     }
   };
 
-  const storeToken = (token) => {
-    console.log(token);
-    if (token) {
-      localStorage.setItem("authToken", token);
-    } else return;
+  const storeToken = (token, type) => {
+    if (!token) {
+      return console.error("No" + type + "available");
+    }
+    if (type === "accessToken") {
+      return localStorage.setItem("authToken", token);
+    } else {
+      return localStorage.setItem("refreshToken", token);
+    }
   };
 
   const createUserInBackend = async () => {
@@ -45,18 +50,32 @@ const SocialLogin = () => {
 
     const response = await createUser(obj);
 
-    if (response?.data?.success === false) {
-      toast.success(response.data.message);
-      if (response.data.token) {
-        storeToken(response.data.token);
+    const resData = response?.data;
+
+    if (resData.googleLogin === true) {
+      //This toast shows google login message
+      toast.success(resData.message);
+      //store access and refresh token
+      if (resData.token && resData.refreshToken) {
+        storeToken(resData.token, "accessToken");
+        storeToken(resData.refreshToken, "refreshToken");
       }
+      // redirect invited users
       invitedUserNav();
-    } else if (response?.data?.success === true) {
-      toast.success(response.data.message);
-      if (!response.data.userNameExists) {
+
+    } else if (resData.success === true) {
+      //This toast shows new google user creation message
+      toast.success(resData.message);
+       //store access and refresh token
+      if (resData.token && resData.refreshToken) {
+        storeToken(resData.token, "accessToken");
+        storeToken(resData.refreshToken, "refreshToken");
+      }
+
+      if (!resData.userNameExists) {
         return navigate("/auth/enter-your-name");
       }
-      if (!response.data.userImageExists) {
+      if (!resData.userImageExists) {
         return navigate("/auth/upload-profile-picture");
       } else {
         navigate("/");
