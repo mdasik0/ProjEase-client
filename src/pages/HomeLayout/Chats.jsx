@@ -7,10 +7,7 @@ import ChatBox from "../../components/ProjectLayout/Chats/ChatBox";
 import SendChatMessage from "../../components/ProjectLayout/Chats/SendChatMessage";
 import toast from "react-hot-toast";
 
-const socket = io(import.meta.env.VITE_BACKEND_BASEURL, {
-  transports: ["polling", "websocket"],
-});
-
+// Move socket initialization inside component to avoid connection issues
 const Chats = () => {
   const { projectData } = useSelector((state) => state.projectSlice);
   const { userData } = useSelector((state) => state.userSlice);
@@ -18,53 +15,103 @@ const Chats = () => {
     originalMessage: "",
     originalSender: [],
   });
-
+  
+  // Create socket reference
+  const socketRef = useRef(null);
   const userId = userData?._id;
-
   const messageInputRef = useRef();
 
+  // Initialize socket connection
   useEffect(() => {
-    const user = userData
-      ? {
-          userName: `${userData.name?.firstname || ""} ${
-            userData.name?.lastname || ""
-          }`.trim(),
-          userId: userData?._id,
-          image: userData?.image || null,
-          jobTitle: userData?.jobTitle || null,
-        }
-      : null;
+    if (!socketRef.current && import.meta.env.VITE_BACKEND_BASEURL) {
+      socketRef.current = io(import.meta.env.VITE_BACKEND_BASEURL, {
+        transports: ["polling", "websocket"], // Keep polling first for reliability
+        upgrade: true, // Allow upgrading from polling to websocket
+        rememberUpgrade: true, // Remember the upgrade for future connections
+        timeout: 10000, // Increase timeout
+        forceNew: false, // Reuse existing connection if available
+        autoConnect: true,
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 5,
+      });
 
-    if (user) {
-      socket.emit("register", user);
+      // Connection event handlers
+      socketRef.current.on("connect", () => {
+        console.log("Socket connected:", socketRef.current.id);
+      });
+
+      socketRef.current.on("connect_error", (error) => {
+        console.log("Socket connection error:", error.message);
+        // Don't show toast for connection errors as polling will work
+      });
+
+      socketRef.current.on("disconnect", (reason) => {
+        console.log("Socket disconnected:", reason);
+      });
     }
 
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socketRef.current || !userData) return;
+
+    const socket = socketRef.current;
+    
+    const user = {
+      userName: `${userData.name?.firstname || ""} ${
+        userData.name?.lastname || ""
+      }`.trim(),
+      userId: userData?._id,
+      image: userData?.image || null,
+      jobTitle: userData?.jobTitle || null,
+    };
+
+    // Register user
+    socket.emit("register", user);
+
+    // Join group if ChatId exists
     if (projectData?.ChatId) {
       socket.emit("joinGroup", projectData.ChatId);
     }
 
-    socket.on("registerResponse", (data) => {
+    // Event listeners
+    const handleRegisterResponse = (data) => {
       data.success
         ? toast.success(`Welcome, ${data.userName || "User"}!`)
         : toast.error(data.message);
-    });
+    };
 
-    socket.on("groupJoinResponse", (data) => {
+    const handleGroupJoinResponse = (data) => {
       toast.success(`Joined the group "${data.groupId}" successfully.`);
-    });
+    };
 
-    socket.on("error", (data) => {
+    const handleError = (data) => {
       toast.error(data.message || "An unexpected error occurred.");
-    });
+    };
 
-    socket.on("User-disconnected", (data) => {
-      console.log(data);
-    });
+    const handleUserDisconnected = (data) => {
+      console.log("User disconnected:", data);
+    };
+
+    // Add event listeners
+    socket.on("registerResponse", handleRegisterResponse);
+    socket.on("groupJoinResponse", handleGroupJoinResponse);
+    socket.on("error", handleError);
+    socket.on("User-disconnected", handleUserDisconnected);
+
+    // Cleanup function
     return () => {
-      socket.off("registerResponse");
-      socket.off("groupJoinResponse");
-      socket.off("userLeftGroup");
-      socket.off("error");
+      socket.off("registerResponse", handleRegisterResponse);
+      socket.off("groupJoinResponse", handleGroupJoinResponse);
+      socket.off("error", handleError);
+      socket.off("User-disconnected", handleUserDisconnected);
     };
   }, [projectData?.ChatId, userData, projectData?.members]);
 
@@ -97,7 +144,7 @@ const Chats = () => {
       />
       <ChatBox
         handleSendReply={handleSendReply}
-        socket={socket}
+        socket={socketRef.current}
         userId={userData?._id}
         groupId={projectData?.ChatId}
       />
@@ -108,7 +155,7 @@ const Chats = () => {
         messageInputRef={messageInputRef}
         groupId={projectData?.ChatId}
         senderId={userData?._id}
-        socket={socket}
+        socket={socketRef.current}
         cancelReply={cancelReply}
       />
     </div>

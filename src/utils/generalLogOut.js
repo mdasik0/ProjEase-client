@@ -7,14 +7,7 @@ import { logoutUser } from "../redux/features/userSlice";
 
 const logOut = async (dispatch) => {
     localStorage.removeItem("authToken");
-    try {
-        await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/remove-refresh-token`, {
-            method: "DELETE",
-        });
-    }
-    catch (error) {
-        console.error("Failed to remove refresh token:", error);
-    }
+    localStorage.removeItem("refreshToken")
     dispatch(logoutUser());
     dispatch(resetProjSlice());
     dispatch(resetTaskSlice());

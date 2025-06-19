@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useCreateUserMutation } from "../../redux/api/userApi";
+
 const SocialLogin = () => {
   const { isError, error, email, login_method, socialLoginLoading } =
     useSelector((state) => state.userSlice);
@@ -32,7 +33,7 @@ const SocialLogin = () => {
 
   const storeToken = (token, type) => {
     if (!token) {
-      return console.error("No" + type + "available");
+      return console.error("No " + type + " available");
     }
     if (type === "accessToken") {
       return localStorage.setItem("authToken", token);
@@ -42,44 +43,86 @@ const SocialLogin = () => {
   };
 
   const createUserInBackend = async () => {
-    const obj = {
-      email,
-      login_method: "google",
-      created: new Date(),
-    };
-
-    const response = await createUser(obj);
-
-    const resData = response?.data;
-
-    if (resData.googleLogin === true) {
-      //This toast shows google login message
-      toast.success(resData.message);
-      //store access and refresh token
-      if (resData.token && resData.refreshToken) {
-        storeToken(resData.token, "accessToken");
-        storeToken(resData.refreshToken, "refreshToken");
-      }
-      // redirect invited users
-      invitedUserNav();
-
-    } else if (resData.success === true) {
-      //This toast shows new google user creation message
-      toast.success(resData.message);
-       //store access and refresh token
-      if (resData.token && resData.refreshToken) {
-        storeToken(resData.token, "accessToken");
-        storeToken(resData.refreshToken, "refreshToken");
+    try {
+      const obj = {
+        email,
+        login_method: "google",
+        created: new Date(),
+      };
+      const response = await createUser(obj);
+      // Check if response has data
+      if (!response) {
+        toast.error("No response from server");
+        return;
       }
 
-      if (!resData.userNameExists) {
-        return navigate("/auth/enter-your-name");
+      // Handle error response
+      if (response.error) {
+        console.error("API Error:", response.error);
+        toast.error(response.error.data?.message || "Server error occurred");
+        return;
       }
-      if (!resData.userImageExists) {
-        return navigate("/auth/upload-profile-picture");
-      } else {
-        navigate("/");
+
+      const resData = response?.data;
+
+      if (!resData) {
+        toast.error("Invalid response from server");
+        return;
       }
+
+      console.log("Response data:", resData); // Debug log
+
+      // Handle existing Google user
+      if (resData.googleLogin === true) {
+        toast.success(resData.message);
+
+        // Store tokens
+        if (resData.token && resData.refreshToken) {
+          storeToken(resData.token, "accessToken");
+          storeToken(resData.refreshToken, "refreshToken");
+          console.log("Tokens stored successfully");
+        } else {
+          console.warn("Tokens missing in response");
+        }
+
+        // Redirect invited users
+        invitedUserNav();
+      }
+      // Handle new user creation
+      else if (resData.success === true) {
+        toast.success(resData.message);
+
+        // Store tokens
+        if (resData.token && resData.refreshToken) {
+          storeToken(resData.token, "accessToken");
+          storeToken(resData.refreshToken, "refreshToken");
+          console.log("Tokens stored successfully");
+        } else {
+          console.warn("Tokens missing in response");
+        }
+
+        // Navigate based on user completion status
+        if (!resData.userNameExists) {
+          return navigate("/auth/enter-your-name");
+        }
+        if (!resData.userImageExists) {
+          return navigate("/auth/upload-profile-picture");
+        } else {
+          navigate("/");
+        }
+      }
+      // Handle user already exists with email
+      else if (resData.success === false) {
+        toast.error(resData.message);
+      }
+      // Handle unexpected response
+      else {
+        console.warn("Unexpected response structure:", resData);
+        toast.error("Unexpected response from server");
+      }
+    } catch (error) {
+      console.error("Error in createUserInBackend:", error);
+      toast.error("An error occurred during authentication");
     }
   };
 
