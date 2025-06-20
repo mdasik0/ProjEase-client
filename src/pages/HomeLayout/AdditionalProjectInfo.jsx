@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useUpdateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { refetchUpdate } from "../../redux/features/userSlice";
 
 const AdditionalProjectInfo = () => {
   const [formData, setFormData] = useState({
@@ -50,29 +49,6 @@ const AdditionalProjectInfo = () => {
   const handleSkip = () => {
     navigate("/projects");
   };
-
-  const { email } = useSelector((state) => state.userSlice);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_BASEURL}/getUser/${email}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
-        const data = await response.json();
-        if (data) {
-          dispatch(refetchUpdate(data));
-        }
-      } catch (err) {
-        toast.error("There was an error. Please refresh the page.");
-      }
-    };
-
-    if (email) fetchUserData();
-  }, [email, dispatch]);
 
   return (
     <main className="w-screen h-screen lg:px-20 md:pt-16 p-6 relative">

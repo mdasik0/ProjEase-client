@@ -13,23 +13,26 @@ const initialState = {
   userData: {},
   email: "",
   name: "",
-  login_method: '',
+  login_method: "",
   isLoading: false,
-  socialLoginLoading:false,
+  socialLoginLoading: false,
   isError: false,
   error: "",
 };
 
 export const uploadImageToImgbb = createAsyncThunk(
-  'userSlice/imgbbHosting',
+  "userSlice/imgbbHosting",
   async (file) => {
     const formData = new FormData();
-    formData.append('image', file);
-    const imgbbApiKey = import.meta.env.VITE_IMGBB_apiKey
-    const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
-      method: 'POST',
-      body: formData,
-    });
+    formData.append("image", file);
+    const imgbbApiKey = import.meta.env.VITE_IMGBB_apiKey;
+    const response = await fetch(
+      `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
     const data = await response.json();
     return data.data.url; // Return the image URL
   }
@@ -127,7 +130,10 @@ const userSlice = createSlice({
     setUser: (state, { payload }) => {
       state.email = payload.email;
       state.isLoading = false;
-      state.userData = payload.userData
+      state.userData = payload.userData;
+    },
+    setUserData: (state, action) => {
+      state.userData = action.payload;
     },
     resetUser: (state) => {
       state.name = "";
@@ -139,9 +145,6 @@ const userSlice = createSlice({
     setLoading: (state, { payload }) => {
       state.isLoading = payload;
     },
-    refetchUpdate: (state, {payload}) => {
-      state.userData = payload
-    }
   },
   extraReducers: (builder) => {
     builder
@@ -153,7 +156,7 @@ const userSlice = createSlice({
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.email = action.payload.email;
-        state.login_method = 'email'
+        state.login_method = "email";
         state.isLoading = false;
       })
       .addCase(signUpUser.rejected, (state, action) => {
@@ -170,7 +173,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.email = action.payload.email;
-        state.login_method = 'email';
+        state.login_method = "email";
         state.isLoading = false;
         state.method = action.payload.method;
       })
@@ -181,7 +184,7 @@ const userSlice = createSlice({
       })
 
       // Logout
-      .addCase(logoutUser.pending,(state) => {
+      .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
       })
@@ -191,9 +194,9 @@ const userSlice = createSlice({
         state.error = action.payload.error.message;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        state.email = '';
-        state.login_method= '';
-        state.userData = {}
+        state.email = "";
+        state.login_method = "";
+        state.userData = {};
         state.isLoading = false;
       })
 
@@ -205,7 +208,7 @@ const userSlice = createSlice({
       })
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.email = action.payload.email;
-        state.login_method = 'google';
+        state.login_method = "google";
         state.socialLoginLoading = false;
       })
       .addCase(googleLogin.rejected, (state, action) => {
@@ -234,5 +237,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetUser, setUser, setLoading, refetchUpdate } = userSlice.actions;
+export const { resetUser, setUser, setLoading, setUserData } =
+  userSlice.actions;
 export default userSlice.reducer;

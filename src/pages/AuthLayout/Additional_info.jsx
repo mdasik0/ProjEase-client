@@ -2,10 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { CiCalendarDate } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import userApi, { useUpdateUserMutation } from "../../redux/api/userApi";
+import { useUpdateUserMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { refetchUpdate, setLoading } from "../../redux/features/userSlice";
+import { setLoading } from "../../redux/features/userSlice";
 import { jobFields} from '../../components/Shared/resources'
 const Additional_info = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ const Additional_info = () => {
     bio: "",
   });
 
-  const { userData, isLoading, email } = useSelector(
+  const { userData, isLoading } = useSelector(
     (state) => state.userSlice
   );
   const navigate = useNavigate();
@@ -41,13 +41,6 @@ const Additional_info = () => {
       if (response?.success) {
         toast.success("Additional information updated");
         console.log('info update complete');
-        // Refetch user once
-        const refetchedUser = await dispatch(
-          userApi.endpoints.getUser.initiate(email)
-        );
-
-        console.log(refetchedUser);
-        dispatch(refetchUpdate(refetchedUser.data));
   
         const isInvited = JSON.parse(sessionStorage.getItem("joinProject_with_invitation"))
       if(isInvited) {

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../redux/features/userSlice";
+import { loginUser, setUserData } from "../../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { MdAlternateEmail } from "react-icons/md";
 import Lottie from "lottie-web";
@@ -9,6 +9,7 @@ import { BiError } from "react-icons/bi";
 import { useEmailLoginQuery } from "../../../redux/api/userApi";
 
 const Login_Form = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,48 +17,28 @@ const Login_Form = () => {
   });
   
   const dispatch = useDispatch();
+  //step:1 - firebase login
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = formData.email;
     const password = formData.password;
     dispatch(loginUser({ email, password }));
   };
-  // step 1: collect form data
-  // step 2: dispatch loginUser
-  // step 3: if login is successful, make email login query to generate tokens
-  // step 4: next store the tokens in local storage
-  // step 5: navigate to the home page
-
+  
+  //step:2 - manipulate ui based on redux state
   const { isLoading, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
+  
+  
+  //step:3 - fetching login user data after firebase auth
   const shouldFetchEmailData = email && login_method === "email";
-
-
   const { data: userData } = useEmailLoginQuery(formData.email, {
     skip: !shouldFetchEmailData,
   });
-
-  const iconMenuRef = useRef(null);
-
-  const navigate = useNavigate();
-
-
-  const AfterLoginNav = useCallback(() => {
-    
-      const isInvited = JSON.parse(
-        sessionStorage.getItem("JoinProject_with_invitation")
-      )
-      if (isInvited) {
-        return navigate(`/join-project/token=${isInvited}`);
-      } else {
-        return navigate("/");
-      }
-    
-  },[navigate])
-
+  
+  //step:4 - after login data from backend store tokens
   const storeToken = (token, type) => {
-    console.log(token);
     if (!token) {
       return console.error("No" + type + "available");
     }
@@ -68,6 +49,20 @@ const Login_Form = () => {
     }
   };
 
+  //not related
+  const AfterLoginNav = useCallback(() => {  
+    const isInvited = JSON.parse(
+      sessionStorage.getItem("JoinProject_with_invitation")
+    )
+    if (isInvited) {
+      return navigate(`/join-project/token=${isInvited}`);
+    } else {
+      return navigate("/");
+    }
+    
+  },[navigate])
+
+  //ui manipulation and token storing
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -76,11 +71,19 @@ const Login_Form = () => {
         toast.success(userData?.message);
         storeToken(userData?.token, 'accessToken');
         storeToken(userData?.refreshToken, 'refreshToken');
+        dispatch(setUserData(userData.userData));
         AfterLoginNav();
+
       }
     }
   }, [error, email, navigate, userData,login_method,AfterLoginNav]);
-
+  
+  
+  
+  
+  
+  //ui element
+  const iconMenuRef = useRef(null);
   useEffect(() => {
     const iconRef = iconMenuRef.current
     if (iconRef) {

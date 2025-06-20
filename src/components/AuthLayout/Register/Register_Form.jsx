@@ -8,15 +8,14 @@ import {
   MdOutlineDoNotDisturb,
 } from "react-icons/md";
 import Lottie from "lottie-web";
-import userApi, { useCreateUserMutation } from "../../../redux/api/userApi";
-import { refetchUpdate, signUpUser } from "../../../redux/features/userSlice";
+import { useCreateUserMutation } from "../../../redux/api/userApi";
+import { setUserData, signUpUser } from "../../../redux/features/userSlice";
 
 const Register_Form = () => {
   const { isLoading, isError, error, email, login_method } = useSelector(
     (state) => state.userSlice
   );
 
-  const iconMenuRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -120,6 +119,17 @@ const Register_Form = () => {
 
   const [createUser] = useCreateUserMutation();
 
+  const storeToken = (token, type) => {
+    if (!token) {
+      return console.error("No " + type + " available");
+    }
+    if (type === "accessToken") {
+      return localStorage.setItem("authToken", token);
+    } else {
+      return localStorage.setItem("refreshToken", token);
+    }
+  };
+
   const createUserInBackend = async () => {
     try {
       const obj = {
@@ -129,26 +139,31 @@ const Register_Form = () => {
       };
   
       const response = await createUser(obj);
-  
-      if (!response?.data?.success) {
-        return toast.error(response.data.message);
+      const resData = response?.data;
+      if (!resData?.success) {
+        return toast.error(resData.message);
       }
 
-      localStorage.setItem("authToken", response.data.token);
-  
-      const fetchTheUser = await dispatch(userApi.endpoints.getUser.initiate(email)).unwrap();
-      dispatch(refetchUpdate(fetchTheUser));
+      dispatch(setUserData(resData?.userData))
+
+      if (resData.token && resData.refreshToken) {
+          storeToken(resData.token, "accessToken");
+          storeToken(resData.refreshToken, "refreshToken");
+          console.log("Tokens stored successfully");
+        } else {
+          console.warn("Tokens missing in response");
+        }
   
       // Navigate based on user data
-      if (!response.data.userNameExists) {
+      if (!resData?.userNameExists) {
         navigate("/auth/enter-your-name");
-      } else if (!response.data.userImageExists) {
+      } else if (!resData?.userImageExists) {
         navigate("/auth/upload-profile-picture");
       } else {
         navigate("/");
       }
   
-      toast.success(response.data.message);
+      toast.success(resData?.message);
     } catch (error) {
       // Handle errors during API calls or dispatch
       toast.error("There was an error. Please refresh the page");
@@ -181,6 +196,7 @@ const Register_Form = () => {
     }
   }, [isError, error, email, navigate, login_method]);
 
+  const iconMenuRef = useRef(null);
   useEffect(() => {
     if (iconMenuRef.current) {
       const animationMenu = Lottie.loadAnimation({

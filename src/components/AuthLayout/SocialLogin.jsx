@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import googleIcon from "/auth/google.png";
-import { googleLogin } from "../../redux/features/userSlice";
+import { googleLogin, setUserData } from "../../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
@@ -15,6 +15,7 @@ const SocialLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //step:1 - firebase login
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
   };
@@ -41,7 +42,7 @@ const SocialLogin = () => {
       return localStorage.setItem("refreshToken", token);
     }
   };
-
+  //step:2 - use email from firebase login and register/google login user in db
   const createUserInBackend = async () => {
     try {
       const obj = {
@@ -70,12 +71,13 @@ const SocialLogin = () => {
         return;
       }
 
+      //new user data is here
       console.log("Response data:", resData); // Debug log
 
       // Handle existing Google user
       if (resData.googleLogin === true) {
         toast.success(resData.message);
-
+        dispatch(setUserData(resData?.userData))
         // Store tokens
         if (resData.token && resData.refreshToken) {
           storeToken(resData.token, "accessToken");
@@ -84,14 +86,15 @@ const SocialLogin = () => {
         } else {
           console.warn("Tokens missing in response");
         }
-
+        
         // Redirect invited users
         invitedUserNav();
       }
       // Handle new user creation
       else if (resData.success === true) {
         toast.success(resData.message);
-
+        
+        dispatch(setUserData(resData?.userData))
         // Store tokens
         if (resData.token && resData.refreshToken) {
           storeToken(resData.token, "accessToken");
