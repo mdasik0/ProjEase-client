@@ -8,9 +8,11 @@ import { storeActiveProject } from "../redux/features/projectSlice";
 import { updateTaskInit } from "../redux/features/tasksSlice";
 import { useGetTasksInitQuery } from "../redux/api/tasksApi";
 import RedirectHome from "../components/Shared/RedirectHome";
+import { useGetUserQuery } from "../redux/api/userApi";
+import { setUserData } from "../redux/features/userSlice";
 
 const ProjectLayout = () => {
-  const { userData, isLoading } = useSelector((state) => state.userSlice);
+  const { userData, isLoading, email } = useSelector((state) => state.userSlice);
   const joinedProjects = userData?.joinedProjects;
 
   const dispatch = useDispatch();
@@ -37,6 +39,21 @@ const ProjectLayout = () => {
       dispatch(updateTaskInit(getTaskInit));
     }
   }, [getTaskInit,dispatch]);
+
+    const location = window.location.pathname
+    
+      const { data, refetch } = useGetUserQuery(email, {
+        refetchOnMount: true,
+        refetchOnFocus: true,
+      });
+    
+      useEffect(() => {
+        refetch();
+        if(data){
+  
+          dispatch(setUserData(data))
+        }
+      }, [data,location,refetch,dispatch]);
 
   if (isLoading) {
     return (

@@ -9,6 +9,7 @@ const Enter_your_name = () => {
   const [updateName] = useUpdateNameMutation();
   const { userData } = useSelector((state) => state.userSlice);
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const firstname = e.target.firstname.value;
@@ -17,8 +18,8 @@ const Enter_your_name = () => {
       firstname,
       lastname,
     };
-    if(!userData?._id) {
-      return toast.error('Please refresh the page and try again.')
+    if (!userData?._id) {
+      return toast.error("Please refresh the page and try again.");
     }
     try {
       const response = await updateName({ _id: userData?._id, data });

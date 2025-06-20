@@ -2,11 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import logo from "/logo/Full-logo/logo-white-ov2.png";
 import { CiCalendarDate } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateUserMutation } from "../../redux/api/userApi";
+import {
+  useGetUserQuery,
+  useUpdateUserMutation,
+} from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { setLoading } from "../../redux/features/userSlice";
-import { jobFields} from '../../components/Shared/resources'
+import { setLoading, setUserData } from "../../redux/features/userSlice";
+import { jobFields } from "../../components/Shared/resources";
 const Additional_info = () => {
   const [formData, setFormData] = useState({
     birthday: "",
@@ -15,7 +18,7 @@ const Additional_info = () => {
     bio: "",
   });
 
-  const { userData, isLoading } = useSelector(
+  const { userData, isLoading, email } = useSelector(
     (state) => state.userSlice
   );
   const navigate = useNavigate();
@@ -31,7 +34,7 @@ const Additional_info = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(setLoading(true)); // Start loading
-  
+
     try {
       const response = await updateUser({
         _id: userData?._id,
@@ -40,14 +43,16 @@ const Additional_info = () => {
       console.log(response.success);
       if (response?.success) {
         toast.success("Additional information updated");
-        console.log('info update complete');
-  
-        const isInvited = JSON.parse(sessionStorage.getItem("joinProject_with_invitation"))
-      if(isInvited) {
-        return navigate(`/join-project/token=${isInvited}`)
-      } else {
-        return navigate("/projects");
-      }
+        console.log("info update complete");
+
+        const isInvited = JSON.parse(
+          sessionStorage.getItem("joinProject_with_invitation")
+        );
+        if (isInvited) {
+          return navigate(`/join-project/token=${isInvited}`);
+        } else {
+          return navigate("/projects");
+        }
       } else {
         toast.error(response?.message || "Failed to update information.");
       }
@@ -58,22 +63,18 @@ const Additional_info = () => {
       dispatch(setLoading(false)); // End loading
     }
   };
-  
+
   const skipAdditionalInfo = async () => {
     dispatch(setLoading(true)); // Start loading
-    try {      
-      const isInvited = JSON.parse(sessionStorage.getItem("JoinProject_with_invitation"))
-      if(isInvited) {
-        localStorage.removeItem("reloaded");
-
-        return navigate(`/join-project/token=${isInvited}`)
-
+    try {
+      const isInvited = JSON.parse(
+        sessionStorage.getItem("JoinProject_with_invitation")
+      );
+      if (isInvited) {
+        return navigate(`/join-project/token=${isInvited}`);
       } else {
-        localStorage.removeItem("reloaded");
-
         return navigate("/projects");
       }
-
     } catch (error) {
       toast.error("Failed to skip additional info.");
       console.error(error);
@@ -82,14 +83,22 @@ const Additional_info = () => {
     }
   };
 
+  const location = window.location.pathname;
+
+  const { data, refetch } = useGetUserQuery(email, {
+    refetchOnMount: true,
+    refetchOnFocus: true,
+  });
+
   useEffect(() => {
-    if (!localStorage.getItem("reloaded")) {
-      localStorage.setItem("reloaded", "true");
-      window.location.reload();
+    refetch();
+  }, [location]); // Only refetch when location changes
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setUserData(data));
     }
-  }, []);
-  
-  
+  }, [data, dispatch]);
 
   return (
     <div className="w-screen ">
