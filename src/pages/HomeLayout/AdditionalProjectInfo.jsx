@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
-import { useSelector } from "react-redux";
-import { useUpdateProjectMutation } from "../../redux/api/projectsApi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useGetProjectQuery,
+  useUpdateProjectMutation,
+} from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useGetUserQuery } from "../../redux/api/userApi";
+import { setUserData } from "../../redux/features/userSlice";
+import { storeActiveProject } from "../../redux/features/projectSlice";
 
 const AdditionalProjectInfo = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +17,9 @@ const AdditionalProjectInfo = () => {
     CompanyOrTeamName: "",
     coWebUrl: "",
   });
-
-  const { userData } = useSelector((state) => state.userSlice);
+  const dispatch = useDispatch();
+  const { userData, email } = useSelector((state) => state.userSlice);
+  const { projectData } = useSelector((state) => state.projectSlice);
   const [updateProject] = useUpdateProjectMutation();
   const navigate = useNavigate();
   const currentProj = userData?.joinedProjects?.find(
@@ -49,6 +56,32 @@ const AdditionalProjectInfo = () => {
   const handleSkip = () => {
     navigate("/projects");
   };
+
+  const location = window.location.pathname;
+
+  const { data, refetch } = useGetUserQuery(email, {
+    refetchOnMount: true,
+    refetchOnFocus: true,
+  });
+  const { data: projectNewData, refetch: projectRefetch } = useGetProjectQuery(
+    projectData._id
+  );
+  useEffect(() => {
+    refetch();
+    projectRefetch();
+  }, [location]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setUserData(data));
+    }
+  }, [data, dispatch]);
+
+  useEffect(() => {
+    if (projectNewData) {
+      dispatch(storeActiveProject(projectNewData));
+    }
+  }, [projectNewData, dispatch]);
 
   return (
     <main className="w-screen h-screen lg:px-20 md:pt-16 p-6 relative">

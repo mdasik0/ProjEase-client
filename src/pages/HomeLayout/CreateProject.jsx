@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TitleandSub from "../../components/ProjectLayout/TitleandSub";
 import { GrCircleInformation } from "react-icons/gr";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useCreateProjectMutation } from "../../redux/api/projectsApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ import {
 import {
   useUpdateJoinedProjectsMutation,
 } from "../../redux/api/userApi";
+import { updateProjectId } from "../../redux/features/projectSlice";
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const CreateProject = () => {
   const [createProject] = useCreateProjectMutation();
   const [updateJoinedProjects] = useUpdateJoinedProjectsMutation();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
  
 
   useEffect(() => {
@@ -117,6 +118,7 @@ const CreateProject = () => {
           projectId: response.data.projectId,
           status: "active",
         };
+        dispatch(updateProjectId(response.data.projectId))
         // API 2
         const updateResponse = await updateJoinedProjects({
           _id: userData?._id,

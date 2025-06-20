@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-projectData: {},
+projectData: {
+    _id: '',
+},
 members: []
 }
 
@@ -18,6 +20,9 @@ const projectSlice = createSlice({
     resetProjSlice: (state) => {
         state.members = [];
         state.projectData = {};
+    }, 
+    updateProjectId: (state, {payload}) => {
+        state.projectData._id = payload;
     }
     }
 })
@@ -26,5 +31,5 @@ const projectSlice = createSlice({
 // then fetch the project
 // then store the project in the projectSlice
 
-export const {storeActiveProject, storeMembersInfo,resetProjSlice} = projectSlice.actions;
+export const {storeActiveProject, storeMembersInfo,resetProjSlice, updateProjectId} = projectSlice.actions;
 export default projectSlice.reducer;
