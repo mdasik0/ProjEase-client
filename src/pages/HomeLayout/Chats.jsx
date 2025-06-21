@@ -25,11 +25,11 @@ const Chats = () => {
   useEffect(() => {
     if (!socketRef.current && import.meta.env.VITE_BACKEND_BASEURL) {
       socketRef.current = io(import.meta.env.VITE_BACKEND_BASEURL, {
-        transports: ["polling", "websocket"], // Keep polling first for reliability
-        upgrade: true, // Allow upgrading from polling to websocket
-        rememberUpgrade: true, // Remember the upgrade for future connections
-        timeout: 10000, // Increase timeout
-        forceNew: false, // Reuse existing connection if available
+        transports: ["polling", "websocket"],
+        upgrade: true,
+        rememberUpgrade: true,
+        timeout: 10000,
+        forceNew: false,
         autoConnect: true,
         reconnection: true,
         reconnectionDelay: 1000,
@@ -39,6 +39,7 @@ const Chats = () => {
       // Connection event handlers
       socketRef.current.on("connect", () => {
         console.log("Socket connected:", socketRef.current.id);
+        
       });
 
       socketRef.current.on("connect_error", (error) => {
@@ -137,17 +138,22 @@ const Chats = () => {
 
   return (
     <div className="w-screen h-screen flex flex-col">
-      <ChatsHeader
-        openChatSettingModal={openChatSettingModal}
-        projectData={projectData}
-        members={members}
-      />
+    <ChatsHeader
+      openChatSettingModal={openChatSettingModal}
+      projectData={projectData}
+      members={members}
+    />
+    {/* Only render ChatBox when socket is ready */}
+    {socketRef.current && (
       <ChatBox
         handleSendReply={handleSendReply}
         socket={socketRef.current}
         userId={userData?._id}
         groupId={projectData?.ChatId}
       />
+    )}
+    {/* Same for SendChatMessage */}
+    {socketRef.current && (
       <SendChatMessage
         setReplyDetails={setReplyDetails}
         currentUserId={userId}
@@ -158,7 +164,8 @@ const Chats = () => {
         socket={socketRef.current}
         cancelReply={cancelReply}
       />
-    </div>
+    )}
+  </div>
   );
 };
 
