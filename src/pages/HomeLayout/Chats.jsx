@@ -16,14 +16,16 @@ const Chats = () => {
     originalSender: [],
   });
   
-  // Create socket reference
+  // Add socket ready state
+  const [isSocketReady, setIsSocketReady] = useState(false);
   const socketRef = useRef(null);
   const userId = userData?._id;
   const messageInputRef = useRef();
 
   // Initialize socket connection
   useEffect(() => {
-    if (!socketRef.current && import.meta.env.VITE_BACKEND_BASEURL) {
+    if (import.meta.env.VITE_BACKEND_BASEURL) {
+      // Always create a new socket when component mounts
       socketRef.current = io(import.meta.env.VITE_BACKEND_BASEURL, {
         transports: ["polling", "websocket"],
         upgrade: true,
@@ -39,16 +41,17 @@ const Chats = () => {
       // Connection event handlers
       socketRef.current.on("connect", () => {
         console.log("Socket connected:", socketRef.current.id);
-        
+        setIsSocketReady(true); // Set ready state
       });
 
       socketRef.current.on("connect_error", (error) => {
         console.log("Socket connection error:", error.message);
-        // Don't show toast for connection errors as polling will work
+        setIsSocketReady(false);
       });
 
       socketRef.current.on("disconnect", (reason) => {
         console.log("Socket disconnected:", reason);
+        setIsSocketReady(false);
       });
     }
 
@@ -56,9 +59,10 @@ const Chats = () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
         socketRef.current = null;
+        setIsSocketReady(false); // Reset ready state
       }
     };
-  }, []);
+  }, []); // Removed condition from dependency array
 
   useEffect(() => {
     if (!socketRef.current || !userData) return;
@@ -84,13 +88,15 @@ const Chats = () => {
 
     // Event listeners
     const handleRegisterResponse = (data) => {
-      data.success
-        ? toast.success(`Welcome, ${data.userName || "User"}!`)
-        : toast.error(data.message);
+      // Only show error toasts, skip success messages to reduce noise
+      if (!data.success) {
+        toast.error(data.message);
+      }
     };
 
     const handleGroupJoinResponse = (data) => {
-      toast.success(`Joined the group "${data.groupId}" successfully.`);
+      // Remove join success toast - it's annoying when navigating back
+      console.log(`Joined the group "${data.groupId}" successfully.`);
     };
 
     const handleError = (data) => {
@@ -138,35 +144,36 @@ const Chats = () => {
 
   return (
     <div className="w-screen h-screen flex flex-col">
-    <ChatsHeader
-      openChatSettingModal={openChatSettingModal}
-      projectData={projectData}
-      members={members}
-    />
-    {/* Only render ChatBox when socket is ready */}
-    {socketRef.current && (
-      <ChatBox
-        handleSendReply={handleSendReply}
-        socket={socketRef.current}
-        userId={userData?._id}
-        groupId={projectData?.ChatId}
+      <ChatsHeader
+        openChatSettingModal={openChatSettingModal}
+        projectData={projectData}
+        members={members}
       />
-    )}
-    {/* Same for SendChatMessage */}
-    {socketRef.current && (
-      <SendChatMessage
-        setReplyDetails={setReplyDetails}
-        currentUserId={userId}
-        replyDetails={replyDetails}
-        messageInputRef={messageInputRef}
-        groupId={projectData?.ChatId}
-        senderId={userData?._id}
-        socket={socketRef.current}
-        cancelReply={cancelReply}
-      />
-    )}
-  </div>
+      
+      {isSocketReady && (
+        <ChatBox
+          handleSendReply={handleSendReply}
+          socket={socketRef.current}
+          userId={userData?._id}
+          groupId={projectData?.ChatId}
+        />
+      )}
+      {isSocketReady && (
+        <SendChatMessage
+          setReplyDetails={setReplyDetails}
+          currentUserId={userId}
+          replyDetails={replyDetails}
+          messageInputRef={messageInputRef}
+          groupId={projectData?.ChatId}
+          senderId={userData?._id}
+          socket={socketRef.current}
+          cancelReply={cancelReply}
+        />
+      )}
+
+    </div>
   );
 };
 
 export default Chats;
+
