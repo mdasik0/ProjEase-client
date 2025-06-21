@@ -76,7 +76,10 @@ const ChatBox = ({ socket, userId, groupId, handleSendReply }) => {
           <div className="h-full flex justify-center items-center">
             <span className="loading loading-bars loading-lg"></span>
           </div>
-        ) : (
+        ) : messages.length === 0 ? <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-260px)]">
+            <h1 className="text-4xl block mb-3 text-gray-400">No message available</h1>
+            <h3 className="text-lg font-[500] text-gray-400">Start a conversation <kbd>(ctrl + /)</kbd> </h3>
+        </div> : (
           messages.map((message, index) =>
             message.sender?.userId === userId ? (
               <MyChatCard

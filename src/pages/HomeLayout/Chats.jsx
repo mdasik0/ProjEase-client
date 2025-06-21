@@ -142,6 +142,25 @@ const Chats = () => {
 
   const openChatSettingModal = () => {};
 
+  // Add this useEffect to your Chats component (after messageInputRef is defined)
+useEffect(() => {
+  const handleKeyboardShortcut = (event) => {
+    // Check for Ctrl + / (or Cmd + / on Mac)
+    if ((event.ctrlKey || event.metaKey) && event.key === '/') {
+      event.preventDefault();
+      if (messageInputRef.current) {
+        messageInputRef.current.focus();
+      }
+    }
+  };
+
+  document.addEventListener('keydown', handleKeyboardShortcut);
+
+  return () => {
+    document.removeEventListener('keydown', handleKeyboardShortcut);
+  };
+}, []);
+
   return (
     <div className="w-screen h-screen flex flex-col">
       <ChatsHeader

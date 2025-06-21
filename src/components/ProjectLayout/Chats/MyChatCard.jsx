@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { MdDelete, MdOutlineReply } from "react-icons/md";
 import Modal from "../../Shared/Modal";
+import { IoWarningOutline } from "react-icons/io5";
 
 const MyChatCard = ({ message, reply, setMessages, messages, socket, index}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,10 +64,12 @@ const MyChatCard = ({ message, reply, setMessages, messages, socket, index}) => 
               </button>
               <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
                 <div className="p-3">
-                  <p>Do you want to delete this message?</p>
-                  <p>If you delete the message you can not recover it anymore.</p>
-                  <button onClick={() => handleDeleteMessage(message?._id)}>Delete</button>
-                  <button onClick={() => handleCancelMessage()}>Cancel</button>
+                  <h3 className="text-[21px] font-[500] mb-2">Do you want to delete this message?</h3>
+                  <p className="text-sm text-gray-500"><IoWarningOutline className="inline text-amber-600" /> If you delete this message you can not recover it anymore.</p>
+                  <div className="mt-3 flex gap-3">
+                    <button className="bg-red-500 hover:bg-red-400 duration-200 text-white px-4 py-1.5 rounded" onClick={() => handleDeleteMessage(message?._id)}>Delete</button>
+                  <button className="bg-green-500 hover:bg-green-400 duration-200 text-white px-4 py-1.5 rounded" onClick={() => handleCancelMessage()}>Cancel</button>
+                  </div>
 
                 </div>
               </Modal>
