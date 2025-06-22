@@ -181,7 +181,7 @@ export const UserInfo = ({ userData }) => {
           <div className="flex items-start gap-6">
             <img
               className="w-2/5 rounded-full p-1 border border-gray-600"
-              src={userData?.image}
+              src={userData?.image ? userData?.image : avatar}
               alt="user image"
             />
             <div>

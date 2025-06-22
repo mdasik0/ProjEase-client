@@ -43,6 +43,9 @@ export const listenForAuthChanges = (dispatch) => {
         if (response.ok) {
           const userData = await response.json();
           dispatch(setUser({ email, userData }));
+
+          //redirect users without name or image
+          isProfileIncomplete(userData);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -66,6 +69,18 @@ const fetchUserData = async (email, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+//func to redirect users without name
+const isProfileIncomplete = (user) => {
+  const doesNameExist = user?.name;
+  if (!doesNameExist) {
+    if(window.location.pathname !== '/auth/enter-your-name') {
+      return window.location.href = '/auth/enter-your-name'
+    }
+  } else {
+    return
+  }
 };
 
 // gets new access token if old one expires
